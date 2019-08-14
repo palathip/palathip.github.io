@@ -14,7 +14,12 @@
       "countryCode": "Thailand",
       "region": "Songkhla"
     },
-    "profiles": [
+  "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "Palathip Wuttiprayoon",
+        "url": "https://www.linkedin.com/in/palathip-wuttiprayoon-b785b995/"
+      },
       {
         "network": "Twitter",
         "username": "@boombibu",
@@ -37,48 +42,7 @@
       }
     ]
   },
-  "work": [
-    {
-      "company": "Air Traffic Control (Hatyai)",
-      "position": "Engineer Internship",
-      "website": "https://www.aerothai.co.th",
-      "startDate": "2013-03-15",
-      "endDate": "2013-06-30",
-      "summary": "Design and create web application \"NAVAID Status\" for show landing device status on webpage.",
-      "highlights": []
-    },
-    {
-      "company": "Toyota Songkhla (Hatyai)",
-      "position": "IT Manager",
-      "website": " http://www.toyotasongkhla.com",
-      "startDate": "2016-10-01",
-      "endDate": "2019-01-19",
-      "summary": "Maintenance, monitoring toyota system and IT service in organization.",
-      "highlights": []
-    }
-    
-  ],
-  "volunteer": [
-    {
-      "organization": "NBTC ITU Volunteer",
-      "position": "Volunteer Member",
-      "website": "http://uso.nbtc.go.th",
-      "startDate": "2014-05-01",
-      "endDate": "2014-06-01",
-      "summary": "At Nataluang ,Trang ,TH",
-      "highlights": []
-    },
-    {
-      "organization": "CoE for Social",
-      "position": "Member",
-      "website": "https://youtu.be/H7ORe3ldtNg",
-      "startDate": "2014-03-15 ",
-      "endDate": "2014-03-18",
-      "summary": "At Ban Kalai school, Phang-nga, TH",
-      "highlights": []
-    }
-  ],
-  "education": [
+ "education": [
     {
       "institution": "Prince of Sonkhla University",
       "area": "Computer Engineering",
@@ -89,16 +53,7 @@
       "courses": []
     }
   ],
-  "awards": [
-    {
-      "title": "Member of NBTC-ITU Volunteer (NIV)",
-      "date": "2014-11-01",
-      "awarder": "NBTC-ITU Volunteer (NIV) Gen.1",
-      "summary": ""
-    }
-  ],
-  "publications": [],
-  "skills": [
+"skills": [
     {
       "name": "Operating Systems",
       "level": "Master",
@@ -137,46 +92,28 @@
       ]
     }
   ],
-  "languages": [
+"work": [
     {
-      "language": "Thai",
-      "fluency": "Native speaker"
+      "company": "Air Traffic Control (Hatyai)",
+      "position": "Engineer Internship",
+      "website": "https://www.aerothai.co.th",
+      "startDate": "2013-03-15",
+      "endDate": "2013-06-30",
+      "summary": "Design and create web application \"NAVAID Status\" for show landing device status on webpage.",
+      "highlights": []
     },
     {
-      "language": "English",
-      "fluency": "Fair"
+      "company": "Toyota Songkhla (Hatyai)",
+      "position": "IT Manager",
+      "website": " http://www.toyotasongkhla.com",
+      "startDate": "2016-10-01",
+      "endDate": "2019-01-19",
+      "summary": "Maintenance, monitoring toyota system and IT service in organization.",
+      "highlights": []
     }
+    
   ],
-  "interests": [
-    {
-      "name": "Movie",
-      "keywords": [
-        "Comedy",
-        "Si-Fi"
-      ]
-    },
-    {
-      "name": "Sport",
-      "keywords": [
-        "Football",
-        "Basketball"
-      ]
-    },
-    {
-      "name": "Computer",
-      "keywords": [
-        "Game",
-        "Internet"
-      ]
-    },
-    {
-      "name": "Etc.",
-      "keywords": [
-        "Photography",
-        "Coffee"
-      ]
-    }
-  ],
-  "references": []
-  { "meta": { "theme": "elegant" } }
+ "meta": {
+    "theme": "elegant"
+  }
 }
