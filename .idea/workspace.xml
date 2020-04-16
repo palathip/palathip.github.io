@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3f90df81-b9f6-4828-99c2-6d920b20e4ac" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resume/resume-prototype.html" beforeDir="false" />
     </list>
     <list id="17deadf1-e303-4e08-b681-ac65dcc4265a" name="edit folio/index.html" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,11 +24,6 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-10" />
-    <option name="width" value="980" />
-    <option name="height" value="1050" />
-  </component>
   <component name="ProjectId" id="1Z6opyxt8DDYSHG9HJ62vd31u88" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -36,9 +32,10 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../json-resume" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
@@ -59,6 +56,7 @@
       <workItem from="1582700103554" duration="273000" />
       <workItem from="1582700499671" duration="99000" />
       <workItem from="1584169205160" duration="50000" />
+      <workItem from="1587066053236" duration="280000" />
     </task>
     <task id="LOCAL-00001" summary="edit folio/index.html">
       <created>1573799274413</created>
