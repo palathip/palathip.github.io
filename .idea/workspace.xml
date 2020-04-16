@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3f90df81-b9f6-4828-99c2-6d920b20e4ac" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resume/resume-prototype.html" beforeDir="false" />
     </list>
     <list id="17deadf1-e303-4e08-b681-ac65dcc4265a" name="edit folio/index.html" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -25,7 +24,9 @@
     </option>
   </component>
   <component name="ProjectId" id="1Z6opyxt8DDYSHG9HJ62vd31u88" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -56,7 +57,7 @@
       <workItem from="1582700103554" duration="273000" />
       <workItem from="1582700499671" duration="99000" />
       <workItem from="1584169205160" duration="50000" />
-      <workItem from="1587066053236" duration="280000" />
+      <workItem from="1587066053236" duration="534000" />
     </task>
     <task id="LOCAL-00001" summary="edit folio/index.html">
       <created>1573799274413</created>
@@ -65,7 +66,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573799274413</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="edit file name">
+      <created>1587066543185</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1587066543185</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -99,13 +107,23 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="edit folio/index.html" />
-    <option name="LAST_COMMIT_MESSAGE" value="edit folio/index.html" />
+    <MESSAGE value="edit file name" />
+    <option name="LAST_COMMIT_MESSAGE" value="edit file name" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="391" y="12" key="CommitChangelistDialog2" timestamp="1587066542069">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="391" y="12" key="CommitChangelistDialog2/0.0.1536.834@0.0.1536.834" timestamp="1587066542069" />
     <state x="549" y="172" key="FileChooserDialogImpl" timestamp="1584169253515">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state x="549" y="172" key="FileChooserDialogImpl/0.0.1536.834@0.0.1536.834" timestamp="1584169253515" />
+    <state x="361" y="150" key="Vcs.Push.Dialog.v2" timestamp="1587066546193">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="361" y="150" key="Vcs.Push.Dialog.v2/0.0.1536.834@0.0.1536.834" timestamp="1587066546193" />
   </component>
 </project>
