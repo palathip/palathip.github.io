@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3f90df81-b9f6-4828-99c2-6d920b20e4ac" name="Default Changelist" comment="" />
+    <list default="true" id="3f90df81-b9f6-4828-99c2-6d920b20e4ac" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/works/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/works/index.html" afterDir="false" />
+    </list>
     <list id="17deadf1-e303-4e08-b681-ac65dcc4265a" name="edit folio/index.html" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +59,7 @@
       <workItem from="1582700499671" duration="99000" />
       <workItem from="1584169205160" duration="50000" />
       <workItem from="1587066053236" duration="1250000" />
+      <workItem from="1624812474045" duration="192000" />
     </task>
     <task id="LOCAL-00001" summary="edit folio/index.html">
       <created>1573799274413</created>
