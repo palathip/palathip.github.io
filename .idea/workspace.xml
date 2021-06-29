@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3f90df81-b9f6-4828-99c2-6d920b20e4ac" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/crypto/tooling.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crypto/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/crypto/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/crypto/mining.html" beforeDir="false" afterPath="$PROJECT_DIR$/crypto/mining.html" afterDir="false" />
     </list>
@@ -69,7 +69,7 @@
       <workItem from="1584169205160" duration="50000" />
       <workItem from="1587066053236" duration="1250000" />
       <workItem from="1624812474045" duration="343000" />
-      <workItem from="1624964235511" duration="846000" />
+      <workItem from="1624964235511" duration="1112000" />
     </task>
     <task id="LOCAL-00001" summary="edit folio/index.html">
       <created>1573799274413</created>
@@ -113,7 +113,14 @@
       <option name="project" value="LOCAL" />
       <updated>1624964785521</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="edit page mining &amp; tool">
+      <created>1624965212007</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1624965212007</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -154,16 +161,17 @@
     <MESSAGE value="add version eloquent" />
     <MESSAGE value="add sm" />
     <MESSAGE value="add mining page" />
-    <option name="LAST_COMMIT_MESSAGE" value="add mining page" />
+    <MESSAGE value="edit page mining &amp; tool" />
+    <option name="LAST_COMMIT_MESSAGE" value="edit page mining &amp; tool" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="391" y="12" key="CommitChangelistDialog2" timestamp="1624964784683">
+    <state x="391" y="12" key="CommitChangelistDialog2" timestamp="1624965211244">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state x="391" y="12" key="CommitChangelistDialog2/0.0.1536.834@0.0.1536.834" timestamp="1624964784683" />
-    <state x="361" y="150" key="Vcs.Push.Dialog.v2" timestamp="1624964792514">
+    <state x="391" y="12" key="CommitChangelistDialog2/0.0.1536.834@0.0.1536.834" timestamp="1624965211244" />
+    <state x="361" y="150" key="Vcs.Push.Dialog.v2" timestamp="1624965218584">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state x="361" y="150" key="Vcs.Push.Dialog.v2/0.0.1536.834@0.0.1536.834" timestamp="1624964792514" />
+    <state x="361" y="150" key="Vcs.Push.Dialog.v2/0.0.1536.834@0.0.1536.834" timestamp="1624965218584" />
   </component>
 </project>
