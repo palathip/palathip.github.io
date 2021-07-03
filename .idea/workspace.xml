@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="3f90df81-b9f6-4828-99c2-6d920b20e4ac" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crypto/mining.html" beforeDir="false" afterPath="$PROJECT_DIR$/crypto/mining.html" afterDir="false" />
     </list>
     <list id="17deadf1-e303-4e08-b681-ac65dcc4265a" name="edit folio/index.html" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -76,7 +75,7 @@
       <workItem from="1624812474045" duration="343000" />
       <workItem from="1624964235511" duration="1953000" />
       <workItem from="1624998284888" duration="214000" />
-      <workItem from="1625299662537" duration="2156000" />
+      <workItem from="1625299662537" duration="2817000" />
     </task>
     <task id="LOCAL-00001" summary="edit folio/index.html">
       <created>1573799274413</created>
@@ -176,7 +175,28 @@
       <option name="project" value="LOCAL" />
       <updated>1625310416539</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="termux no ubuntu">
+      <created>1625311096529</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1625311096529</updated>
+    </task>
+    <task id="LOCAL-00016" summary="termux no ubuntu">
+      <created>1625311129405</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1625311129405</updated>
+    </task>
+    <task id="LOCAL-00017" summary="termux no ubuntu">
+      <created>1625311138343</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1625311138343</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -227,15 +247,15 @@
     <option name="LAST_COMMIT_MESSAGE" value="termux no ubuntu" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="391" y="6" key="CommitChangelistDialog2" timestamp="1625311128764">
+    <state x="391" y="6" key="CommitChangelistDialog2" timestamp="1625311137733">
       <screen x="0" y="0" width="1536" height="816" />
     </state>
-    <state x="391" y="6" key="CommitChangelistDialog2/0.0.1536.816@0.0.1536.816" timestamp="1625311128764" />
+    <state x="391" y="6" key="CommitChangelistDialog2/0.0.1536.816@0.0.1536.816" timestamp="1625311137733" />
     <state x="391" y="12" key="CommitChangelistDialog2/0.0.1536.834@0.0.1536.834" timestamp="1624998480319" />
-    <state x="361" y="147" key="Vcs.Push.Dialog.v2" timestamp="1625310421055">
+    <state x="361" y="147" key="Vcs.Push.Dialog.v2" timestamp="1625311144249">
       <screen x="0" y="0" width="1536" height="816" />
     </state>
-    <state x="361" y="147" key="Vcs.Push.Dialog.v2/0.0.1536.816@0.0.1536.816" timestamp="1625310421055" />
+    <state x="361" y="147" key="Vcs.Push.Dialog.v2/0.0.1536.816@0.0.1536.816" timestamp="1625311144249" />
     <state x="361" y="150" key="Vcs.Push.Dialog.v2/0.0.1536.834@0.0.1536.834" timestamp="1624998486880" />
     <state x="431" y="155" width="672" height="678" key="search.everywhere.popup" timestamp="1624998306039">
       <screen x="0" y="0" width="1536" height="834" />
