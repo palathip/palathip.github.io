@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3f90df81-b9f6-4828-99c2-6d920b20e4ac" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crypto/tooling.html" beforeDir="false" afterPath="$PROJECT_DIR$/crypto/tooling.html" afterDir="false" />
     </list>
     <list id="17deadf1-e303-4e08-b681-ac65dcc4265a" name="edit folio/index.html" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -74,6 +75,8 @@
       <workItem from="1587066053236" duration="1250000" />
       <workItem from="1624812474045" duration="343000" />
       <workItem from="1624964235511" duration="1953000" />
+      <workItem from="1624998284888" duration="214000" />
+      <workItem from="1625299662537" duration="261000" />
     </task>
     <task id="LOCAL-00001" summary="edit folio/index.html">
       <created>1573799274413</created>
@@ -145,7 +148,14 @@
       <option name="project" value="LOCAL" />
       <updated>1624966156790</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="add verus coin apk download">
+      <created>1624998480927</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1624998480927</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -190,17 +200,18 @@
     <MESSAGE value="adjust bold text" />
     <MESSAGE value="add pool stat" />
     <MESSAGE value="add back to home link" />
-    <option name="LAST_COMMIT_MESSAGE" value="add back to home link" />
+    <MESSAGE value="add verus coin apk download" />
+    <option name="LAST_COMMIT_MESSAGE" value="add verus coin apk download" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="391" y="12" key="CommitChangelistDialog2" timestamp="1624966156119">
+    <state x="391" y="12" key="CommitChangelistDialog2" timestamp="1624998480319">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state x="391" y="12" key="CommitChangelistDialog2/0.0.1536.834@0.0.1536.834" timestamp="1624966156119" />
-    <state x="361" y="150" key="Vcs.Push.Dialog.v2" timestamp="1624966161584">
+    <state x="391" y="12" key="CommitChangelistDialog2/0.0.1536.834@0.0.1536.834" timestamp="1624998480319" />
+    <state x="361" y="150" key="Vcs.Push.Dialog.v2" timestamp="1624998486880">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state x="361" y="150" key="Vcs.Push.Dialog.v2/0.0.1536.834@0.0.1536.834" timestamp="1624966161584" />
+    <state x="361" y="150" key="Vcs.Push.Dialog.v2/0.0.1536.834@0.0.1536.834" timestamp="1624998486880" />
     <state x="431" y="155" width="672" height="678" key="search.everywhere.popup" timestamp="1624998306039">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
