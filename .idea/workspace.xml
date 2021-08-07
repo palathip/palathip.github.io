@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3f90df81-b9f6-4828-99c2-6d920b20e4ac" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crypto/tiktok.html" beforeDir="false" afterPath="$PROJECT_DIR$/tiktok/index.html" afterDir="false" />
     </list>
     <list id="17deadf1-e303-4e08-b681-ac65dcc4265a" name="edit folio/index.html" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -82,6 +83,7 @@
       <workItem from="1627420075355" duration="721000" />
       <workItem from="1627973467557" duration="295000" />
       <workItem from="1628135901395" duration="103000" />
+      <workItem from="1628365599634" duration="275000" />
     </task>
     <task id="LOCAL-00001" summary="edit folio/index.html">
       <created>1573799274413</created>
@@ -223,7 +225,14 @@
       <option name="project" value="LOCAL" />
       <updated>1627420162557</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="add tiktok page">
+      <created>1628365740748</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1628365740748</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -273,18 +282,19 @@
     <MESSAGE value="termux no ubuntu" />
     <MESSAGE value="add create root .sh" />
     <MESSAGE value="add ltc address" />
-    <option name="LAST_COMMIT_MESSAGE" value="add ltc address" />
+    <MESSAGE value="add tiktok page" />
+    <option name="LAST_COMMIT_MESSAGE" value="add tiktok page" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="391" y="6" key="CommitChangelistDialog2" timestamp="1627420161413">
+    <state x="391" y="6" key="CommitChangelistDialog2" timestamp="1628365739170">
       <screen x="0" y="0" width="1536" height="816" />
     </state>
-    <state x="391" y="6" key="CommitChangelistDialog2/0.0.1536.816@0.0.1536.816" timestamp="1627420161413" />
+    <state x="391" y="6" key="CommitChangelistDialog2/0.0.1536.816@0.0.1536.816" timestamp="1628365739170" />
     <state x="391" y="12" key="CommitChangelistDialog2/0.0.1536.834@0.0.1536.834" timestamp="1624998480319" />
-    <state x="361" y="147" key="Vcs.Push.Dialog.v2" timestamp="1627420172524">
+    <state x="361" y="147" key="Vcs.Push.Dialog.v2" timestamp="1628365753613">
       <screen x="0" y="0" width="1536" height="816" />
     </state>
-    <state x="361" y="147" key="Vcs.Push.Dialog.v2/0.0.1536.816@0.0.1536.816" timestamp="1627420172524" />
+    <state x="361" y="147" key="Vcs.Push.Dialog.v2/0.0.1536.816@0.0.1536.816" timestamp="1628365753613" />
     <state x="361" y="150" key="Vcs.Push.Dialog.v2/0.0.1536.834@0.0.1536.834" timestamp="1624998486880" />
     <state x="431" y="155" width="672" height="678" key="search.everywhere.popup" timestamp="1624998306039">
       <screen x="0" y="0" width="1536" height="834" />
