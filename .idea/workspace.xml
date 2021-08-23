@@ -92,6 +92,7 @@
       <workItem from="1628924809591" duration="387000" />
       <workItem from="1628925217382" duration="729000" />
       <workItem from="1629376142775" duration="1185000" />
+      <workItem from="1629736001112" duration="273000" />
     </task>
     <task id="LOCAL-00001" summary="edit folio/index.html">
       <created>1573799274413</created>
@@ -254,7 +255,14 @@
       <option name="project" value="LOCAL" />
       <updated>1628925023848</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="add DOGE Coin">
+      <created>1629736177252</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1629736177252</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -306,18 +314,19 @@
     <MESSAGE value="add ltc address" />
     <MESSAGE value="add tiktok page" />
     <MESSAGE value="add LTC Zergpool" />
-    <option name="LAST_COMMIT_MESSAGE" value="add LTC Zergpool" />
+    <MESSAGE value="add DOGE Coin" />
+    <option name="LAST_COMMIT_MESSAGE" value="add DOGE Coin" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="391" y="6" key="CommitChangelistDialog2" timestamp="1628925022562">
+    <state x="391" y="6" key="CommitChangelistDialog2" timestamp="1629736175506">
       <screen x="0" y="0" width="1536" height="816" />
     </state>
-    <state x="391" y="6" key="CommitChangelistDialog2/0.0.1536.816@0.0.1536.816" timestamp="1628925022562" />
+    <state x="391" y="6" key="CommitChangelistDialog2/0.0.1536.816@0.0.1536.816" timestamp="1629736175506" />
     <state x="391" y="12" key="CommitChangelistDialog2/0.0.1536.834@0.0.1536.834" timestamp="1624998480319" />
-    <state x="361" y="147" key="Vcs.Push.Dialog.v2" timestamp="1628925247792">
+    <state x="361" y="147" key="Vcs.Push.Dialog.v2" timestamp="1629736193064">
       <screen x="0" y="0" width="1536" height="816" />
     </state>
-    <state x="361" y="147" key="Vcs.Push.Dialog.v2/0.0.1536.816@0.0.1536.816" timestamp="1628925247792" />
+    <state x="361" y="147" key="Vcs.Push.Dialog.v2/0.0.1536.816@0.0.1536.816" timestamp="1629736193064" />
     <state x="361" y="150" key="Vcs.Push.Dialog.v2/0.0.1536.834@0.0.1536.834" timestamp="1624998486880" />
     <state x="431" y="155" width="672" height="678" key="search.everywhere.popup" timestamp="1624998306039">
       <screen x="0" y="0" width="1536" height="834" />
