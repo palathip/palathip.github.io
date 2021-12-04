@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3f90df81-b9f6-4828-99c2-6d920b20e4ac" name="Default Changelist" comment="">
+    <list default="true" id="3f90df81-b9f6-4828-99c2-6d920b20e4ac" name="Default Changelist" comment="add new ETC address">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <list id="17deadf1-e303-4e08-b681-ac65dcc4265a" name="edit folio/index.html" comment="" />
@@ -36,12 +36,13 @@
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -53,12 +54,14 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\git\boombibu-git\BBB Web Hosting\palathip.github.io\tiktok" />
     </key>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -93,6 +96,8 @@
       <workItem from="1628925217382" duration="729000" />
       <workItem from="1629376142775" duration="1185000" />
       <workItem from="1629736001112" duration="273000" />
+      <workItem from="1631711710523" duration="469000" />
+      <workItem from="1638622904531" duration="18000" />
     </task>
     <task id="LOCAL-00001" summary="edit folio/index.html">
       <created>1573799274413</created>
@@ -262,20 +267,25 @@
       <option name="project" value="LOCAL" />
       <updated>1629736177252</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="add new ETC address">
+      <created>1631712017730</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1631712017730</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
@@ -294,6 +304,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
@@ -315,22 +326,7 @@
     <MESSAGE value="add tiktok page" />
     <MESSAGE value="add LTC Zergpool" />
     <MESSAGE value="add DOGE Coin" />
-    <option name="LAST_COMMIT_MESSAGE" value="add DOGE Coin" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="391" y="6" key="CommitChangelistDialog2" timestamp="1629736175506">
-      <screen x="0" y="0" width="1536" height="816" />
-    </state>
-    <state x="391" y="6" key="CommitChangelistDialog2/0.0.1536.816@0.0.1536.816" timestamp="1629736175506" />
-    <state x="391" y="12" key="CommitChangelistDialog2/0.0.1536.834@0.0.1536.834" timestamp="1624998480319" />
-    <state x="361" y="147" key="Vcs.Push.Dialog.v2" timestamp="1629736193064">
-      <screen x="0" y="0" width="1536" height="816" />
-    </state>
-    <state x="361" y="147" key="Vcs.Push.Dialog.v2/0.0.1536.816@0.0.1536.816" timestamp="1629736193064" />
-    <state x="361" y="150" key="Vcs.Push.Dialog.v2/0.0.1536.834@0.0.1536.834" timestamp="1624998486880" />
-    <state x="431" y="155" width="672" height="678" key="search.everywhere.popup" timestamp="1624998306039">
-      <screen x="0" y="0" width="1536" height="834" />
-    </state>
-    <state x="431" y="155" width="672" height="678" key="search.everywhere.popup/0.0.1536.834@0.0.1536.834" timestamp="1624998306039" />
+    <MESSAGE value="add new ETC address" />
+    <option name="LAST_COMMIT_MESSAGE" value="add new ETC address" />
   </component>
 </project>
