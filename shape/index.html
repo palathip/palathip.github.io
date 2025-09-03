@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Multiple Polygons Example</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQQS5TgOR0Zb2VK0SxqfQC5_k0BRtTXbs"></script>
+    <script>
+      let map;
+      let infoWindow;
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: 13.7563, lng: 100.5018 },
+          zoom: 11,
+          mapTypeId: "satellite",
+        });
+
+        infoWindow = new google.maps.InfoWindow();
+
+        // ฟังก์ชันสร้าง shape
+        function generateShape(center, type, size = 0.001) {
+          const coords = [];
+          const { lat, lng } = center;
+
+          if (type === "square") {
+            coords.push(
+              { lat: lat + size, lng: lng - size },
+              { lat: lat + size, lng: lng + size },
+              { lat: lat - size, lng: lng + size },
+              { lat: lat - size, lng: lng - size }
+            );
+          } else if (type === "triangle") {
+            coords.push(
+              { lat: lat + size, lng: lng },
+              { lat: lat - size, lng: lng - size },
+              { lat: lat - size, lng: lng + size }
+            );
+          } else if (type === "pentagon") {
+            for (let i = 0; i < 5; i++) {
+              coords.push({
+                lat: lat + size * Math.cos((i * 2 * Math.PI) / 5),
+                lng: lng + size * Math.sin((i * 2 * Math.PI) / 5),
+              });
+            }
+          }
+          return coords;
+        }
+
+        // สร้าง 15000 shape แบบสุ่มในกรุงเทพ
+        function generateRandomPlots(num = 200) {
+          const plots = [];
+          const latMin = 13.55, latMax = 13.95;
+          const lngMin = 100.35, lngMax = 100.85;
+
+          for (let i = 0; i < num; i++) {
+            const lat = Math.random() * (latMax - latMin) + latMin;
+            const lng = Math.random() * (lngMax - lngMin) + lngMin;
+            const shapeType = ["square", "triangle", "pentagon"][
+              Math.floor(Math.random() * 3)
+            ];
+
+            plots.push({
+              name: `ที่ดินแปลง ${i + 1}`,
+              description: `
+                ราคาขายรวม : ${(Math.random() * 1e6).toFixed(0)}<br>
+                ราคาขายย่อย : ${(Math.random() * 1e4).toFixed(0)}
+              `,
+              coords: generateShape({ lat, lng }, shapeType, 0.0005),
+            });
+          }
+          return plots;
+        }
+
+        const plots = generateRandomPlots(15000);
+
+        plots.forEach((plot) => {
+          const polygon = new google.maps.Polygon({
+            paths: plot.coords,
+            strokeColor: "#0000FF",      // สีเส้นขอบน้ำเงิน
+            strokeOpacity: 0.8,
+            strokeWeight: 1,
+            fillColor: "#1E90FF",        // สีเติมน้ำเงิน
+            fillOpacity: 0.35,
+            map: map,
+          });
+
+          polygon.addListener("click", (event) => {
+            infoWindow.setContent(`<b>${plot.name}</b><br>${plot.description}`);
+            infoWindow.setPosition(event.latLng);
+            infoWindow.open(map);
+          });
+        });
+      }
+    </script>
+  </head>
+  <body onload="initMap()">
+    <div id="map" style="height: 100vh; width: 100%"></div>
+  </body>
+</html>
