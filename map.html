@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Batch + MarkerClusterer with Labels</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQQS5TgOR0Zb2VK0SxqfQC5_k0BRtTXbs"></script>
+    <!-- โหลด MarkerClusterer -->
+    <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
+    <script>
+      let map;
+      let markers = [];
+      let markerCluster;
+      let infoWindow;
+
+      // สร้าง dummy data (สมมติว่ามี 5,000 จุด)
+      function generateDummyData(count) {
+        const points = [];
+        for (let i = 0; i < count; i++) {
+          points.push({
+            lat: 13.7 + Math.random() * 0.5,
+            lng: 100.5 + Math.random() * 0.5,
+            name: "DRU2509" + (i + 1), // ชื่อแต่ละ pin
+          });
+        }
+        return points;
+      }
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: 13.7563, lng: 100.5018 }, // Bangkok
+          zoom: 10,
+        });
+
+        infoWindow = new google.maps.InfoWindow();
+
+        const allPoints = generateDummyData(5000);
+        const batchSize = 500;
+        let batchIndex = 0;
+
+        function addBatch() {
+          const start = batchIndex * batchSize;
+          const end = start + batchSize;
+          const batch = allPoints.slice(start, end);
+
+          batch.forEach((point) => {
+            const marker = new google.maps.Marker({
+              position: { lat: point.lat, lng: point.lng },
+              title: point.name, // ชื่อที่โชว์ tooltip
+            });
+
+            // Event: คลิกแล้วโชว์ InfoWindow
+            marker.addListener("click", () => {
+              infoWindow.setContent(`<b>${point.name}</b>`);
+              infoWindow.open(map, marker);
+            });
+
+            markers.push(marker);
+          });
+
+          // อัปเดต cluster
+          markerCluster.addMarkers(markers.slice(start, end));
+
+          batchIndex++;
+          if (batchIndex * batchSize < allPoints.length) {
+            setTimeout(addBatch, 300);
+          }
+        }
+
+        // สร้าง clusterer
+        markerCluster = new markerClusterer.MarkerClusterer({ map, markers: [] });
+
+        // เริ่มโหลด batch
+        addBatch();
+      }
+    </script>
+  </head>
+  <body onload="initMap()">
+    <div id="map" style="height: 100vh; width: 100%"></div>
+  </body>
+</html>
