@@ -92,10 +92,22 @@
       justify-content: center;
       width: 50px;
       height: 50px;
-      background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+      background: white;
       border-radius: 12px;
       color: white;
       box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+      padding: 5px;
+    }
+
+    .section-icon img,
+    .section-icon svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .section-icon.emoji {
+      background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
     }
 
     .wallet-group {
@@ -220,7 +232,7 @@
     <div class="content">
       <div class="section">
         <h2 class="section-title">
-          <span class="section-icon">🌐</span>
+          <span class="section-icon emoji">🌐</span>
           WEB3
         </h2>
         <div class="wallet-group">
@@ -233,7 +245,9 @@
 
       <div class="section">
         <h2 class="section-title">
-          <span class="section-icon">⚡</span>
+          <span class="section-icon">
+            <img src="https://www.okx.com/favicon.ico" alt="OKX" onerror="this.style.display='none'; this.parentElement.innerHTML='⚡';">
+          </span>
           OKX
         </h2>
         <div class="wallet-group">
@@ -254,7 +268,9 @@
 
       <div class="section">
         <h2 class="section-title">
-          <span class="section-icon">🟡</span>
+          <span class="section-icon">
+            <img src="https://www.binance.com/favicon.ico" alt="Binance" onerror="this.style.display='none'; this.parentElement.innerHTML='🟡';">
+          </span>
           BINANCE
         </h2>
         <div class="wallet-group">
@@ -291,7 +307,9 @@
 
       <div class="section">
         <h2 class="section-title">
-          <span class="section-icon">🔒</span>
+          <span class="section-icon">
+            <img src="https://www.safepal.com/favicon.ico" alt="SafePal" onerror="this.style.display='none'; this.parentElement.innerHTML='🔒';">
+          </span>
           VAULT
         </h2>
         <div class="wallet-group">
@@ -308,7 +326,7 @@
 
       <div class="section">
         <h2 class="section-title">
-          <span class="section-icon">💎</span>
+          <span class="section-icon emoji">💎</span>
           OTHER
         </h2>
         <div class="wallet-group">
