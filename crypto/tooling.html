@@ -1,99 +1,277 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>tooling</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mining Tool - BOOMBIBU</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .header {
+      background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .content {
+      padding: 40px;
+    }
+
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      color: #4A90E2;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid #4A90E2;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::before {
+      content: '';
+      width: 5px;
+      height: 30px;
+      background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+      border-radius: 3px;
+    }
+
+    .code-block {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 20px;
+      border-radius: 10px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      overflow-x: auto;
+      border-left: 4px solid #4A90E2;
+      margin: 15px 0;
+    }
+
+    .code-block code {
+      display: block;
+      white-space: pre;
+    }
+
+    .download-link {
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .download-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 24px;
+      background: white;
+      color: #4A90E2;
+      text-decoration: none;
+      border-radius: 25px;
+      border: 2px solid #4A90E2;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .back-link:hover {
+      background: #4A90E2;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .nav-links {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+      .code-block {
+        font-size: 0.8rem;
+      }
+    }
+  </style>
 </head>
 <body>
-<b>Android</b> <br><br>
-<a href="https://bit.ly/3myNLdS">VerusCoin</a><br><br>
+  <div class="container">
+    <div class="header">
+      <h1>🔧 Mining Tool</h1>
+      <p>Setup Instructions & Tools</p>
+    </div>
 
-<b>TURMUX UBUNTU</b> <br><br>
-termux-setup-storage <br><br>
+    <div class="content">
+      <div class="section">
+        <h2 class="section-title">Android</h2>
+        <a href="https://bit.ly/3myNLdS" target="_blank" class="download-link">Download VerusCoin →</a>
+      </div>
 
-apt update && apt upgrade <br><br>
+      <div class="section">
+        <h2 class="section-title">TURMUX UBUNTU</h2>
+        <div class="code-block">
+          <code>termux-setup-storage
 
-pkg install nano <br><br>
+apt update && apt upgrade
 
-pkg install git <br><br>
+pkg install nano
 
-pkg install wget <br><br>
+pkg install git
 
-pkg install proot <br><br>
+pkg install wget
 
-git clone https://github.com/MFDGaming/ubuntu-in-termux <br><br>
+pkg install proot
 
-cd ubuntu-in-termux <br><br>
+git clone https://github.com/MFDGaming/ubuntu-in-termux
 
-chmod +x ubuntu.sh <br><br>
+cd ubuntu-in-termux
 
-./ubuntu.sh <br><br>
+chmod +x ubuntu.sh
 
-./startubuntu.sh <br><br>
+./ubuntu.sh
 
-apt update && apt upgrade <br><br>
+./startubuntu.sh
 
-apt-get install libcurl4-openssl-dev libssl-dev libjansson-dev automake autotools-dev build-essential <br><br>
+apt update && apt upgrade
 
-apt-get install git <br><br>
+apt-get install libcurl4-openssl-dev libssl-dev libjansson-dev automake autotools-dev build-essential
 
-git clone --single-branch -b ARM https://github.com/monkins1010/ccminer <br><br>
+apt-get install git
 
-cd ccminer <br><br>
+git clone --single-branch -b ARM https://github.com/monkins1010/ccminer
 
-chmod +x build.sh <br><br>
+cd ccminer
 
-chmod +x configure.sh <br><br>
+chmod +x build.sh
 
-chmod +x autogen.sh <br><br>
+chmod +x configure.sh
 
-./build.sh <br><br><br>
+chmod +x autogen.sh
 
+./build.sh</code>
+        </div>
+      </div>
 
-<b>TERMUX NO UBUNTU</b> <br><br>
+      <div class="section">
+        <h2 class="section-title">TERMUX NO UBUNTU</h2>
+        <div class="code-block">
+          <code>apt update && apt upgrade
 
-apt update && apt upgrade <br><br>
+pkg install automake build-essential curl git gnupg openssl nano
 
-pkg install automake build-essential curl git gnupg openssl nano <br><br>
+curl -s https://its-pointless.github.io/setup-pointless-repo.sh | bash
 
-curl -s https://its-pointless.github.io/setup-pointless-repo.sh | bash <br><br>
-
-pkg install gcc-10 <br>
-[ gcc6, gcc7, gcc8, gcc9, gcc10] <br><br>
+pkg install gcc-10
+[ gcc6, gcc7, gcc8, gcc9, gcc10]
 
 git clone --single-branch -b ARM https://github.com/monkins1010/ccminer.git
 
-cd ccminer <br><br>
+cd ccminer
 
-setupgcc-10 <br><br>
-[setupgcc-6, setupgcc-7, setupgcc-8, setupgcc-9, setupgcc-10 ] <br><br>
+setupgcc-10
+[setupgcc-6, setupgcc-7, setupgcc-8, setupgcc-9, setupgcc-10 ]
 
-setup-patchforgcc <br><br>
+setup-patchforgcc
 
-./build.sh <br><br>
+./build.sh</code>
+        </div>
+      </div>
 
-<b>Create boot TERMUX</b><br><br>
-nano<br><br>
-echo""<br><br>
-cd ubuntu-in-termux<br><br>
-clear<br><br>
-./startubuntu.sh<br><br>
+      <div class="section">
+        <h2 class="section-title">Create boot TERMUX</h2>
+        <div class="code-block">
+          <code>nano
 
+echo""
 
+cd ubuntu-in-termux
 
+clear
 
-<b>XMRig TERMUX</b><br><br>
-sudo apt-get install git build-essential cmake libuv1-dev libssl-dev libhwloc-dev<br><br>
-git clone https://github.com/xmrig/xmrig.git<br><br>
-mkdir xmrig/build && cd xmrig/build<br><br>
-cmake ..<br><br>
-make -j$(nproc)<br><br>
+./startubuntu.sh</code>
+        </div>
+      </div>
 
-<br><br>
+      <div class="section">
+        <h2 class="section-title">XMRig TERMUX</h2>
+        <div class="code-block">
+          <code>sudo apt-get install git build-essential cmake libuv1-dev libssl-dev libhwloc-dev
 
+git clone https://github.com/xmrig/xmrig.git
 
-<br><br>
-<a href="index.html">Home</a>
+mkdir xmrig/build && cd xmrig/build
 
+cmake ..
+
+make -j$(nproc)</code>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a href="index.html" class="back-link">← Back to Home</a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

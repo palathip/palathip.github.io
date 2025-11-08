@@ -1,20 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Pool</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mining Pool - BOOMBIBU</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .header {
+      background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .content {
+      padding: 40px;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      color: #4A90E2;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid #4A90E2;
+    }
+
+    .pool-list {
+      display: grid;
+      gap: 20px;
+    }
+
+    .pool-item {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 10px;
+      border-left: 4px solid #4A90E2;
+      transition: all 0.3s;
+    }
+
+    .pool-item:hover {
+      transform: translateX(5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .pool-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #4A90E2;
+      margin-bottom: 10px;
+    }
+
+    .pool-link {
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+      margin-top: 10px;
+    }
+
+    .pool-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 12px 24px;
+      background: white;
+      color: #4A90E2;
+      text-decoration: none;
+      border-radius: 25px;
+      border: 2px solid #4A90E2;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .back-link:hover {
+      background: #4A90E2;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .nav-links {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .content {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-<b>My Pool</b><br>
-<a href="https://luckpool.net/verus/miner.html?RHiC9iCQusDKhxRywrPLQy2nsAjLcnrcZm">VRSC - Luckpool</a><br>
-<a href="https://etc.ethermine.org/miners/3f37a90da7ab699cbbddc5338b2a6aa22e32cacc/dashboard">ETC - Ethermine</a><br>
-<a href="https://ravencoin.flypool.org/miners/RSXs6cGRWdSmD7wSaPiNC7RmaefQrFns3v/dashboard">RVN - Flypool</a><br>
-<a href="https://turtlecoin.herominers.com/#">TRTL - Herominers</a><br>
-<a href="http://korea02.mibpool.com/#/account/0x38a0d5f016e4978aff273c669f3af9f8b07554f3">MIB - MIBpool</a><br>
-<a href="https://unmineable.com/coins/SHIB/address/0x3f37a90da7ab699cbbddc5338b2a6aa22e32cacc">SHIB - Unmineable</a>
+  <div class="container">
+    <div class="header">
+      <h1>🏊 My Mining Pool</h1>
+      <p>Pool Dashboard Links</p>
+    </div>
 
-<br><br>
-<a href="index.html">Home</a>
+    <div class="content">
+      <h2 class="section-title">Pool Links</h2>
+      
+      <div class="pool-list">
+        <div class="pool-item">
+          <div class="pool-name">VRSC - Luckpool</div>
+          <a href="https://luckpool.net/verus/miner.html?RHiC9iCQusDKhxRywrPLQy2nsAjLcnrcZm" target="_blank" class="pool-link">View Dashboard →</a>
+        </div>
 
+        <div class="pool-item">
+          <div class="pool-name">ETC - Ethermine</div>
+          <a href="https://etc.ethermine.org/miners/3f37a90da7ab699cbbddc5338b2a6aa22e32cacc/dashboard" target="_blank" class="pool-link">View Dashboard →</a>
+        </div>
+
+        <div class="pool-item">
+          <div class="pool-name">RVN - Flypool</div>
+          <a href="https://ravencoin.flypool.org/miners/RSXs6cGRWdSmD7wSaPiNC7RmaefQrFns3v/dashboard" target="_blank" class="pool-link">View Dashboard →</a>
+        </div>
+
+        <div class="pool-item">
+          <div class="pool-name">TRTL - Herominers</div>
+          <a href="https://turtlecoin.herominers.com/#" target="_blank" class="pool-link">View Dashboard →</a>
+        </div>
+
+        <div class="pool-item">
+          <div class="pool-name">MIB - MIBpool</div>
+          <a href="http://korea02.mibpool.com/#/account/0x38a0d5f016e4978aff273c669f3af9f8b07554f3" target="_blank" class="pool-link">View Dashboard →</a>
+        </div>
+
+        <div class="pool-item">
+          <div class="pool-name">SHIB - Unmineable</div>
+          <a href="https://unmineable.com/coins/SHIB/address/0x3f37a90da7ab699cbbddc5338b2a6aa22e32cacc" target="_blank" class="pool-link">View Dashboard →</a>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a href="index.html" class="back-link">← Back to Home</a>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

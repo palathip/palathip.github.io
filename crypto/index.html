@@ -1,31 +1,310 @@
-<b>BOOMBIBU Crypto Details</b> <br><br>
-Wallet Address <br> <br>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BOOMBIBU Crypto Details</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-<b>WEB3</b> <br>
-address : 0x8A4b3d4986f85212851cFF079A7720B7015f9081 <br><br>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #333;
+    }
 
-<b>OKX</b> <br>
-BTC   : 3CBPnWnsm5Ff6CyaCeaaBBAReSHN3wfkiL <br>
-DOGE  : A7VpY1uHaJ8ktDsFqLVaGSVTp6zVguwrUc <br>
-MATIC : 0x81334f1e61d97de966937f107f80275eee1d4df4 <br><br>
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      animation: fadeIn 0.8s ease-out;
+    }
 
-<b>BINANCE</b> <br>
-BTC   : 1KdorZw28Z4Tb38WWtJorizE8sXi87o37J <br>
-LTC   : LR9fipgurMJeChx4JG1qfNDjaqtsR89FHU <br>
-RVN   : REWCofh9q3UHPQ6W66dTCC1FGBnV4hLgPR <br>
-DOGE  : DBQCUHpVrM9rzom8ztv5YqcMdVfDaoDr3o <br>
-ETC   : 0x1f100bfcf7820ce79157fd6adb9b6618345f198c <br>
-SHIB  : 0x1f100bfcf7820ce79157fd6adb9b6618345f198c <br>
-BNB   : 0x1f100bfcf7820ce79157fd6adb9b6618345f198c <br><br>
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-<b>VAULT</b> <br>
-BTC   : bc1qh4z460g6nsh630s9wyfh8zlweuykc5f97rtrr2 <br>
-POL   : 0x37cFA9f9fd9D5031492C3D1B87379206ffA4838F <br><br>
+    .header {
+      background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
 
-<b>OTHER</b> <br>
-VRSC (SafeTrade) : RYRKFbavsHszSyHn892MMEtALjk5Np8YWw <br>
-TRTL (Lagacy) : TRTLuwgfNczGdzad6H9Dpg5AoCnHPwJotDyc3Ch7pads5wLekJD4ZcKTMwQh6HFNCVTFXc5qx2iz9NTgeYCUvXgQcFDwNtTeuxh <br><br>
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
 
-<a href="mining.html">Coin Mining</a> <br>
-<a href="tooling.html">Mining Tool</a> <br>
-<a href="pool.html">Mining Pool</a> <br>
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.95;
+    }
+
+    .content {
+      padding: 40px;
+    }
+
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      color: #4A90E2;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid #4A90E2;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::before {
+      content: '';
+      width: 5px;
+      height: 30px;
+      background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+      border-radius: 3px;
+    }
+
+    .wallet-group {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      border-left: 4px solid #4A90E2;
+      transition: all 0.3s;
+    }
+
+    .wallet-group:hover {
+      transform: translateX(5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .wallet-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #4A90E2;
+      margin-bottom: 15px;
+    }
+
+    .wallet-item {
+      margin: 10px 0;
+      padding: 12px;
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #e0e0e0;
+      transition: all 0.3s;
+    }
+
+    .wallet-item:hover {
+      border-color: #4A90E2;
+      box-shadow: 0 2px 8px rgba(74, 144, 226, 0.2);
+    }
+
+    .coin-name {
+      font-weight: 600;
+      color: #333;
+      display: inline-block;
+      min-width: 80px;
+    }
+
+    .address {
+      font-family: 'Courier New', monospace;
+      color: #555;
+      word-break: break-all;
+      font-size: 0.9rem;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 30px;
+      justify-content: center;
+    }
+
+    .nav-link {
+      display: inline-block;
+      padding: 15px 30px;
+      background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+    }
+
+    .nav-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 24px;
+      background: white;
+      color: #4A90E2;
+      text-decoration: none;
+      border-radius: 25px;
+      border: 2px solid #4A90E2;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .back-link:hover {
+      background: #4A90E2;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+      }
+
+      .nav-links {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>💰 BOOMBIBU Crypto Details</h1>
+      <p>Wallet Addresses & Information</p>
+    </div>
+
+    <div class="content">
+      <div class="section">
+        <h2 class="section-title">WEB3</h2>
+        <div class="wallet-group">
+          <div class="wallet-item">
+            <span class="coin-name">Address:</span>
+            <span class="address">0x8A4b3d4986f85212851cFF079A7720B7015f9081</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">OKX</h2>
+        <div class="wallet-group">
+          <div class="wallet-item">
+            <span class="coin-name">BTC:</span>
+            <span class="address">3CBPnWnsm5Ff6CyaCeaaBBAReSHN3wfkiL</span>
+          </div>
+          <div class="wallet-item">
+            <span class="coin-name">DOGE:</span>
+            <span class="address">A7VpY1uHaJ8ktDsFqLVaGSVTp6zVguwrTp</span>
+          </div>
+          <div class="wallet-item">
+            <span class="coin-name">MATIC:</span>
+            <span class="address">0x81334f1e61d97de966937f107f80275eee1d4df4</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">BINANCE</h2>
+        <div class="wallet-group">
+          <div class="wallet-item">
+            <span class="coin-name">BTC:</span>
+            <span class="address">1KdorZw28Z4Tb38WWtJorizE8sXi87o37J</span>
+          </div>
+          <div class="wallet-item">
+            <span class="coin-name">LTC:</span>
+            <span class="address">LR9fipgurMJeChx4JG1qfNDjaqtsR89FHU</span>
+          </div>
+          <div class="wallet-item">
+            <span class="coin-name">RVN:</span>
+            <span class="address">REWCofh9q3UHPQ6W66dTCC1FGBnV4hLgPR</span>
+          </div>
+          <div class="wallet-item">
+            <span class="coin-name">DOGE:</span>
+            <span class="address">DBQCUHpVrM9rzom8ztv5YqcMdVfDaoDr3o</span>
+          </div>
+          <div class="wallet-item">
+            <span class="coin-name">ETC:</span>
+            <span class="address">0x1f100bfcf7820ce79157fd6adb9b6618345f198c</span>
+          </div>
+          <div class="wallet-item">
+            <span class="coin-name">SHIB:</span>
+            <span class="address">0x1f100bfcf7820ce79157fd6adb9b6618345f198c</span>
+          </div>
+          <div class="wallet-item">
+            <span class="coin-name">BNB:</span>
+            <span class="address">0x1f100bfcf7820ce79157fd6adb9b6618345f198c</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">VAULT</h2>
+        <div class="wallet-group">
+          <div class="wallet-item">
+            <span class="coin-name">BTC:</span>
+            <span class="address">bc1qh4z460g6nsh630s9wyfh8zlweuykc5f97rtrr2</span>
+          </div>
+          <div class="wallet-item">
+            <span class="coin-name">POL:</span>
+            <span class="address">0x37cFA9f9fd9D5031492C3D1B87379206ffA4838F</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">OTHER</h2>
+        <div class="wallet-group">
+          <div class="wallet-item">
+            <span class="coin-name">VRSC (SafeTrade):</span>
+            <span class="address">RYRKFbavsHszSyHn892MMEtALjk5Np8YWw</span>
+          </div>
+          <div class="wallet-item">
+            <span class="coin-name">TRTL (Legacy):</span>
+            <span class="address">TRTLuwgfNczGdzad6H9Dpg5AoCnHPwJotDyc3Ch7pads5wLekJD4cKTMwQh6HFNCVTFXc5qx2iz9NTgeYCUvXgQcFDwNtTeuxh</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a href="mining.html" class="nav-link">⛏️ Coin Mining</a>
+        <a href="tooling.html" class="nav-link">🔧 Mining Tool</a>
+        <a href="pool.html" class="nav-link">🏊 Mining Pool</a>
+      </div>
+
+      <div style="text-align: center;">
+        <a href="../index.html" class="back-link">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
