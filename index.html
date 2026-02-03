@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BOOMBIBU SITE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-dark: #0D0D0D;
@@ -43,9 +46,10 @@
     }
 
     .logo {
+      font-family: 'Syne', sans-serif;
       font-size: 1.5rem;
-      font-weight: 600;
-      letter-spacing: -0.5px;
+      font-weight: 700;
+      letter-spacing: 1px;
     }
 
     .nav-links {
@@ -179,17 +183,6 @@
       background: #d92d47;
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(240, 53, 81, 0.4);
-    }
-
-    .btn-qr {
-      background: transparent;
-      color: var(--text-white);
-      border-color: #00C853;
-    }
-
-    .btn-qr:hover {
-      background: #00C853;
-      transform: translateY(-2px);
     }
 
     /* Services Section */
@@ -408,8 +401,7 @@
       <div class="accent-line"></div>
       <h1><span id="typed-text"></span><span class="typing-cursor">|</span></h1>
       <div class="button-group">
-        <a href="resume.html" class="btn btn-solid">Interactive Resume</a>
-        <button type="button" class="btn btn-qr" id="qrPaymentBtn">QR Payment</button>
+        <a href="resume.html" class="btn btn-solid">View My Resume</a>
       </div>
     </div>
   </section>
@@ -553,7 +545,6 @@
 
     // QR Payment Modal
     const qrModal = document.getElementById('qrModal');
-    const qrPaymentBtn = document.getElementById('qrPaymentBtn');
     const qrModalClose = document.getElementById('qrModalClose');
     const qrServiceItem = document.getElementById('qrServiceItem');
     const navQrLink = document.getElementById('navQrLink');
@@ -568,7 +559,6 @@
       document.body.style.overflow = '';
     }
 
-    qrPaymentBtn.addEventListener('click', openQrModal);
     qrServiceItem.addEventListener('click', openQrModal);
     navQrLink.addEventListener('click', (e) => {
       e.preventDefault();
