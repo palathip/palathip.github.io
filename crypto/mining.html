@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Coin Mining - BOOMBIBU</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-dark: #0D0D0D;
@@ -16,7 +19,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Inter', 'Segoe UI', sans-serif;
+      font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg-dark);
       min-height: 100vh;
       padding: 20px;
@@ -34,7 +37,14 @@
       background: var(--bg-dark);
     }
 
-    .logo a { color: var(--text-white); text-decoration: none; font-weight: 600; }
+    .logo a {
+      font-family: 'Syne', sans-serif;
+      color: var(--text-white);
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
     .back-link {
       padding: 12px 24px;
       background: transparent;
@@ -103,7 +113,7 @@
 </head>
 <body>
   <header class="page-header">
-    <div class="logo"><a href="index.html">BOOMBIBU SITE</a></div>
+    <div class="logo"><a href="index.html">BOOMBIBU</a></div>
     <a href="index.html" class="back-link">← Back to Crypto</a>
   </header>
 
