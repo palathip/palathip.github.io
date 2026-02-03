@@ -112,6 +112,7 @@
       letter-spacing: -1px;
       margin-bottom: 32px;
       min-height: 1.2em;
+      white-space: nowrap;
     }
 
     .typing-cursor {
@@ -516,21 +517,101 @@
   </div>
 
   <script>
-    // Typing effect
+    // Typing effect: Developer. → Engineer. → Ordinary Man. :)
     const typedText = document.getElementById('typed-text');
-    const text = "I'm a Software Engineer.";
-    let i = 0;
+    const typeSpeed = 80;
+    const deleteSpeed = 50;
+    const pauseAfterType = 2000;
+    const pauseAfterDelete = 400;
 
-    function typeWriter() {
-      if (i < text.length) {
-        typedText.textContent += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, 80);
+    const phrases = [
+      { prefix: "I'm a ", suffix: "Software Developer.", deleteStop: 9 },
+      { prefix: "I'm a Software ", suffix: "Engineer.", deleteStop: 0 },
+      { prefix: "I'm a ", suffix: "Software ", deleteOnly: true },
+      { prefix: "I'm an ", suffix: "Ordinary Man.", deleteStop: 0 }
+    ];
+
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let isFixingPrefix = false;
+
+    function type() {
+      const phrase = phrases[phraseIndex];
+      const { prefix: displayPrefix, suffix: currentSuffix } = phrase;
+
+      if (isFixingPrefix) {
+        typedText.textContent = "I'm an ";
+        isFixingPrefix = false;
+        charIndex = 0;
+        setTimeout(type, pauseAfterDelete);
+        return;
+      }
+
+      if (!isDeleting) {
+        if (phrase.deleteOnly) {
+          isDeleting = true;
+          charIndex = currentSuffix.length;
+          setTimeout(type, pauseAfterDelete);
+          return;
+        }
+        const suffixToShow = currentSuffix.substring(0, charIndex);
+        typedText.textContent = displayPrefix + suffixToShow;
+        charIndex++;
+        if (charIndex > currentSuffix.length) {
+          if (phraseIndex === phrases.length - 1) {
+            setTimeout(() => typeSuffix(), pauseAfterType);
+            return;
+          }
+          isDeleting = true;
+          charIndex = currentSuffix.length;
+          setTimeout(type, pauseAfterType);
+        } else {
+          setTimeout(type, typeSpeed);
+        }
+      } else {
+        const deleteStop = phrase.deleteStop || 0;
+        charIndex--;
+        const suffixToShow = currentSuffix.substring(0, Math.max(charIndex, deleteStop));
+        typedText.textContent = displayPrefix + suffixToShow;
+        if (charIndex <= deleteStop) {
+          isDeleting = false;
+          phraseIndex++;
+          charIndex = 0;
+          if (phraseIndex === 3) {
+            typedText.textContent = "I'm ";
+            setTimeout(() => {
+              isFixingPrefix = true;
+              type();
+            }, pauseAfterDelete);
+          } else if (phrases[phraseIndex]?.deleteOnly) {
+            isDeleting = true;
+            charIndex = phrases[phraseIndex].suffix.length;
+            setTimeout(type, pauseAfterDelete);
+          } else {
+            setTimeout(type, pauseAfterDelete);
+          }
+        } else {
+          setTimeout(type, deleteSpeed);
+        }
       }
     }
 
+    function typeSuffix() {
+      const suffix = " :)";
+      let i = 0;
+      function addChar() {
+        if (i < suffix.length) {
+          typedText.textContent += suffix.charAt(i);
+          i++;
+          setTimeout(addChar, typeSpeed);
+        }
+      }
+      addChar();
+    }
+
     window.addEventListener('load', () => {
-      setTimeout(typeWriter, 500);
+      setTimeout(type, 500);
     });
 
     // QR Payment Modal
