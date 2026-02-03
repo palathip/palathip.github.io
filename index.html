@@ -85,6 +85,9 @@
       overflow: hidden;
       letter-spacing: 1px;
       text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
     }
 
     .resume-button::before {
@@ -133,6 +136,15 @@
 
     .resume-button-beautiful:hover {
       box-shadow: 0 15px 40px rgba(245, 87, 108, 0.6);
+    }
+
+    .resume-button-qr {
+      background: linear-gradient(135deg, #00C853 0%, #00A843 100%);
+      box-shadow: 0 10px 30px rgba(0, 200, 83, 0.4);
+    }
+
+    .resume-button-qr:hover {
+      box-shadow: 0 15px 40px rgba(0, 200, 83, 0.6);
     }
 
     .decorative-line {
@@ -222,6 +234,116 @@
         opacity: 0;
       }
     }
+
+    /* QR Payment Modal */
+    .qr-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      backdrop-filter: blur(5px);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .qr-modal-overlay.active {
+      display: flex;
+    }
+
+    .qr-modal {
+      background: white;
+      border-radius: 24px;
+      padding: 40px;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+      position: relative;
+      animation: slideUp 0.4s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .qr-modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: #f0f0f0;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .qr-modal-close:hover {
+      background: #e0e0e0;
+      transform: rotate(90deg);
+    }
+
+    .qr-modal-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .qr-modal-header h2 {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .qr-modal-header p {
+      font-size: 0.95rem;
+      color: #666;
+    }
+
+    .qr-modal-image {
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto 20px;
+      display: block;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .qr-modal-info {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .qr-modal-info p {
+      font-size: 0.9rem;
+      color: #555;
+      margin: 4px 0;
+    }
+
+    .qr-modal-info .highlight {
+      color: #00C853;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -237,6 +359,27 @@
         <a href="https://palathip.github.io/resume/" class="resume-button">
           <span>Original Resume</span>
         </a>
+        <button type="button" class="resume-button resume-button-qr" id="qrPaymentBtn">
+          <span>💳 QR Payment</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Payment Modal -->
+  <div class="qr-modal-overlay" id="qrModal">
+    <div class="qr-modal">
+      <button type="button" class="qr-modal-close" id="qrModalClose" aria-label="ปิด">×</button>
+      <div class="qr-modal-header">
+        <h2>💳 Thai QR Payment</h2>
+        <p>สแกน QR เพื่อโอนเงิน</p>
+      </div>
+      <img src="images/qr-payment.png" alt="QR Payment - นาย พลาธิป วุฒิประยูร" class="qr-modal-image">
+      <div class="qr-modal-info">
+        <p><strong>ชื่อ:</strong> นาย พลาธิป วุฒิประยูร</p>
+        <p><strong>บัญชี:</strong> xxx-x-x5834-x</p>
+        <p><strong>เลขที่อ้างอิง:</strong> 004999012949193</p>
+        <p class="highlight">✓ รับเงินได้จากทุกธนาคาร</p>
       </div>
     </div>
   </div>
@@ -259,6 +402,29 @@
 
     // เรียกใช้เมื่อโหลดหน้าเว็บ
     window.addEventListener('load', createParticles);
+
+    // QR Payment Modal
+    const qrModal = document.getElementById('qrModal');
+    const qrPaymentBtn = document.getElementById('qrPaymentBtn');
+    const qrModalClose = document.getElementById('qrModalClose');
+
+    qrPaymentBtn.addEventListener('click', () => {
+      qrModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+
+    function closeQrModal() {
+      qrModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    qrModalClose.addEventListener('click', closeQrModal);
+    qrModal.addEventListener('click', (e) => {
+      if (e.target === qrModal) closeQrModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeQrModal();
+    });
   </script>
 </body>
 </html>
