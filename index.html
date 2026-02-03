@@ -50,25 +50,31 @@
 
     .nav-links {
       display: flex;
-      gap: 32px;
+      gap: 12px;
       list-style: none;
     }
 
     .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 20px;
+      background: var(--bg-card);
+      border-radius: 12px;
       color: var(--text-white);
       text-decoration: none;
       font-size: 0.95rem;
-      transition: color 0.3s;
+      font-weight: 600;
+      border: 1px solid transparent;
+      transition: all 0.3s;
     }
 
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: var(--accent);
+    .nav-links a:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
     }
 
     .nav-links a.active {
-      border-bottom: 2px solid var(--accent);
-      padding-bottom: 2px;
+      background: var(--accent);
     }
 
     /* Hero Section */
@@ -128,6 +134,14 @@
       display: flex;
       gap: 16px;
       flex-wrap: wrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    .button-group.visible {
+      opacity: 1;
+      visibility: visible;
     }
 
     .btn {
@@ -176,63 +190,6 @@
     .btn-qr:hover {
       background: #00C853;
       transform: translateY(-2px);
-    }
-
-    /* Feature Cards */
-    .features {
-      padding: 80px 48px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .feature-card {
-      background: var(--bg-card);
-      padding: 40px 32px;
-      border-radius: 12px;
-      position: relative;
-      transition: all 0.3s;
-      border: 1px solid transparent;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(240, 53, 81, 0.3);
-    }
-
-    .feature-card.highlight {
-      background: var(--accent);
-    }
-
-    .feature-icon {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      opacity: 0.9;
-    }
-
-    .feature-card h3 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-      letter-spacing: -0.3px;
-    }
-
-    .feature-card p {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    .feature-card.highlight p {
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    .feature-card a {
-      color: inherit;
-      text-decoration: none;
-      display: block;
     }
 
     /* Services Section */
@@ -418,7 +375,6 @@
         opacity: 0.15;
       }
 
-      .features,
       .services {
         padding: 60px 24px;
       }
@@ -458,42 +414,21 @@
     </div>
   </section>
 
-  <section class="features">
-    <a href="resume.html" class="feature-card highlight">
-      <div class="feature-icon">📄</div>
-      <h3>Interactive Resume</h3>
-      <p>View my professional experience, skills, and projects in a modern interactive format.</p>
-    </a>
-    <a href="crypto/index.html" class="feature-card">
-      <div class="feature-icon">💰</div>
-      <h3>Crypto Details</h3>
-      <p>Wallet addresses, mining pools, and tools for cryptocurrency.</p>
-    </a>
-    <div class="feature-card" id="qrFeatureCard" style="cursor: pointer;">
-      <div class="feature-icon"></div>
-      <h3>QR Payment</h3>
-      <p>Scan to transfer via Thai QR Payment (PromptPay). Accepts all banks.</p>
-    </div>
-  </section>
-
   <section class="services">
     <div class="services-header">
       <div class="accent-line"></div>
       <h2>Services.</h2>
-      <p class="subtitle">WE WORK WITH YOU, NOT FOR YOU</p>
+      <p class="subtitle">I WORK WITH YOU, NOT FOR YOU</p>
     </div>
     <div class="services-grid">
-      <a href="resume.html" class="service-item highlight">
-        <span>Resume</span>
-        <span class="arrow">→</span>
+      <a href="https://palathip.github.io/resume/" class="service-item highlight">
+        <span>Simple Resume</span>
       </a>
       <a href="crypto/index.html" class="service-item">
         <span>Crypto</span>
-        <span class="arrow">→</span>
       </a>
       <div class="service-item" id="qrServiceItem" style="cursor: pointer;">
         <span>QR Payment</span>
-        <span class="arrow">→</span>
       </div>
     </div>
   </section>
@@ -605,6 +540,8 @@
           typedText.textContent += suffix.charAt(i);
           i++;
           setTimeout(addChar, typeSpeed);
+        } else {
+          document.querySelector('.button-group').classList.add('visible');
         }
       }
       addChar();
@@ -618,7 +555,6 @@
     const qrModal = document.getElementById('qrModal');
     const qrPaymentBtn = document.getElementById('qrPaymentBtn');
     const qrModalClose = document.getElementById('qrModalClose');
-    const qrFeatureCard = document.getElementById('qrFeatureCard');
     const qrServiceItem = document.getElementById('qrServiceItem');
     const navQrLink = document.getElementById('navQrLink');
 
@@ -633,7 +569,6 @@
     }
 
     qrPaymentBtn.addEventListener('click', openQrModal);
-    qrFeatureCard.addEventListener('click', openQrModal);
     qrServiceItem.addEventListener('click', openQrModal);
     navQrLink.addEventListener('click', (e) => {
       e.preventDefault();
