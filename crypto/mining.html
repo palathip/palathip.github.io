@@ -5,104 +5,83 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Coin Mining - BOOMBIBU</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --bg-dark: #0D0D0D;
+      --bg-card: #1A1A1A;
+      --accent: #F03551;
+      --text-white: #FFFFFF;
+      --text-muted: #888888;
     }
 
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: var(--bg-dark);
       min-height: 100vh;
       padding: 20px;
-      color: #333;
+      color: var(--text-white);
     }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 48px;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--bg-dark);
+    }
+
+    .logo a { color: var(--text-white); text-decoration: none; font-weight: 600; }
+    .back-link {
+      padding: 12px 24px;
+      background: transparent;
+      color: var(--text-white);
+      text-decoration: none;
+      border-radius: 8px;
+      border: 2px solid var(--accent);
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    .back-link:hover { background: var(--accent); transform: translateY(-2px); }
 
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      overflow: hidden;
-      animation: fadeIn 0.8s ease-out;
+      padding: 120px 24px 60px;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+    .page-title { margin-bottom: 40px; }
+    .accent-line { width: 60px; height: 3px; background: var(--accent); margin-bottom: 20px; }
+    .page-title h1 { font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 700; margin-bottom: 8px; }
+    .page-title p { font-size: 1rem; color: var(--text-muted); }
 
-    .header {
-      background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
-      color: white;
-      padding: 40px;
-      text-align: center;
-    }
-
-    .header h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    .content {
-      padding: 40px;
-    }
-
-    .section {
-      margin-bottom: 40px;
-    }
-
+    .section { margin-bottom: 40px; }
     .section-title {
       font-size: 1.8rem;
-      color: #4A90E2;
+      color: var(--text-white);
       margin-bottom: 20px;
       padding-bottom: 10px;
-      border-bottom: 3px solid #4A90E2;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .section-title::before {
-      content: '';
-      width: 5px;
-      height: 30px;
-      background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
-      border-radius: 3px;
+      border-bottom: 2px solid var(--accent);
     }
 
     .mining-group {
-      background: #f8f9fa;
-      padding: 25px;
-      border-radius: 10px;
-      border-left: 4px solid #4A90E2;
+      background: var(--bg-card);
+      padding: 24px;
+      border-radius: 12px;
+      border-left: 4px solid var(--accent);
       margin-bottom: 20px;
       transition: all 0.3s;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-left: 4px solid var(--accent);
     }
-
-    .mining-group:hover {
-      transform: translateX(5px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .mining-platform {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #555;
-      margin-bottom: 15px;
-    }
+    .mining-group:hover { transform: translateX(4px); border-color: rgba(240,53,81,0.3); }
+    .mining-platform { font-size: 1.1rem; font-weight: 600; color: var(--text-muted); margin-bottom: 15px; }
 
     .code-block {
-      background: #1e1e1e;
+      background: rgba(0,0,0,0.4);
       color: #d4d4d4;
       padding: 15px;
       border-radius: 8px;
@@ -112,120 +91,83 @@
       overflow-x: auto;
       margin: 10px 0;
     }
+    .code-block code { display: block; white-space: pre; }
 
-    .code-block code {
-      display: block;
-      white-space: pre;
-    }
-
-    .back-link {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 12px 24px;
-      background: white;
-      color: #4A90E2;
-      text-decoration: none;
-      border-radius: 25px;
-      border: 2px solid #4A90E2;
-      font-weight: 600;
-      transition: all 0.3s;
-    }
-
-    .back-link:hover {
-      background: #4A90E2;
-      color: white;
-      transform: translateY(-2px);
-    }
-
-    .nav-links {
-      text-align: center;
-      margin-top: 30px;
-    }
-
+    .nav-links { text-align: center; margin-top: 40px; }
     @media (max-width: 768px) {
-      .header h1 {
-        font-size: 2rem;
-      }
-
-      .content {
-        padding: 20px;
-      }
-
-      .code-block {
-        font-size: 0.8rem;
-      }
+      .page-header { padding: 20px 24px; }
+      .container { padding: 100px 20px 40px; }
+      .code-block { font-size: 0.8rem; }
     }
   </style>
 </head>
 <body>
+  <header class="page-header">
+    <div class="logo"><a href="index.html">BOOMBIBU SITE</a></div>
+    <a href="index.html" class="back-link">← Back to Crypto</a>
+  </header>
+
   <div class="container">
-    <div class="header">
+    <div class="page-title">
+      <div class="accent-line"></div>
       <h1>⛏️ Coin Mining</h1>
       <p>Mining Commands & Configuration</p>
     </div>
 
-    <div class="content">
-      <div class="section">
-        <h2 class="section-title">SHIB (Unmineable)</h2>
-        
-        <div class="mining-group">
-          <div class="mining-platform">XMRig-CPU (Termux)</div>
-          <div class="code-block">
-            <code>./xmrig -o rx.unmineable.com:3333 -u SHIB:XXX.WORKERNAME -p x -t 8</code>
-          </div>
-        </div>
-
-        <div class="mining-group">
-          <div class="mining-platform">XMRig-CPU (Windows)</div>
-          <div class="code-block">
-            <code>xmrig.exe -o rx.unmineable.com:3333 -a rx -k -u SHIB:XXX.WORKERNAME -p x -t 8</code>
-          </div>
+    <div class="section">
+      <h2 class="section-title">SHIB (Unmineable)</h2>
+      <div class="mining-group">
+        <div class="mining-platform">XMRig-CPU (Termux)</div>
+        <div class="code-block">
+          <code>./xmrig -o rx.unmineable.com:3333 -u SHIB:XXX.WORKERNAME -p x -t 8</code>
         </div>
       </div>
-
-      <div class="section">
-        <h2 class="section-title">VRSC</h2>
-        
-        <div class="mining-group">
-          <div class="mining-platform">CCMiner (TERMUX)</div>
-          <div class="code-block">
-            <code>./ccminer -a verus -o stratum+tcp://ap.luckpool.net:3956 -u R9RjDPB8oUsTABvmw5KUooR6BjbZngEFA1.workername -p x -t 8</code>
-          </div>
+      <div class="mining-group">
+        <div class="mining-platform">XMRig-CPU (Windows)</div>
+        <div class="code-block">
+          <code>xmrig.exe -o rx.unmineable.com:3333 -a rx -k -u SHIB:XXX.WORKERNAME -p x -t 8</code>
         </div>
       </div>
+    </div>
 
-      <div class="section">
-        <h2 class="section-title">LTC (Zergpool-VerusHash)</h2>
-        
-        <div class="mining-group">
-          <div class="mining-platform">CCMiner (TERMUX)</div>
-          <div class="code-block">
-            <code>./ccminer -a verus -o stratum+tcp://verushash.asia.mine.zergpool.com:3300 -u LR9fipgurMJeChx4JG1qfNDjaqtsR89FHU.workername -password c=LTC,mc=VRSC -t 8</code>
-          </div>
+    <div class="section">
+      <h2 class="section-title">VRSC</h2>
+      <div class="mining-group">
+        <div class="mining-platform">CCMiner (TERMUX)</div>
+        <div class="code-block">
+          <code>./ccminer -a verus -o stratum+tcp://ap.luckpool.net:3956 -u R9RjDPB8oUsTABvmw5KUooR6BjbZngEFA1.workername -p x -t 8</code>
         </div>
       </div>
+    </div>
 
-      <div class="section">
-        <h2 class="section-title">DOGE (Zergpool-VerusHash)</h2>
-        
-        <div class="mining-group">
-          <div class="mining-platform">CCMiner (TERMUX)</div>
-          <div class="code-block">
-            <code>./ccminer -a verus -o stratum+tcp://verushash.asia.mine.zergpool.com:3300 -u DBQCUHpVrM9rzom8ztv5YqcMdVfDaoDr3o.workername -password c=DOGE,mc=VRSC -t 8</code>
-          </div>
-        </div>
-
-        <div class="mining-group">
-          <div class="mining-platform">XMRig-CPU (Termux)</div>
-          <div class="code-block">
-            <code>./xmrig -o rx.unmineable.com:3333 -u DOGE:A7VpY1uHaJ8ktDsFqLVaGSVTp6zVguwrUc.MI6#11zh-o5jn -p x -t 8</code>
-          </div>
+    <div class="section">
+      <h2 class="section-title">LTC (Zergpool-VerusHash)</h2>
+      <div class="mining-group">
+        <div class="mining-platform">CCMiner (TERMUX)</div>
+        <div class="code-block">
+          <code>./ccminer -a verus -o stratum+tcp://verushash.asia.mine.zergpool.com:3300 -u LR9fipgurMJeChx4JG1qfNDjaqtsR89FHU.workername -password c=LTC,mc=VRSC -t 8</code>
         </div>
       </div>
+    </div>
 
-      <div class="nav-links">
-        <a href="index.html" class="back-link">← Back to Home</a>
+    <div class="section">
+      <h2 class="section-title">DOGE (Zergpool-VerusHash)</h2>
+      <div class="mining-group">
+        <div class="mining-platform">CCMiner (TERMUX)</div>
+        <div class="code-block">
+          <code>./ccminer -a verus -o stratum+tcp://verushash.asia.mine.zergpool.com:3300 -u DBQCUHpVrM9rzom8ztv5YqcMdVfDaoDr3o.workername -password c=DOGE,mc=VRSC -t 8</code>
+        </div>
       </div>
+      <div class="mining-group">
+        <div class="mining-platform">XMRig-CPU (Termux)</div>
+        <div class="code-block">
+          <code>./xmrig -o rx.unmineable.com:3333 -u DOGE:A7VpY1uHaJ8ktDsFqLVaGSVTp6zVguwrUc.MI6#11zh-o5jn -p x -t 8</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="../index.html" class="back-link">← Back to Home</a>
     </div>
   </div>
 </body>
