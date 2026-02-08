@@ -371,6 +371,19 @@
       text-align: right;
     }
 
+    .qr-bank-value {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .qr-bank-icon {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
     .qr-modal-account-row {
       display: flex;
       align-items: center;
@@ -772,7 +785,7 @@
         </div>
         <div class="qr-modal-info-item">
           <span class="qr-modal-info-label">ธนาคาร</span>
-          <span class="qr-modal-info-value">กสิกรไทย</span>
+          <span class="qr-modal-info-value qr-bank-value"><img src="images/kbank-logo.png" alt="" class="qr-bank-icon" onerror="this.style.display='none'">กสิกรไทย</span>
         </div>
         <div class="qr-modal-info-footer">✓ รับเงินได้จากทุกธนาคาร</div>
       </div>
