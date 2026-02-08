@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BOOMBIBU // TERMINAL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --terminal-green: #00ff41;
+      --terminal-green-dim: #00aa2a;
+      --terminal-green-bright: #39ff14;
+      --bg-terminal: #0a0e0a;
+      --bg-panel: #0d120d;
+      --text-green: #00ff41;
+      --text-dim: #008f26;
+      --glow: rgba(0, 255, 65, 0.4);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'JetBrains Mono', 'VT323', 'Consolas', monospace;
+      background: var(--bg-terminal);
+      color: var(--text-green);
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-size: 14px;
+    }
+
+    /* CRT scanline effect */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.15) 2px,
+        rgba(0, 0, 0, 0.15) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .header {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--text-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'VT323', monospace;
+      font-size: 1.8rem;
+      color: var(--terminal-green);
+      text-shadow: 0 0 10px var(--glow);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 1px solid var(--text-dim);
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--terminal-green);
+      border-color: var(--terminal-green);
+      box-shadow: 0 0 8px var(--glow);
+    }
+
+    .terminal-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .term-line {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .term-prompt {
+      color: var(--text-dim);
+      flex-shrink: 0;
+    }
+
+    .term-output {
+      color: var(--text-green);
+    }
+
+    .term-cursor {
+      display: inline-block;
+      width: 10px;
+      height: 18px;
+      background: var(--terminal-green);
+      animation: blink 1s step-end infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .hero-section {
+      margin-bottom: 48px;
+    }
+
+    .hero-section .term-line:first-of-type {
+      margin-top: 24px;
+    }
+
+    .hero-title {
+      font-family: 'VT323', monospace;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: var(--terminal-green-bright);
+      text-shadow: 0 0 20px var(--glow);
+      margin: 16px 0;
+    }
+
+    .services-section {
+      margin-top: 48px;
+    }
+
+    .services-section .term-line {
+      margin-bottom: 12px;
+    }
+
+    .service-item {
+      display: block;
+      padding: 12px 16px;
+      margin: 8px 0;
+      border: 1px solid var(--text-dim);
+      color: var(--text-green);
+      text-decoration: none;
+      transition: all 0.2s;
+      font-size: 0.95rem;
+    }
+
+    .service-item:hover {
+      border-color: var(--terminal-green);
+      box-shadow: 0 0 12px var(--glow);
+      background: rgba(0, 255, 65, 0.05);
+    }
+
+    .service-item.highlight {
+      border-color: var(--terminal-green);
+      background: rgba(0, 255, 65, 0.08);
+    }
+
+    /* Modals - Terminal style */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal-terminal {
+      background: var(--bg-panel);
+      border: 2px solid var(--terminal-green);
+      max-width: 480px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: 0 0 30px var(--glow);
+    }
+
+    .modal-header {
+      border-bottom: 1px solid var(--text-dim);
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 1rem;
+      color: var(--terminal-green);
+      font-weight: 400;
+    }
+
+    .modal-close {
+      background: none;
+      border: 1px solid var(--text-dim);
+      color: var(--text-dim);
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      color: var(--terminal-green);
+      border-color: var(--terminal-green);
+    }
+
+    .qr-modal-image {
+      width: 100%;
+      max-width: 280px;
+      margin: 0 auto 16px;
+      display: block;
+      border: 1px solid var(--text-dim);
+    }
+
+    .modal-info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--text-dim);
+      font-size: 0.85rem;
+    }
+
+    .modal-info-row .label { color: var(--text-dim); }
+    .modal-info-row .value { color: var(--text-green); }
+
+    .qr-copy-btn, .asset-copy-btn {
+      background: transparent;
+      border: 1px solid var(--text-dim);
+      color: var(--text-green);
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .qr-copy-btn:hover, .asset-copy-btn:hover {
+      border-color: var(--terminal-green);
+      box-shadow: 0 0 8px var(--glow);
+    }
+
+    .qr-copy-btn.copied, .asset-copy-btn.copied {
+      color: var(--terminal-green);
+      border-color: var(--terminal-green);
+    }
+
+    /* Asset modal */
+    .asset-modal { max-height: 85vh; overflow-y: auto; overflow-x: hidden; }
+    .asset-section { margin-bottom: 20px; }
+    .asset-section-title {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .asset-wallet-item {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      border: 1px solid rgba(0, 255, 65, 0.2);
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .asset-wallet-item > div {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .asset-wallet-item .asset-copy-btn {
+      flex-shrink: 0;
+      align-self: center;
+    }
+
+    .asset-coin-name {
+      color: var(--text-green);
+      font-size: 0.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .asset-coin-name img {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .asset-address {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      word-break: break-all;
+      margin-top: 4px;
+    }
+
+    .asset-evm-icons-inline {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 2px;
+      margin-left: 4px;
+    }
+
+    .asset-evm-icons-inline img {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .asset-modal-footer {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--text-dim);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+    }
+
+    .asset-desc-coins {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .asset-desc-coins span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .asset-desc-coins img {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+    }
+
+    .asset-section-icon-wrap {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-right: 6px;
+    }
+
+    .asset-section-icon-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .asset-section-icon-wrap img[src*="hardware-wallet"] {
+      filter: invert(1) sepia(1) saturate(100) hue-rotate(70deg);
+    }
+
+    .btn-resume {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 24px;
+      border: 2px solid var(--terminal-green);
+      color: var(--terminal-green);
+      text-decoration: none;
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .btn-resume:hover {
+      box-shadow: 0 0 20px var(--glow);
+      background: rgba(0, 255, 65, 0.1);
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .terminal-container { padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">root@boombibu:~$</div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="../">← Main</a></li>
+        <li><a href="https://palathip.github.io/resume/">Resume</a></li>
+        <li><a href="#" id="navAssetLink">Digital Asset</a></li>
+        <li><a href="#" id="navQrLink">QR Payment</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="terminal-container">
+    <section class="hero-section">
+      <div class="term-line">
+        <span class="term-prompt">root@boombibu:~$</span>
+        <span class="term-output">whoami</span>
+      </div>
+      <div class="term-line">
+        <span class="term-prompt">root@boombibu:~$</span>
+        <span class="hero-title">BOOMBIBU</span>
+      </div>
+      <div class="term-line">
+        <span class="term-prompt">root@boombibu:~$</span>
+        <span class="term-output">cat profile.txt</span>
+      </div>
+      <div class="term-line">
+        <span class="term-prompt">></span>
+        <span class="term-output">Software Developer. Engineer. Ordinary Man. :)</span>
+      </div>
+      <div class="term-line">
+        <span class="term-prompt">root@boombibu:~$</span>
+        <span class="term-output">_</span>
+        <span class="term-cursor"></span>
+      </div>
+      <a href="resume.html" class="btn-resume">[ EXEC ] View Resume</a>
+    </section>
+
+    <section class="services-section">
+      <div class="term-line">
+        <span class="term-prompt">root@boombibu:~$</span>
+        <span class="term-output">ls services/</span>
+      </div>
+      <div class="term-line">
+        <span class="term-prompt">></span>
+        <span class="term-output">Simple Resume | Digital Asset | QR Payment</span>
+      </div>
+      <div class="term-line">
+        <a href="resume.html" class="service-item highlight">[+] Simple Resume</a>
+      </div>
+      <div class="term-line">
+        <div class="service-item" id="assetServiceItem" style="cursor: pointer;">[+] Digital Asset</div>
+      </div>
+      <div class="term-line">
+        <div class="service-item" id="qrServiceItem" style="cursor: pointer;">[+] QR Payment</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- QR Modal -->
+  <div class="modal-overlay" id="qrModal">
+    <div class="modal-terminal">
+      <div class="modal-header">
+        <h2>QR_PAYMENT.SYS</h2>
+        <button type="button" class="modal-close" id="qrModalClose">×</button>
+      </div>
+      <img src="../images/qr-payment.png" alt="QR Payment" class="qr-modal-image">
+      <div class="modal-info-row">
+        <span class="label">NAME</span>
+        <span class="value">นาย พลาธิป วุฒิประยูร</span>
+      </div>
+      <div class="modal-info-row">
+        <span class="label">ACCOUNT</span>
+        <div>
+          <span class="value">517-2-15834-1</span>
+          <button type="button" class="qr-copy-btn" id="qrCopyBtn" data-copy="517-2-15834-1">Copy</button>
+        </div>
+      </div>
+      <div class="modal-info-row">
+        <span class="label">BANK</span>
+        <span class="value">กสิกรไทย</span>
+      </div>
+      <div class="term-line" style="margin-top:12px;color:var(--text-dim);font-size:0.8rem">✓ รับเงินได้จากทุกธนาคาร</div>
+    </div>
+  </div>
+
+  <!-- Digital Asset Modal -->
+  <div class="modal-overlay" id="assetModal">
+    <div class="modal-terminal asset-modal">
+      <div class="modal-header">
+        <h2>DIGITAL_ASSET.WALLET</h2>
+        <button type="button" class="modal-close" id="assetModalClose">×</button>
+      </div>
+
+      <div class="asset-section">
+        <h3 class="asset-section-title"><span class="asset-section-icon-wrap"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/eth.png" alt=""></span>Web3</h3>
+        <div class="asset-wallet-item">
+          <div>
+            <span class="asset-coin-name"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/eth.png" alt="">EVM*<span class="asset-evm-icons-inline"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/eth.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/bnb.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/matic.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/avax.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/etc.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/cro.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/ftm.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/one.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/arb.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/op.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/link.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/usdt.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/usdc.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/dai.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/uni.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/shib.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/aave.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/mkr.png" alt=""></span></span>
+            <span class="asset-address">0x8A4b3d4986f85212851cFF079A7720B7015f9081</span>
+          </div>
+          <button type="button" class="asset-copy-btn" data-copy="0x8A4b3d4986f85212851cFF079A7720B7015f9081">Copy</button>
+        </div>
+      </div>
+
+      <div class="asset-section">
+        <h3 class="asset-section-title"><span class="asset-section-icon-wrap"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/OKX_logo.svg/80px-OKX_logo.svg.png" alt=""></span>OKX</h3>
+        <div class="asset-wallet-item">
+          <div>
+            <span class="asset-coin-name"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/btc.png" alt="">BTC</span>
+            <span class="asset-address">3CBPnWnsm5Ff6CyaCeaaBBAReSHN3wfkiL</span>
+          </div>
+          <button type="button" class="asset-copy-btn" data-copy="3CBPnWnsm5Ff6CyaCeaaBBAReSHN3wfkiL">Copy</button>
+        </div>
+        <div class="asset-wallet-item">
+          <div>
+            <span class="asset-coin-name"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/eth.png" alt="">EVM*<span class="asset-evm-icons-inline"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/eth.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/bnb.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/matic.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/avax.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/etc.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/cro.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/ftm.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/one.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/arb.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/op.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/link.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/usdt.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/usdc.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/dai.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/uni.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/shib.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/aave.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/mkr.png" alt=""></span></span>
+            <span class="asset-address">0x81334f1e61d97de966937f107f80275eee1d4df4</span>
+          </div>
+          <button type="button" class="asset-copy-btn" data-copy="0x81334f1e61d97de966937f107f80275eee1d4df4">Copy</button>
+        </div>
+        <div class="asset-wallet-item">
+          <div>
+            <span class="asset-coin-name"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/doge.png" alt="">DOGE</span>
+            <span class="asset-address">A7VpY1uHaJ8ktDsFqLVaGSVTp6zVguwrTp</span>
+          </div>
+          <button type="button" class="asset-copy-btn" data-copy="A7VpY1uHaJ8ktDsFqLVaGSVTp6zVguwrTp">Copy</button>
+        </div>
+      </div>
+
+      <div class="asset-section">
+        <h3 class="asset-section-title"><span class="asset-section-icon-wrap"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/bnb.png" alt=""></span>Binance</h3>
+        <div class="asset-wallet-item">
+          <div>
+            <span class="asset-coin-name"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/btc.png" alt="">BTC</span>
+            <span class="asset-address">1KdorZw28Z4Tb38WWtJorizE8sXi87o37J</span>
+          </div>
+          <button type="button" class="asset-copy-btn" data-copy="1KdorZw28Z4Tb38WWtJorizE8sXi87o37J">Copy</button>
+        </div>
+        <div class="asset-wallet-item">
+          <div>
+            <span class="asset-coin-name"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/eth.png" alt="">EVM*<span class="asset-evm-icons-inline"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/eth.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/bnb.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/matic.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/avax.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/etc.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/cro.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/ftm.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/one.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/arb.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/op.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/link.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/usdt.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/usdc.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/dai.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/uni.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/shib.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/aave.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/mkr.png" alt=""></span></span>
+            <span class="asset-address">0x1f100bfcf7820ce79157fd6adb9b6618345f198c</span>
+          </div>
+          <button type="button" class="asset-copy-btn" data-copy="0x1f100bfcf7820ce79157fd6adb9b6618345f198c">Copy</button>
+        </div>
+        <div class="asset-wallet-item">
+          <div>
+            <span class="asset-coin-name"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/ltc.png" alt="">LTC</span>
+            <span class="asset-address">LR9fipgurMJeChx4JG1qfNDjaqtsR89FHU</span>
+          </div>
+          <button type="button" class="asset-copy-btn" data-copy="LR9fipgurMJeChx4JG1qfNDjaqtsR89FHU">Copy</button>
+        </div>
+        <div class="asset-wallet-item">
+          <div>
+            <span class="asset-coin-name"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/rvn.png" alt="">RVN</span>
+            <span class="asset-address">REWCofh9q3UHPQ6W66dTCC1FGBnV4hLgPR</span>
+          </div>
+          <button type="button" class="asset-copy-btn" data-copy="REWCofh9q3UHPQ6W66dTCC1FGBnV4hLgPR">Copy</button>
+        </div>
+        <div class="asset-wallet-item">
+          <div>
+            <span class="asset-coin-name"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/doge.png" alt="">DOGE</span>
+            <span class="asset-address">DBQCUHpVrM9rzom8ztv5YqcMdVfDaoDr3o</span>
+          </div>
+          <button type="button" class="asset-copy-btn" data-copy="DBQCUHpVrM9rzom8ztv5YqcMdVfDaoDr3o">Copy</button>
+        </div>
+      </div>
+
+      <div class="asset-section">
+        <h3 class="asset-section-title"><span class="asset-section-icon-wrap"><img src="../images/hardware-wallet-icon.svg" alt=""></span>Vault</h3>
+        <div class="asset-wallet-item">
+          <div>
+            <span class="asset-coin-name"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/btc.png" alt="">BTC</span>
+            <span class="asset-address">bc1qh4z460g6nsh630s9wyfh8zlweuykc5f97rtrr2</span>
+          </div>
+          <button type="button" class="asset-copy-btn" data-copy="bc1qh4z460g6nsh630s9wyfh8zlweuykc5f97rtrr2">Copy</button>
+        </div>
+        <div class="asset-wallet-item">
+          <div>
+            <span class="asset-coin-name"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/eth.png" alt="">EVM*<span class="asset-evm-icons-inline"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/eth.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/bnb.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/matic.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/avax.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/etc.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/cro.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/ftm.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/one.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/arb.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/op.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/link.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/usdt.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/usdc.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/dai.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/uni.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/shib.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/aave.png" alt=""><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/mkr.png" alt=""></span></span>
+            <span class="asset-address">0x37cFA9f9fd9D5031492C3D1B87379206ffA4838F</span>
+          </div>
+          <button type="button" class="asset-copy-btn" data-copy="0x37cFA9f9fd9D5031492C3D1B87379206ffA4838F">Copy</button>
+        </div>
+      </div>
+
+      <div class="asset-modal-footer">
+        <p><sup>*</sup> EVM address supports: Ethereum, BNB Chain, Polygon, Avalanche, etc.</p>
+        <div class="asset-desc-coins">
+          <span><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/eth.png" alt="">ETH</span>
+          <span><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/bnb.png" alt="">BNB</span>
+          <span><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/matic.png" alt="">MATIC</span>
+          <span><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/avax.png" alt="">AVAX</span>
+          <span><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/usdt.png" alt="">USDT</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Modals
+    const qrModal = document.getElementById('qrModal');
+    const assetModal = document.getElementById('assetModal');
+    const qrModalClose = document.getElementById('qrModalClose');
+    const assetModalClose = document.getElementById('assetModalClose');
+    const qrServiceItem = document.getElementById('qrServiceItem');
+    const assetServiceItem = document.getElementById('assetServiceItem');
+    const navQrLink = document.getElementById('navQrLink');
+    const navAssetLink = document.getElementById('navAssetLink');
+
+    function openModal(modal) {
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    qrServiceItem.onclick = () => openModal(qrModal);
+    assetServiceItem.onclick = () => openModal(assetModal);
+    navQrLink.onclick = (e) => { e.preventDefault(); openModal(qrModal); };
+    navAssetLink.onclick = (e) => { e.preventDefault(); openModal(assetModal); };
+    qrModalClose.onclick = () => closeModal(qrModal);
+    assetModalClose.onclick = () => closeModal(assetModal);
+    qrModal.onclick = (e) => { if (e.target === qrModal) closeModal(qrModal); };
+    assetModal.onclick = (e) => { if (e.target === assetModal) closeModal(assetModal); };
+
+    // Copy buttons
+    document.querySelectorAll('.qr-copy-btn, .asset-copy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const text = btn.getAttribute('data-copy');
+        try {
+          await navigator.clipboard.writeText(text);
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+        } catch (e) { btn.textContent = 'Fail'; }
+      });
+    });
+  </script>
+</body>
+</html>
