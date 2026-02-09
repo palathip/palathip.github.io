@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trading Chart - Bitcoin (BTC)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0D0D0D;
+      --bg-card: #1A1A1A;
+      --accent: #F03551;
+      --text-white: #FFFFFF;
+      --text-muted: #888888;
+      --green: #26A69A;
+      --red: #EF5350;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      min-height: 100%;
+      margin: 0;
+      font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-white);
+      overflow-x: hidden;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 48px;
+      background: var(--bg-dark);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      box-sizing: border-box;
+      max-width: 100%;
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .logo a {
+      color: var(--text-white);
+      text-decoration: none;
+    }
+
+    .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 20px;
+      background: var(--bg-card);
+      border-radius: 12px;
+      color: var(--text-white);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: 1px solid transparent;
+      transition: all 0.3s;
+    }
+
+    .nav-links a:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    .main {
+      padding: 120px 48px 48px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    .page-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 1.85rem);
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      max-width: 100%;
+    }
+
+    .page-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 32px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      max-width: 100%;
+    }
+
+    .price-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 32px;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+
+    .price-card:hover {
+      border-color: var(--accent);
+    }
+
+    .price-card .click-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+      width: 100%;
+    }
+
+    .price-card .click-hint::before {
+      content: 'Click to view chart';
+    }
+
+    .price-card.chart-open .click-hint::before {
+      content: 'Click to hide chart';
+    }
+
+    .price-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btc-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .btc-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .gold-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .gold-icon img,
+    .gold-icon svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .coin-info h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-white);
+      margin-bottom: 4px;
+    }
+
+    .coin-info .symbol {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .price-display {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .price-value {
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 8px;
+      min-width: 140px;
+    }
+
+    .price-change {
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      min-width: 120px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .price-change.positive {
+      background: rgba(38, 166, 154, 0.2);
+      color: var(--green);
+    }
+
+    .price-change.negative {
+      background: rgba(239, 83, 80, 0.2);
+      color: var(--red);
+    }
+
+    .price-change.neutral {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+    }
+
+    .chart-container {
+      display: none;
+      background: var(--bg-card);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      margin-bottom: 24px;
+    }
+
+    .chart-container.visible {
+      display: block;
+    }
+
+    .chart-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .chart-header h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-white);
+    }
+
+    .chart-iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+
+    .loading {
+      color: var(--text-muted);
+      font-weight: 400;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 16px 20px;
+      }
+
+      .main {
+        padding: 100px 20px 32px;
+        min-width: 0;
+      }
+
+      .price-card {
+        padding: 20px;
+        gap: 20px;
+      }
+
+      .chart-iframe {
+        height: 450px;
+      }
+
+      .page-subtitle {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <a href="../index.html">BOOMBIBU</a>
+    </div>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <h1 class="page-title">Trading Chart</h1>
+    <p class="page-subtitle">My favorite spot</p>
+
+    <div class="price-card" id="btcPriceCard" role="button" tabindex="0" aria-label="Click to show Bitcoin chart">
+      <div class="price-header">
+        <div class="btc-icon">
+        <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" alt="Bitcoin">
+      </div>
+        <div class="coin-info">
+          <h2>Bitcoin</h2>
+          <span class="symbol">BTC</span>
+        </div>
+      </div>
+      <div class="price-display">
+        <div class="price-value" id="btc-price"><span class="loading">Loading...</span></div>
+        <div class="price-change" id="btc-change">
+          <span>24h</span>
+        </div>
+        <div class="click-hint"></div>
+      </div>
+    </div>
+
+    <div class="chart-container" id="btcChartContainer">
+      <div class="chart-header">
+        <h3>กราฟราคา BTC/USDT</h3>
+      </div>
+      <iframe
+        id="tradingview-btc-chart"
+        class="chart-iframe"
+        data-src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_btc_chart&symbol=BINANCE:BTCUSDT&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=1&theme=dark&style=1&timezone=Asia%2FBangkok&withdateranges=1&showpopupbutton=1&studies=%5B%5D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=th"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+    <div class="price-card" id="goldPriceCard" role="button" tabindex="0" aria-label="Click to show Gold chart">
+      <div class="price-header">
+        <div class="gold-icon">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Gold bar 24K">
+            <defs>
+              <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#FFE55C"/>
+                <stop offset="50%" stop-color="#D4AF37"/>
+                <stop offset="100%" stop-color="#B8860B"/>
+              </linearGradient>
+            </defs>
+            <rect x="8" y="12" width="32" height="24" rx="3" fill="url(#goldGrad)" stroke="#8B6914" stroke-width="1.5"/>
+            <text x="24" y="28" text-anchor="middle" fill="#5C4A1A" font-size="9" font-weight="bold" font-family="sans-serif">24K</text>
+          </svg>
+        </div>
+        <div class="coin-info">
+          <h2>Gold</h2>
+          <span class="symbol">XAU/USD</span>
+        </div>
+      </div>
+      <div class="price-display">
+        <div class="price-value" id="gold-price"><span class="loading">Loading...</span></div>
+        <div class="price-change" id="gold-change">
+          <span>24h</span>
+        </div>
+        <div class="click-hint"></div>
+      </div>
+    </div>
+
+    <div class="chart-container" id="goldChartContainer">
+      <div class="chart-header">
+        <h3>XAU/USD Chart</h3>
+      </div>
+      <iframe
+        id="tradingview-gold-chart"
+        class="chart-iframe"
+        data-src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_gold_chart&symbol=OANDA:XAUUSD&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=1&theme=dark&style=1&timezone=Asia%2FBangkok&withdateranges=1&showpopupbutton=1&studies=%5B%5D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=th"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </main>
+
+  <script>
+    // ดึงราคา BTC จาก CoinGecko API
+    async function fetchBtcPrice() {
+      try {
+        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
+        const data = await res.json();
+
+        const price = data.bitcoin.usd;
+        const change = data.bitcoin.usd_24h_change;
+
+        const priceEl = document.getElementById('btc-price');
+        const changeEl = document.getElementById('btc-change');
+
+        priceEl.innerHTML = '$' + price.toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+
+        if (change !== null) {
+          const sign = change >= 0 ? '+' : '';
+          const changeText = `${sign}${change.toFixed(2)}%`;
+          changeEl.innerHTML = `<span>24h ${changeText}</span>`;
+          changeEl.className = 'price-change ' + (change > 0 ? 'positive' : change < 0 ? 'negative' : 'neutral');
+        }
+      } catch (err) {
+        document.getElementById('btc-price').innerHTML = '$<span style="color: var(--text-muted)">Unavailable</span>';
+      }
+    }
+
+    // ดึงราคาทอง (PAX Gold) จาก CoinGecko - 1 PAXG ≈ 1 oz ทอง
+    async function fetchGoldPrice() {
+      try {
+        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=pax-gold&vs_currencies=usd&include_24hr_change=true');
+        const data = await res.json();
+
+        const price = data['pax-gold']?.usd;
+        const change = data['pax-gold']?.usd_24h_change;
+
+        const priceEl = document.getElementById('gold-price');
+        const changeEl = document.getElementById('gold-change');
+
+        if (price) {
+          priceEl.innerHTML = '$' + price.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          });
+
+          if (change !== null && change !== undefined) {
+            const sign = change >= 0 ? '+' : '';
+            const changeText = `${sign}${change.toFixed(2)}%`;
+            changeEl.innerHTML = `<span>24h ${changeText}</span>`;
+            changeEl.className = 'price-change ' + (change > 0 ? 'positive' : change < 0 ? 'negative' : 'neutral');
+          }
+        } else {
+          priceEl.innerHTML = '<span style="color: var(--text-muted)">Unavailable</span>';
+        }
+      } catch (err) {
+        document.getElementById('gold-price').innerHTML = '<span style="color: var(--text-muted)">Unavailable</span>';
+      }
+    }
+
+    fetchBtcPrice();
+    fetchGoldPrice();
+    setInterval(fetchBtcPrice, 60000);
+    setInterval(fetchGoldPrice, 60000);
+
+    // แสดงกราฟเมื่อคลิกที่ Bitcoin
+    const btcPriceCard = document.getElementById('btcPriceCard');
+    const btcChartContainer = document.getElementById('btcChartContainer');
+    const btcChartIframe = document.getElementById('tradingview-btc-chart');
+
+    btcPriceCard.addEventListener('click', () => {
+      const isOpening = btcChartContainer.classList.toggle('visible');
+      btcPriceCard.classList.toggle('chart-open', btcChartContainer.classList.contains('visible'));
+
+      if (isOpening) {
+        const src = btcChartIframe.getAttribute('data-src');
+        if (src && !btcChartIframe.src) {
+          btcChartIframe.src = src;
+        }
+        btcChartContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    btcPriceCard.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        btcPriceCard.click();
+      }
+    });
+
+    // แสดงกราฟเมื่อคลิกที่ Gold
+    const goldPriceCard = document.getElementById('goldPriceCard');
+    const goldChartContainer = document.getElementById('goldChartContainer');
+    const goldChartIframe = document.getElementById('tradingview-gold-chart');
+
+    goldPriceCard.addEventListener('click', () => {
+      const isOpening = goldChartContainer.classList.toggle('visible');
+      goldPriceCard.classList.toggle('chart-open', goldChartContainer.classList.contains('visible'));
+
+      if (isOpening) {
+        const src = goldChartIframe.getAttribute('data-src');
+        if (src && !goldChartIframe.src) {
+          goldChartIframe.src = src;
+        }
+        goldChartContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    goldPriceCard.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        goldPriceCard.click();
+      }
+    });
+  </script>
+</body>
+</html>
