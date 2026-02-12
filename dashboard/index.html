@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Bitcoin (BTC)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Plus+Jakarta+Sans:wght@600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0D0D0D;
+      --bg-card: #1A1A1A;
+      --accent: #F03551;
+      --text-white: #FFFFFF;
+      --text-muted: #888888;
+      --green: #26A69A;
+      --red: #EF5350;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      min-height: 100%;
+      margin: 0;
+      font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-white);
+      overflow-x: hidden;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 48px;
+      background: var(--bg-dark);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      box-sizing: border-box;
+      max-width: 100%;
+    }
+
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .logo a {
+      color: var(--text-white);
+      text-decoration: none;
+    }
+
+    .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 20px;
+      background: var(--bg-card);
+      border-radius: 12px;
+      color: var(--text-white);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: 1px solid transparent;
+      transition: all 0.3s;
+    }
+
+    .nav-links a:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    .main {
+      padding: 120px 48px 48px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    .page-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 1.85rem);
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      max-width: 100%;
+    }
+
+    .page-subtitle {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 32px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      max-width: 100%;
+    }
+
+    .dashboard-hero {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-hero-right {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .btc-compact {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 20px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+
+    .btc-compact:hover {
+      border-color: var(--accent);
+    }
+
+    .btc-compact .btc-icon {
+      width: 40px;
+      height: 40px;
+    }
+
+    .btc-compact .price-value {
+      font-size: 1.35rem;
+    }
+
+    .btc-compact .price-change {
+      padding: 4px 10px;
+      font-size: 0.8rem;
+    }
+
+    .public-pool-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .public-pool-header {
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .public-pool-header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .public-pool-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #F03551 0%, #c92a43 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 12px rgba(240, 53, 81, 0.35);
+      color: #fff;
+    }
+
+    .public-pool-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .public-pool-title-wrap h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-white);
+      margin-bottom: 2px;
+      letter-spacing: -0.3px;
+    }
+
+    .public-pool-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: rgba(240, 53, 81, 0.15);
+      border: 1px solid rgba(240, 53, 81, 0.4);
+      border-radius: 8px;
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .public-pool-cta:hover {
+      background: rgba(240, 53, 81, 0.25);
+      border-color: var(--accent);
+    }
+
+    .public-pool-cta svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .public-pool-content {
+      padding: 0 24px 24px;
+    }
+
+    .public-pool-iframe-wrap {
+      margin-top: 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+      border-radius: 0 0 20px 20px;
+      min-height: 420px;
+    }
+
+    .public-pool-iframe-wrap iframe {
+      width: 100%;
+      height: 520px;
+      border: none;
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .public-pool-iframe-wrap iframe {
+        height: 480px;
+      }
+      .dashboard-hero-right {
+        min-width: 100%;
+      }
+      .public-pool-header {
+        padding: 20px;
+      }
+      .public-pool-content {
+        padding: 0 20px 20px;
+      }
+    }
+
+    .price-list-compact {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+      margin-bottom: 24px;
+    }
+
+    .price-card-compact {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 14px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: border-color 0.3s;
+    }
+
+    .price-card-compact:hover {
+      border-color: var(--accent);
+    }
+
+    .price-card-compact .coin-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .price-card-compact .coin-icon img,
+    .price-card-compact .coin-icon svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .price-card-compact .price-info {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 8px 12px;
+    }
+
+    .price-card-compact .coin-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      width: 100%;
+      margin-bottom: 2px;
+    }
+
+    .price-card-compact .price-values {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .price-card-compact .price-value {
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0;
+      min-width: 0;
+    }
+
+    .price-card-compact .price-value-thb {
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.2;
+    }
+
+    .price-card-compact .price-change {
+      padding: 3px 8px;
+      font-size: 0.75rem;
+      min-width: 0;
+    }
+
+    .price-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btc-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .btc-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .gold-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .gold-icon img,
+    .gold-icon svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .price-value {
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 8px;
+      min-width: 140px;
+    }
+
+    .price-change {
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      min-width: 120px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .price-change.positive {
+      background: rgba(38, 166, 154, 0.2);
+      color: var(--green);
+    }
+
+    .price-change.negative {
+      background: rgba(239, 83, 80, 0.2);
+      color: var(--red);
+    }
+
+    .price-change.neutral {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+    }
+
+    .chart-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      backdrop-filter: blur(4px);
+    }
+
+    .chart-modal-overlay.visible {
+      display: flex;
+    }
+
+    .chart-modal {
+      background: var(--bg-card);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      max-width: 1200px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chart-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .chart-modal-header h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-white);
+    }
+
+    .chart-modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 4px 12px;
+      line-height: 1;
+      border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .chart-modal-close:hover {
+      color: var(--text-white);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .chart-modal-iframe-wrap {
+      flex: 1;
+      min-height: 0;
+    }
+
+    .chart-iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+
+    @media (max-width: 768px) {
+      .chart-modal {
+        max-height: 85vh;
+      }
+      .chart-iframe {
+        height: 450px;
+      }
+    }
+
+    .loading {
+      color: var(--text-muted);
+      font-weight: 400;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 16px 20px;
+      }
+
+      .main {
+        padding: 100px 20px 32px;
+        min-width: 0;
+      }
+
+      .price-list-compact {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .page-subtitle {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <a href="../index.html">BOOMBIBU</a>
+    </div>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <h1 class="page-title">Dashboard</h1>
+
+    <div class="price-list-compact">
+      <div class="price-card-compact" id="goldPriceCard" role="button" tabindex="0" data-chart-src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_gold_chart&symbol=OANDA:XAUUSD&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=1&theme=dark&style=1&timezone=Asia%2FBangkok&withdateranges=1&showpopupbutton=1&studies=%5B%5D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=th" data-chart-title="XAU/USD Chart">
+        <div class="coin-icon">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="goldGrad2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FFE55C"/><stop offset="50%" stop-color="#D4AF37"/><stop offset="100%" stop-color="#B8860B"/></linearGradient></defs><rect x="8" y="12" width="32" height="24" rx="3" fill="url(#goldGrad2)" stroke="#8B6914" stroke-width="1.5"/><text x="24" y="28" text-anchor="middle" fill="#5C4A1A" font-size="9" font-weight="bold" font-family="sans-serif">24K</text></svg>
+        </div>
+        <div class="price-info">
+          <div class="coin-name">Gold</div>
+          <div class="price-values">
+            <div class="price-value" id="gold-price"><span class="loading">...</span></div>
+            <div class="price-value-thb" id="gold-price-thb"></div>
+          </div>
+          <div class="price-change" id="gold-change"><span>24h</span></div>
+        </div>
+      </div>
+      <div class="price-card-compact" id="btcPriceCard" role="button" tabindex="0" data-chart-src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_btc_chart&symbol=BINANCE:BTCUSDT&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=1&theme=dark&style=1&timezone=Asia%2FBangkok&withdateranges=1&showpopupbutton=1&studies=%5B%5D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=th" data-chart-title="กราฟราคา BTC/USDT">
+        <div class="coin-icon"><img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" alt="BTC"></div>
+        <div class="price-info">
+          <div class="coin-name">BTC</div>
+          <div class="price-values">
+            <div class="price-value" id="btc-price"><span class="loading">...</span></div>
+            <div class="price-value-thb" id="btc-price-thb"></div>
+          </div>
+          <div class="price-change" id="btc-change"><span>24h</span></div>
+        </div>
+      </div>
+      <div class="price-card-compact" id="ethPriceCard" role="button" tabindex="0" data-chart-src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_eth_chart&symbol=BINANCE:ETHUSDT&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=1&theme=dark&style=1&timezone=Asia%2FBangkok&withdateranges=1&showpopupbutton=1&studies=%5B%5D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=th" data-chart-title="กราฟราคา ETH/USDT">
+        <div class="coin-icon"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/eth.png" alt="ETH"></div>
+        <div class="price-info">
+          <div class="coin-name">ETH</div>
+          <div class="price-values">
+            <div class="price-value" id="eth-price"><span class="loading">...</span></div>
+            <div class="price-value-thb" id="eth-price-thb"></div>
+          </div>
+          <div class="price-change" id="eth-change"><span>24h</span></div>
+        </div>
+      </div>
+      <div class="price-card-compact" id="bnbPriceCard" role="button" tabindex="0" data-chart-src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_bnb_chart&symbol=BINANCE:BNBUSDT&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=1&theme=dark&style=1&timezone=Asia%2FBangkok&withdateranges=1&showpopupbutton=1&studies=%5B%5D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=th" data-chart-title="กราฟราคา BNB/USDT">
+        <div class="coin-icon"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/bnb.png" alt="BNB"></div>
+        <div class="price-info">
+          <div class="coin-name">BNB</div>
+          <div class="price-values">
+            <div class="price-value" id="bnb-price"><span class="loading">...</span></div>
+            <div class="price-value-thb" id="bnb-price-thb"></div>
+          </div>
+          <div class="price-change" id="bnb-change"><span>24h</span></div>
+        </div>
+      </div>
+      <div class="price-card-compact" id="solPriceCard" role="button" tabindex="0" data-chart-src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_sol_chart&symbol=BINANCE:SOLUSDT&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=1&theme=dark&style=1&timezone=Asia%2FBangkok&withdateranges=1&showpopupbutton=1&studies=%5B%5D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=th" data-chart-title="กราฟราคา SOL/USDT">
+        <div class="coin-icon"><img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" alt="SOL"></div>
+        <div class="price-info">
+          <div class="coin-name">SOL</div>
+          <div class="price-values">
+            <div class="price-value" id="sol-price"><span class="loading">...</span></div>
+            <div class="price-value-thb" id="sol-price-thb"></div>
+          </div>
+          <div class="price-change" id="sol-change"><span>24h</span></div>
+        </div>
+      </div>
+      <div class="price-card-compact" id="polPriceCard" role="button" tabindex="0" data-chart-src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_pol_chart&symbol=CRYPTO:MATICUSD&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=1&theme=dark&style=1&timezone=Asia%2FBangkok&withdateranges=1&showpopupbutton=1&studies=%5B%5D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=th" data-chart-title="กราฟราคา POL/USDT">
+        <div class="coin-icon"><img src="https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/matic.png" alt="POL"></div>
+        <div class="price-info">
+          <div class="coin-name">POL</div>
+          <div class="price-values">
+            <div class="price-value" id="pol-price"><span class="loading">...</span></div>
+            <div class="price-value-thb" id="pol-price-thb"></div>
+          </div>
+          <div class="price-change" id="pol-change"><span>24h</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-hero">
+      <div class="dashboard-hero-right">
+        <div class="public-pool-card">
+          <div class="public-pool-header">
+            <div class="public-pool-header-left">
+              <div class="public-pool-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="public-pool-title-wrap">
+                <h3>Solo Mining · Public Pool</h3>
+              </div>
+            </div>
+            <a href="https://web.public-pool.io/#/app/bc1qh4z460g6nsh630s9wyfh8zlweuykc5f97rtrr2" target="_blank" rel="noopener" class="public-pool-cta">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Public Pool
+            </a>
+          </div>
+          <div class="public-pool-content">
+            <div class="public-pool-iframe-wrap">
+              <iframe src="https://web.public-pool.io/#/app/bc1qh4z460g6nsh630s9wyfh8zlweuykc5f97rtrr2" title="Public Pool Dashboard" loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Chart Popup Modal -->
+  <div class="chart-modal-overlay" id="chartModal" aria-hidden="true">
+    <div class="chart-modal">
+      <div class="chart-modal-header">
+        <h3 id="chartModalTitle">กราฟราคา</h3>
+        <button type="button" class="chart-modal-close" id="chartModalClose" aria-label="ปิด">×</button>
+      </div>
+      <div class="chart-modal-iframe-wrap">
+        <iframe id="chartModalIframe" class="chart-iframe" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ดึงราคาทั้งหมดจาก CoinGecko API ในครั้งเดียว (ลด rate limit)
+    async function fetchAllPrices() {
+      const updatePrice = (coinData, priceElId, changeElId, thbElId) => {
+        const price = coinData?.usd ?? coinData?.price;
+        const thb = coinData?.thb;
+        const change = coinData?.usd_24h_change ?? coinData?.priceChangePercent;
+        const priceEl = document.getElementById(priceElId);
+        const changeEl = document.getElementById(changeElId);
+        const thbEl = document.getElementById(thbElId);
+        if (!priceEl) return;
+        if (price) {
+          const num = typeof price === 'string' ? parseFloat(price) : price;
+          priceEl.innerHTML = '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          if (thbEl && thb != null) {
+            const thbNum = typeof thb === 'string' ? parseFloat(thb) : thb;
+            thbEl.textContent = thbNum.toLocaleString('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' ฿';
+          } else if (thbEl && coinData?.usd) {
+            thbEl.textContent = '';
+          }
+          if (changeEl && change != null) {
+            const pct = typeof change === 'string' ? parseFloat(change) : change;
+            const sign = pct >= 0 ? '+' : '';
+            changeEl.innerHTML = `<span>24h ${sign}${pct.toFixed(2)}%</span>`;
+            changeEl.className = 'price-change ' + (pct > 0 ? 'positive' : pct < 0 ? 'negative' : 'neutral');
+          }
+        } else {
+          priceEl.innerHTML = '<span style="color: var(--text-muted)">Unavailable</span>';
+          if (thbEl) thbEl.textContent = '';
+        }
+      };
+
+      const updatePriceWithUsdThb = (usdPrice, usdToThb, priceElId, changeElId, thbElId, change) => {
+        const priceEl = document.getElementById(priceElId);
+        const changeEl = document.getElementById(changeElId);
+        const thbEl = document.getElementById(thbElId);
+        if (!priceEl) return;
+        const num = typeof usdPrice === 'string' ? parseFloat(usdPrice) : usdPrice;
+        priceEl.innerHTML = '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        if (thbEl && usdToThb) {
+          const thbNum = num * usdToThb;
+          thbEl.textContent = thbNum.toLocaleString('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' ฿';
+        }
+        if (changeEl && change != null) {
+          const pct = typeof change === 'string' ? parseFloat(change) : change;
+          const sign = pct >= 0 ? '+' : '';
+          changeEl.innerHTML = `<span>24h ${sign}${pct.toFixed(2)}%</span>`;
+          changeEl.className = 'price-change ' + (pct > 0 ? 'positive' : pct < 0 ? 'negative' : 'neutral');
+        }
+      };
+
+      try {
+        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,solana,matic-network,polygon,pax-gold&vs_currencies=usd,thb&include_24hr_change=true');
+        const data = await res.json();
+
+        updatePrice(data.bitcoin, 'btc-price', 'btc-change', 'btc-price-thb');
+        updatePrice(data.ethereum, 'eth-price', 'eth-change', 'eth-price-thb');
+        updatePrice(data.binancecoin, 'bnb-price', 'bnb-change', 'bnb-price-thb');
+        updatePrice(data.solana, 'sol-price', 'sol-change', 'sol-price-thb');
+        updatePrice(data['matic-network'] || data.polygon, 'pol-price', 'pol-change', 'pol-price-thb');
+        updatePrice(data['pax-gold'], 'gold-price', 'gold-change', 'gold-price-thb');
+
+        // ถ้า POL ยังไม่มีราคา ให้ดึงจาก Binance API (MATIC/POL)
+        const polEl = document.getElementById('pol-price');
+        if (polEl && polEl.textContent.includes('Unavailable')) {
+          try {
+            const [priceRes, changeRes] = await Promise.all([
+              fetch('https://api.binance.com/api/v3/ticker/price?symbol=MATICUSDT'),
+              fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=MATICUSDT')
+            ]);
+            const priceData = await priceRes.json();
+            const changeData = await changeRes.json();
+            if (priceData?.price) {
+              const usdToThb = data?.bitcoin?.thb && data?.bitcoin?.usd ? data.bitcoin.thb / data.bitcoin.usd : null;
+              updatePriceWithUsdThb(priceData.price, usdToThb, 'pol-price', 'pol-change', 'pol-price-thb', changeData?.priceChangePercent);
+            }
+          } catch (_) {}
+        }
+      } catch (err) {
+        ['btc-price','eth-price','bnb-price','sol-price','pol-price','gold-price'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.innerHTML = '<span style="color: var(--text-muted)">Unavailable</span>';
+        });
+        ['btc-price-thb','eth-price-thb','bnb-price-thb','sol-price-thb','pol-price-thb','gold-price-thb'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = '';
+        });
+      }
+    }
+
+    fetchAllPrices();
+    setInterval(fetchAllPrices, 60000);
+
+    // แสดงกราฟใน popup modal
+    const chartModal = document.getElementById('chartModal');
+    const chartModalTitle = document.getElementById('chartModalTitle');
+    const chartModalIframe = document.getElementById('chartModalIframe');
+    const chartModalClose = document.getElementById('chartModalClose');
+
+    function openChartModal(src, title) {
+      if (src && title) {
+        chartModalTitle.textContent = title;
+        chartModalIframe.src = src;
+        chartModal.classList.add('visible');
+        chartModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeChartModal() {
+      chartModal.classList.remove('visible');
+      chartModal.setAttribute('aria-hidden', 'true');
+      chartModalIframe.src = '';
+      document.body.style.overflow = '';
+    }
+
+    chartModalClose.addEventListener('click', closeChartModal);
+    chartModal.addEventListener('click', (e) => {
+      if (e.target === chartModal) closeChartModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && chartModal.classList.contains('visible')) closeChartModal();
+    });
+
+    document.querySelectorAll('.price-card-compact[data-chart-src]').forEach(card => {
+      card.addEventListener('click', () => {
+        const src = card.getAttribute('data-chart-src');
+        const title = card.getAttribute('data-chart-title');
+        openChartModal(src, title);
+      });
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.click();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
