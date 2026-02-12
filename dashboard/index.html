@@ -655,7 +655,7 @@
   <script>
     // ดึงราคาทั้งหมดจาก CoinGecko API ในครั้งเดียว (ลด rate limit)
     async function fetchAllPrices() {
-      const updatePrice = (coinData, priceElId, changeElId, thbElId) => {
+      const updatePrice = (coinData, priceElId, changeElId, thbElId, isGold = false) => {
         const price = coinData?.usd ?? coinData?.price;
         const thb = coinData?.thb;
         const change = coinData?.usd_24h_change ?? coinData?.priceChangePercent;
@@ -666,11 +666,17 @@
         if (price) {
           const num = typeof price === 'string' ? parseFloat(price) : price;
           priceEl.innerHTML = '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-          if (thbEl && thb != null) {
-            const thbNum = typeof thb === 'string' ? parseFloat(thb) : thb;
-            thbEl.textContent = thbNum.toLocaleString('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' ฿';
-          } else if (thbEl && coinData?.usd) {
-            thbEl.textContent = '';
+          if (thbEl) {
+            if (isGold && thb != null) {
+              const thbNum = typeof thb === 'string' ? parseFloat(thb) : thb;
+              const goldThb = Math.round(thbNum * 0.473);
+              thbEl.textContent = goldThb.toLocaleString('th-TH') + ' ฿/บาท';
+            } else if (thb != null) {
+              const thbNum = typeof thb === 'string' ? parseFloat(thb) : thb;
+              thbEl.textContent = thbNum.toLocaleString('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' ฿';
+            } else {
+              thbEl.textContent = '';
+            }
           }
           if (changeEl && change != null) {
             const pct = typeof change === 'string' ? parseFloat(change) : change;
@@ -712,7 +718,7 @@
         updatePrice(data.binancecoin, 'bnb-price', 'bnb-change', 'bnb-price-thb');
         updatePrice(data.solana, 'sol-price', 'sol-change', 'sol-price-thb');
         updatePrice(data['matic-network'] || data.polygon, 'pol-price', 'pol-change', 'pol-price-thb');
-        updatePrice(data['pax-gold'], 'gold-price', 'gold-change', 'gold-price-thb');
+        updatePrice(data['pax-gold'], 'gold-price', 'gold-change', 'gold-price-thb', true);
 
         // ถ้า POL ยังไม่มีราคา ให้ดึงจาก Binance API (MATIC/POL)
         const polEl = document.getElementById('pol-price');
