@@ -512,6 +512,289 @@
       50% { opacity: 0.5; }
     }
 
+    /* Asset Converter */
+    .converter-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      margin-bottom: 32px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .converter-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-white);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .converter-title svg {
+      width: 22px;
+      height: 22px;
+      opacity: 0.9;
+    }
+
+    .converter-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: flex-end;
+    }
+
+    .converter-field {
+      flex: 1 1 auto;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .converter-field label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .converter-input-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 8px 16px;
+      min-height: 48px;
+      box-sizing: border-box;
+      min-width: 0;
+      transition: border-color 0.2s;
+    }
+
+    .converter-input-wrap:focus-within {
+      border-color: var(--accent);
+    }
+
+    .converter-input-wrap input,
+    .converter-input-wrap select {
+      background: transparent;
+      border: none;
+      color: var(--text-white);
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .converter-input-wrap input {
+      flex: 1 1 120px;
+      min-width: 80px;
+      align-self: center;
+    }
+
+    .converter-input-wrap input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .converter-dropdown {
+      position: relative;
+      flex: 0 0 auto;
+      min-width: 215px;
+      align-self: stretch;
+      display: flex;
+      box-sizing: border-box;
+    }
+
+    .converter-dropdown-trigger {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 16px;
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      box-sizing: border-box;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.95rem;
+      color: var(--text-white);
+    }
+
+    .converter-dropdown-trigger:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .converter-dropdown.open .converter-dropdown-trigger {
+      border-color: var(--accent);
+      border-radius: 8px 8px 0 0;
+    }
+
+    .converter-dropdown-trigger-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .converter-dropdown-trigger-icon img,
+    .converter-dropdown-trigger-icon svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .converter-dropdown-trigger-icon svg {
+      padding: 4px;
+    }
+
+    .converter-dropdown-trigger span {
+      flex: 1;
+      text-align: left;
+    }
+
+    .converter-dropdown-trigger::after {
+      content: '▾';
+      font-size: 0.7rem;
+      opacity: 0.7;
+    }
+
+    .converter-dropdown-list {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      max-height: 280px;
+      overflow-y: auto;
+      z-index: 50;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .converter-dropdown.open .converter-dropdown-list {
+      display: block;
+    }
+
+    .converter-dropdown-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: background 0.15s;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-white);
+    }
+
+    .converter-dropdown-option:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .converter-dropdown-option.selected {
+      background: rgba(240, 53, 81, 0.15);
+    }
+
+    .converter-dropdown-option-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .converter-dropdown-option-icon img,
+    .converter-dropdown-option-icon svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .converter-dropdown-option-icon svg {
+      padding: 4px;
+    }
+
+    .converter-result {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .converter-result-item {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 10px;
+      padding: 8px 18px;
+      height: 48px;
+      box-sizing: border-box;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .converter-result-label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    .converter-result-value {
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+      color: var(--text-white);
+    }
+
+    .converter-result-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    .converter-result-prefix,
+    .converter-result-suffix {
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+      color: var(--text-muted);
+    }
+
+    .converter-result-item input.converter-result-input {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+      color: inherit;
+      outline: none;
+      padding: 0;
+    }
+
+    .converter-result-item input.converter-result-input::placeholder {
+      color: var(--text-muted);
+    }
+
     @media (max-width: 768px) {
       .header {
         padding: 16px 20px;
@@ -528,6 +811,33 @@
 
       .page-subtitle {
         font-size: 0.85rem;
+      }
+
+      .converter-row {
+        flex-direction: column;
+      }
+
+      .converter-field {
+        min-width: 100%;
+      }
+
+      .converter-input-wrap {
+        flex-direction: column;
+        align-items: stretch;
+        min-height: auto;
+        height: auto;
+        padding: 10px 14px;
+      }
+
+      .converter-input-wrap input {
+        flex: none;
+        min-width: 0;
+        width: 100%;
+      }
+
+      .converter-dropdown {
+        max-width: none;
+        height: 44px;
       }
     }
   </style>
@@ -682,6 +992,62 @@
       </div>
     </div>
 
+    <!-- Asset Converter -->
+    <div class="converter-card">
+      <h3 class="converter-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3"/></svg>
+        Asset Converter
+      </h3>
+      <div class="converter-row">
+        <div class="converter-field">
+          <label for="converterAmount">Amount</label>
+          <div class="converter-input-wrap">
+            <input type="number" id="converterAmount" placeholder="0" min="0" step="any" inputmode="decimal">
+            <div class="converter-dropdown" id="converterDropdown">
+              <button type="button" class="converter-dropdown-trigger" id="converterDropdownTrigger" aria-haspopup="listbox" aria-expanded="false" aria-label="เลือกสกุลเงินดิจิทัล">
+                <span class="converter-dropdown-trigger-icon" id="converterTriggerIcon"></span>
+                <span id="converterTriggerLabel">Gold (t oz)</span>
+              </button>
+              <div class="converter-dropdown-list" role="listbox" id="converterDropdownList">
+                <!-- options จะถูกสร้างด้วย JS -->
+              </div>
+            </div>
+            <select id="converterCrypto" aria-hidden="true" tabindex="-1" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+              <option value="gold">Gold (t oz)</option>
+              <option value="gold-gram">Gold (g.)</option>
+              <option value="btc">BTC</option>
+              <option value="eth">ETH</option>
+              <option value="bnb">BNB</option>
+              <option value="sol">SOL</option>
+              <option value="pol">POL</option>
+              <option value="xrp">XRP</option>
+              <option value="trx">TRX</option>
+              <option value="xlm">XLM</option>
+              <option value="ada">ADA</option>
+              <option value="avax">AVAX</option>
+              <option value="ton">TON</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="converter-result">
+        <div class="converter-result-item">
+          <div class="converter-result-label">USD</div>
+          <div class="converter-result-input-wrap">
+            <span class="converter-result-prefix">$</span>
+            <input type="text" id="converterUsd" class="converter-result-value converter-result-input" placeholder="—" inputmode="decimal" aria-label="มูลค่า USD">
+          </div>
+        </div>
+        <div class="converter-result-item">
+          <div class="converter-result-label">THB</div>
+          <div class="converter-result-input-wrap">
+            <input type="text" id="converterThb" class="converter-result-value converter-result-input" placeholder="—" inputmode="decimal" aria-label="มูลค่า THB">
+            <span class="converter-result-suffix">฿</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="dashboard-hero">
       <div class="dashboard-hero-right">
         <div class="public-pool-card">
@@ -731,6 +1097,74 @@
   </div>
 
   <script>
+    // เก็บราคาสำหรับ Converter
+    const GOLD_OZ_TO_GRAM = 31.1034768;
+    window.dashboardPrices = {
+      gold: { usd: null, thb: null },
+      'gold-gram': { usd: null, thb: null },
+      btc: { usd: null, thb: null },
+      eth: { usd: null, thb: null },
+      bnb: { usd: null, thb: null },
+      sol: { usd: null, thb: null },
+      pol: { usd: null, thb: null },
+      xrp: { usd: null, thb: null },
+      trx: { usd: null, thb: null },
+      xlm: { usd: null, thb: null },
+      ada: { usd: null, thb: null },
+      avax: { usd: null, thb: null },
+      ton: { usd: null, thb: null }
+    };
+
+    let converterUpdating = false;
+    function parseNum(str) {
+      if (str == null || str === '') return NaN;
+      const s = String(str).replace(/[^\d.-]/g, '');
+      return parseFloat(s) || NaN;
+    }
+
+    function updateConverter(source) {
+      source = source || 'crypto';
+      if (converterUpdating) return;
+      const crypto = document.getElementById('converterCrypto').value;
+      const prices = window.dashboardPrices[crypto];
+      const amountEl = document.getElementById('converterAmount');
+      const usdEl = document.getElementById('converterUsd');
+      const thbEl = document.getElementById('converterThb');
+
+      const usdPrice = prices?.usd;
+      const thbPrice = prices?.thb ?? (usdPrice && window.dashboardPrices.btc?.usd && window.dashboardPrices.btc?.thb
+        ? usdPrice * (window.dashboardPrices.btc.thb / window.dashboardPrices.btc.usd) : null);
+
+      if (!prices || (usdPrice == null && thbPrice == null)) {
+        usdEl.value = '';
+        usdEl.placeholder = '—';
+        thbEl.value = '';
+        thbEl.placeholder = '—';
+        return;
+      }
+
+      let amount, usdVal, thbVal;
+      if (source === 'crypto') {
+        amount = parseNum(amountEl.value) || 0;
+        usdVal = amount * (usdPrice || 0);
+        thbVal = amount * (thbPrice || 0);
+      } else if (source === 'usd') {
+        usdVal = parseNum(usdEl.value) || 0;
+        amount = usdPrice ? usdVal / usdPrice : 0;
+        thbVal = amount * (thbPrice || 0);
+      } else {
+        thbVal = parseNum(thbEl.value) || 0;
+        amount = thbPrice ? thbVal / thbPrice : 0;
+        usdVal = amount * (usdPrice || 0);
+      }
+
+      converterUpdating = true;
+      if (source !== 'crypto') amountEl.value = amount > 0 ? amount : '';
+      if (source !== 'usd') usdEl.value = usdPrice != null && usdVal > 0 ? usdVal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '';
+      if (source !== 'thb') thbEl.value = thbPrice != null && thbVal > 0 ? thbVal.toLocaleString('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '';
+      converterUpdating = false;
+    }
+
     // ดึงราคาทั้งหมดจาก CoinGecko API ในครั้งเดียว (ลด rate limit)
     async function fetchAllPrices() {
       const updatePrice = (coinData, priceElId, changeElId, thbElId, isGold = false) => {
@@ -787,9 +1221,29 @@
         }
       };
 
+      const store = (key, coin) => {
+        if (coin?.usd != null) window.dashboardPrices[key].usd = coin.usd;
+        if (coin?.thb != null) window.dashboardPrices[key].thb = coin.thb;
+      };
+
       try {
         const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,solana,matic-network,polygon,pax-gold,ripple,tron,stellar,cardano,avalanche-2,the-open-network&vs_currencies=usd,thb&include_24hr_change=true');
         const data = await res.json();
+        store('btc', data.bitcoin);
+        store('eth', data.ethereum);
+        store('bnb', data.binancecoin);
+        store('sol', data.solana);
+        store('xrp', data.ripple);
+        store('trx', data.tron);
+        store('xlm', data.stellar);
+        store('ada', data.cardano);
+        store('avax', data['avalanche-2']);
+        store('ton', data['the-open-network']);
+        store('gold', data['pax-gold']);
+        if (data['pax-gold']?.usd != null) {
+          window.dashboardPrices['gold-gram'].usd = data['pax-gold'].usd / GOLD_OZ_TO_GRAM;
+          window.dashboardPrices['gold-gram'].thb = data['pax-gold'].thb != null ? data['pax-gold'].thb / GOLD_OZ_TO_GRAM : null;
+        }
 
         updatePrice(data.bitcoin, 'btc-price', 'btc-change', 'btc-price-thb');
         updatePrice(data.ethereum, 'eth-price', 'eth-change', 'eth-price-thb');
@@ -804,12 +1258,17 @@
           const polPriceData = await polPriceRes.json();
           const polChangeData = await polChangeRes.json();
           if (polPriceData?.price) {
+            const polUsd = parseFloat(polPriceData.price);
             const usdToThb = data?.bitcoin?.thb && data?.bitcoin?.usd ? data.bitcoin.thb / data.bitcoin.usd : null;
+            window.dashboardPrices.pol.usd = polUsd;
+            window.dashboardPrices.pol.thb = usdToThb ? polUsd * usdToThb : null;
             updatePriceWithUsdThb(polPriceData.price, usdToThb, 'pol-price', 'pol-change', 'pol-price-thb', polChangeData?.priceChangePercent);
           } else {
+            store('pol', data.polygon || data['matic-network']);
             updatePrice(data.polygon || data['matic-network'], 'pol-price', 'pol-change', 'pol-price-thb');
           }
         } catch (_) {
+          store('pol', data.polygon || data['matic-network']);
           updatePrice(data.polygon || data['matic-network'], 'pol-price', 'pol-change', 'pol-price-thb');
         }
         updatePrice(data.ripple, 'xrp-price', 'xrp-change', 'xrp-price-thb');
@@ -832,8 +1291,91 @@
       }
     }
 
-    fetchAllPrices();
-    setInterval(fetchAllPrices, 60000);
+    fetchAllPrices().then(updateConverter);
+    setInterval(() => fetchAllPrices().then(updateConverter), 60000);
+
+    // Converter: Custom dropdown พร้อมไอคอน
+    const goldSvg = (gid) => '<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FFE55C"/><stop offset="50%" stop-color="#D4AF37"/><stop offset="100%" stop-color="#B8860B"/></linearGradient></defs><rect x="8" y="12" width="32" height="24" rx="3" fill="url(#'+gid+')" stroke="#8B6914" stroke-width="1.5"/><text x="24" y="28" text-anchor="middle" fill="#5C4A1A" font-size="9" font-weight="bold" font-family="sans-serif">24K</text></svg>';
+    const converterOptions = [
+      { id: 'gold', label: 'Gold (t oz)', icon: 'gold' },
+      { id: 'gold-gram', label: 'Gold (g.)', icon: 'gold' },
+      { id: 'btc', label: 'BTC', icon: 'https://assets.coingecko.com/coins/images/1/small/bitcoin.png' },
+      { id: 'eth', label: 'ETH', icon: 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/eth.png' },
+      { id: 'bnb', label: 'BNB', icon: 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/bnb.png' },
+      { id: 'sol', label: 'SOL', icon: 'https://assets.coingecko.com/coins/images/4128/small/solana.png' },
+      { id: 'pol', label: 'POL', icon: 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/matic.png' },
+      { id: 'xrp', label: 'XRP', icon: 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/xrp.png' },
+      { id: 'trx', label: 'TRX', icon: 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/trx.png' },
+      { id: 'xlm', label: 'XLM', icon: 'https://cdn.jsdelivr.net/npm/cryptocurrency-icons@0.18.1/32/color/xlm.png' },
+      { id: 'ada', label: 'ADA', icon: 'https://coin-images.coingecko.com/coins/images/975/small/cardano.png' },
+      { id: 'avax', label: 'AVAX', icon: 'https://coin-images.coingecko.com/coins/images/12559/small/Avalanche_Circle_RedWhite_Trans.png' },
+      { id: 'ton', label: 'TON', icon: 'https://assets.coingecko.com/coins/images/17980/small/ton_symbol.png' }
+    ];
+
+    let iconIdSeed = 0;
+    function renderIcon(icon) {
+      if (icon === 'gold') return goldSvg('goldGrad' + (++iconIdSeed));
+      return '<img src="' + icon + '" alt="">';
+    }
+
+    const dropdownList = document.getElementById('converterDropdownList');
+    converterOptions.forEach((opt, i) => {
+      const div = document.createElement('div');
+      div.className = 'converter-dropdown-option' + (i === 0 ? ' selected' : '');
+      div.setAttribute('role', 'option');
+      div.setAttribute('data-value', opt.id);
+      div.innerHTML = '<span class="converter-dropdown-option-icon">' + renderIcon(opt.icon) + '</span><span>' + opt.label + '</span>';
+      dropdownList.appendChild(div);
+    });
+
+    function updateConverterTrigger() {
+      const crypto = document.getElementById('converterCrypto').value;
+      const opt = converterOptions.find(o => o.id === crypto) || converterOptions[0];
+      document.getElementById('converterTriggerLabel').textContent = opt.label;
+      document.getElementById('converterTriggerIcon').innerHTML = renderIcon(opt.icon);
+      dropdownList.querySelectorAll('.converter-dropdown-option').forEach(el => {
+        el.classList.toggle('selected', el.getAttribute('data-value') === crypto);
+      });
+    }
+
+    const dropdown = document.getElementById('converterDropdown');
+    const dropdownTrigger = document.getElementById('converterDropdownTrigger');
+    dropdownTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle('open');
+      dropdownTrigger.setAttribute('aria-expanded', dropdown.classList.contains('open'));
+    });
+
+    dropdownList.querySelectorAll('.converter-dropdown-option').forEach(el => {
+      el.addEventListener('click', () => {
+        const val = el.getAttribute('data-value');
+        document.getElementById('converterCrypto').value = val;
+        dropdown.classList.remove('open');
+        dropdownTrigger.setAttribute('aria-expanded', 'false');
+        updateConverterTrigger();
+        const usdVal = parseNum(document.getElementById('converterUsd').value);
+        const thbVal = parseNum(document.getElementById('converterThb').value);
+        const amt = parseNum(document.getElementById('converterAmount').value);
+        const src = !isNaN(usdVal) && usdVal > 0 ? 'usd' : !isNaN(thbVal) && thbVal > 0 ? 'thb' : 'crypto';
+        updateConverter(src);
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!dropdown.contains(e.target)) {
+        dropdown.classList.remove('open');
+        dropdownTrigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    updateConverterTrigger();
+
+    document.getElementById('converterAmount').addEventListener('input', () => updateConverter('crypto'));
+    document.getElementById('converterAmount').addEventListener('change', () => updateConverter('crypto'));
+    document.getElementById('converterUsd').addEventListener('input', () => updateConverter('usd'));
+    document.getElementById('converterUsd').addEventListener('change', () => updateConverter('usd'));
+    document.getElementById('converterThb').addEventListener('input', () => updateConverter('thb'));
+    document.getElementById('converterThb').addEventListener('change', () => updateConverter('thb'));
 
     // แสดงกราฟใน popup modal
     const chartModal = document.getElementById('chartModal');
