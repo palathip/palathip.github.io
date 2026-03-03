@@ -1,6 +1,6 @@
 const FAL_KEY = process.env.FAL_KEY || '95edfbc1-f5a6-4194-a0ae-f3b33d323e98:1f0e93252530a8d848275297b976fc53';
-const FAL_SUBMIT = 'https://queue.fal.run/fal-ai/flux/schnell';
-const FAL_QUEUE = 'https://queue.fal.run/fal-ai/flux';
+const FAL_SUBMIT = 'https://queue.fal.run/xai/grok-imagine-image';
+const FAL_QUEUE = 'https://queue.fal.run/xai/grok-imagine-image';
 
 function setCors(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -57,7 +57,12 @@ module.exports = async function handler(req, res) {
         'Authorization': 'Key ' + FAL_KEY,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ prompt: prompt.trim() })
+      body: JSON.stringify({
+        prompt: prompt.trim(),
+        num_images: 1,
+        aspect_ratio: '1:1',
+        output_format: 'jpeg'
+      })
     });
     const submitText = await submitRes.text();
     let submitData = {};
