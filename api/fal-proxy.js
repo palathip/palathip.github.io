@@ -12,13 +12,21 @@ async function pollUntilComplete(requestId) {
     const statusRes = await fetch(FAL_API + '/requests/' + requestId + '/status', {
       headers: { 'Authorization': 'Key ' + FAL_KEY }
     });
-    const statusData = await statusRes.json();
+    const statusText = await statusRes.text();
+    let statusData = {};
+    try { statusData = statusText ? JSON.parse(statusText) : {}; } catch (e) {
+      throw new Error('fal.ai status: ' + (statusText?.slice(0, 80) || e.message));
+    }
     if (statusData.status === 'COMPLETED') {
       const resultRes = await fetch(FAL_API + '/requests/' + requestId, {
         headers: { 'Authorization': 'Key ' + FAL_KEY }
       });
-      const resultData = await resultRes.json();
-      return resultData.response;
+      const resultText = await resultRes.text();
+      let resultData = {};
+      try { resultData = resultText ? JSON.parse(resultText) : {}; } catch (e) {
+        throw new Error('fal.ai result: ' + (resultText?.slice(0, 80) || e.message));
+      }
+      return resultData.response || resultData;
     }
     await new Promise(r => setTimeout(r, 1500));
   }
@@ -50,9 +58,11 @@ module.exports = async function handler(req, res) {
       },
       body: JSON.stringify({ prompt: prompt.trim() })
     });
-    const submitData = await submitRes.json();
+    const submitText = await submitRes.text();
+    let submitData = {};
+    try { submitData = submitText ? JSON.parse(submitText) : {}; } catch (_) {}
     if (!submitData.request_id) {
-      return res.status(500).json({ error: submitData.detail || submitData.message || 'Submit failed' });
+      return res.status(500).json({ error: submitData.detail || submitData.message || submitText?.slice(0, 100) || 'Submit failed' });
     }
     const response = await pollUntilComplete(submitData.request_id);
     return res.status(200).json(response);

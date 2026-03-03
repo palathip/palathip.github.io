@@ -265,7 +265,13 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ prompt })
         });
-        const response = await res.json().catch(() => ({}));
+        const text = await res.text();
+        let response = {};
+        try {
+          response = text ? JSON.parse(text) : {};
+        } catch (_) {
+          throw new Error('API ตอบกลับมาไม่ใช่ JSON — ตรวจสอบ proxy URL ว่าถูกต้องหรือยัง (ดู image-gen/README.md)');
+        }
         if (!res.ok) {
           const err = response.error || (res.status === 404 ? 'API ไม่พบ — ต้อง deploy ไป Vercel (ดู image-gen/README.md)' : 'เกิดข้อผิดพลาด');
           throw new Error(err);
