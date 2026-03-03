@@ -1,5 +1,6 @@
 const FAL_KEY = process.env.FAL_KEY || '95edfbc1-f5a6-4194-a0ae-f3b33d323e98:1f0e93252530a8d848275297b976fc53';
-const FAL_API = 'https://queue.fal.run/fal-ai/flux/schnell';
+const FAL_SUBMIT = 'https://queue.fal.run/fal-ai/flux/schnell';
+const FAL_QUEUE = 'https://queue.fal.run/fal-ai/flux';
 
 function setCors(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -9,7 +10,7 @@ function setCors(res) {
 
 async function pollUntilComplete(requestId) {
   for (let i = 0; i < 60; i++) {
-    const statusRes = await fetch(FAL_API + '/requests/' + requestId + '/status', {
+    const statusRes = await fetch(FAL_QUEUE + '/requests/' + requestId + '/status', {
       headers: { 'Authorization': 'Key ' + FAL_KEY }
     });
     const statusText = await statusRes.text();
@@ -18,7 +19,7 @@ async function pollUntilComplete(requestId) {
       throw new Error('fal.ai status: ' + (statusText?.slice(0, 80) || e.message));
     }
     if (statusData.status === 'COMPLETED') {
-      const resultRes = await fetch(FAL_API + '/requests/' + requestId, {
+      const resultRes = await fetch(FAL_QUEUE + '/requests/' + requestId, {
         headers: { 'Authorization': 'Key ' + FAL_KEY }
       });
       const resultText = await resultRes.text();
@@ -50,7 +51,7 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'prompt is required' });
   }
   try {
-    const submitRes = await fetch(FAL_API, {
+    const submitRes = await fetch(FAL_SUBMIT, {
       method: 'POST',
       headers: {
         'Authorization': 'Key ' + FAL_KEY,
