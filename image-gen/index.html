@@ -142,6 +142,18 @@
       max-width: 100%;
       border-radius: 12px;
       border: 1px solid rgba(255, 255, 255, 0.1);
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+    }
+
+    .btn-outline:hover {
+      background: rgba(240, 53, 81, 0.15);
     }
 
     .status-msg {
@@ -246,6 +258,21 @@
       statusMsg.classList.remove('hidden');
     }
 
+    async function downloadImage(url) {
+      try {
+        const res = await fetch(url, { mode: 'cors' });
+        const blob = await res.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = 'flux-image-' + Date.now() + '.png';
+        a.click();
+        URL.revokeObjectURL(blobUrl);
+      } catch (_) {
+        window.open(url, '_blank');
+      }
+    }
+
     function getProxyUrl() {
       return PROXY_URL.startsWith('http') ? PROXY_URL : (window.location.origin + PROXY_URL);
     }
@@ -278,8 +305,10 @@
         }
         statusMsg.classList.add('hidden');
         if (response?.images?.length) {
-          resultArea.innerHTML = '<img src="' + response.images[0].url + '" alt="Generated">';
+          const imgUrl = response.images[0].url;
+          resultArea.innerHTML = '<img src="' + imgUrl + '" alt="Generated"><button type="button" class="btn btn-outline" id="downloadBtn">Download</button>';
           resultArea.classList.remove('hidden');
+          document.getElementById('downloadBtn').addEventListener('click', () => downloadImage(imgUrl));
         } else {
           setStatus('ไม่พบภาพในผลลัพธ์');
         }
