@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Gen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Plus+Jakarta+Sans:wght@600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0D0D0D;
+      --bg-card: #1A1A1A;
+      --accent: #F03551;
+      --text-white: #FFFFFF;
+      --text-muted: #888888;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body, html {
+      min-height: 100%;
+      font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-white);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 48px;
+      background: var(--bg-dark);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .logo a {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-white);
+      text-decoration: none;
+    }
+
+    .main {
+      padding: 80px 48px 48px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 32px;
+    }
+
+    .password-card,
+    .gen-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .password-card h2,
+    .gen-card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      color: var(--text-muted);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      color: var(--text-white);
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: #d92d47;
+      transform: translateY(-1px);
+    }
+
+    .error-msg {
+      color: #EF5350;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .result-area {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .result-area img {
+      max-width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .status-msg {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 768px) {
+      .header { padding: 16px 20px; }
+      .main { padding: 60px 20px 32px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo"><a href="../index.html">BOOMBIBU</a></div>
+    <nav><a href="../index.html" style="color:var(--text-muted);text-decoration:none;font-size:0.95rem">← Home</a></nav>
+  </header>
+
+  <main class="main">
+    <h1 class="page-title">Image Gen</h1>
+
+    <div id="passwordScreen" class="password-card">
+      <h2>กรอกรหัสผ่าน</h2>
+      <div class="form-group">
+        <label for="passwordInput">Password</label>
+        <input type="password" id="passwordInput" placeholder="••••" autocomplete="off">
+      </div>
+      <button type="button" class="btn" id="passwordBtn">เข้าสู่ระบบ</button>
+      <div id="passwordError" class="error-msg hidden"></div>
+    </div>
+
+    <div id="genScreen" class="gen-card hidden">
+      <h2>Prompt</h2>
+      <div class="form-group">
+        <textarea id="promptInput" placeholder="เช่น a cat sitting on a chair..." aria-label="Prompt"></textarea>
+      </div>
+      <button type="button" class="btn" id="runBtn">Run</button>
+      <div id="statusMsg" class="status-msg hidden"></div>
+      <div id="resultArea" class="result-area hidden"></div>
+    </div>
+  </main>
+
+  <script>
+    const PASSWORD = '5585';
+    const STORAGE_KEY = 'imageGenAuth';
+    const FAL_KEY = '95edfbc1-f5a6-4194-a0ae-f3b33d323e98:1f0e93252530a8d848275297b976fc53';
+    const FAL_API = 'https://queue.fal.run/fal-ai/flux/schnell';
+
+    const passwordScreen = document.getElementById('passwordScreen');
+    const genScreen = document.getElementById('genScreen');
+    const passwordInput = document.getElementById('passwordInput');
+    const passwordBtn = document.getElementById('passwordBtn');
+    const passwordError = document.getElementById('passwordError');
+    const promptInput = document.getElementById('promptInput');
+    const runBtn = document.getElementById('runBtn');
+    const statusMsg = document.getElementById('statusMsg');
+    const resultArea = document.getElementById('resultArea');
+
+    function checkAuth() {
+      return sessionStorage.getItem(STORAGE_KEY) === '1';
+    }
+
+    function showScreen() {
+      if (checkAuth()) {
+        passwordScreen.classList.add('hidden');
+        genScreen.classList.remove('hidden');
+      } else {
+        passwordScreen.classList.remove('hidden');
+        genScreen.classList.add('hidden');
+      }
+    }
+
+    passwordBtn.addEventListener('click', () => {
+      const val = passwordInput.value.trim();
+      passwordError.classList.add('hidden');
+      if (val === PASSWORD) {
+        sessionStorage.setItem(STORAGE_KEY, '1');
+        passwordInput.value = '';
+        showScreen();
+      } else {
+        passwordError.textContent = 'รหัสผ่านไม่ถูกต้อง';
+        passwordError.classList.remove('hidden');
+      }
+    });
+
+    passwordInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') passwordBtn.click();
+    });
+
+    function setStatus(msg) {
+      statusMsg.textContent = msg;
+      statusMsg.classList.remove('hidden');
+    }
+
+    function pollResult(requestId) {
+      return fetch(FAL_API + '/requests/' + requestId, {
+        headers: { 'Authorization': 'Key ' + FAL_KEY }
+      }).then(r => r.json());
+    }
+
+    function pollStatus(requestId) {
+      return new Promise((resolve, reject) => {
+        const interval = setInterval(async () => {
+          try {
+            const res = await fetch(FAL_API + '/requests/' + requestId + '/status', {
+              headers: { 'Authorization': 'Key ' + FAL_KEY }
+            });
+            const data = await res.json();
+            if (data.status === 'COMPLETED') {
+              clearInterval(interval);
+              const result = await pollResult(requestId);
+              resolve(result.response);
+            } else if (data.status === 'IN_QUEUE' || data.status === 'IN_PROGRESS') {
+              setStatus(data.status === 'IN_QUEUE' ? 'รอคิว...' : 'กำลังสร้างภาพ...');
+            }
+          } catch (e) {
+            clearInterval(interval);
+            reject(e);
+          }
+        }, 1500);
+      });
+    }
+
+    runBtn.addEventListener('click', async () => {
+      const prompt = promptInput.value.trim();
+      if (!prompt) {
+        alert('กรุณากรอก prompt');
+        return;
+      }
+      runBtn.disabled = true;
+      resultArea.classList.add('hidden');
+      setStatus('กำลังส่งคำขอ...');
+      try {
+        const submitRes = await fetch(FAL_API, {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Key ' + FAL_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ prompt })
+        });
+        const submitData = await submitRes.json();
+        if (!submitData.request_id) {
+          throw new Error(submitData.detail || submitData.message || 'ส่งคำขอไม่สำเร็จ');
+        }
+        const response = await pollStatus(submitData.request_id);
+        statusMsg.classList.add('hidden');
+        if (response?.images?.length) {
+          resultArea.innerHTML = '<img src="' + response.images[0].url + '" alt="Generated">';
+          resultArea.classList.remove('hidden');
+        } else {
+          setStatus('ไม่พบภาพในผลลัพธ์');
+        }
+      } catch (e) {
+        setStatus('เกิดข้อผิดพลาด: ' + (e.message || e));
+      }
+      runBtn.disabled = false;
+    });
+
+    showScreen();
+  </script>
+</body>
+</html>
