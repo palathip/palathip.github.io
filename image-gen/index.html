@@ -188,11 +188,17 @@
     </div>
   </main>
 
+  <!-- ถ้าใช้ GitHub Pages: deploy api folder ไป Vercel แล้วใส่ URL ใน data-proxy-url ด้านล่าง -->
+  <script id="proxy-config" data-proxy-url="https://palathip-github-io.vercel.app/api/fal-proxy"></script>
   <script>
     const PASSWORD = '5585';
     const STORAGE_KEY = 'imageGenAuth';
-    const FAL_KEY = '95edfbc1-f5a6-4194-a0ae-f3b33d323e98:1f0e93252530a8d848275297b976fc53';
-    const FAL_API = 'https://queue.fal.run/fal-ai/flux/schnell';
+    // ใช้ proxy เพื่อหลีกเลี่ยง CORS - ต้อง deploy บน Vercel (มี api folder) หรือใช้ full URL ของ Vercel deployment
+    const PROXY_URL = (function() {
+      const u = document.getElementById('proxy-config');
+      const url = u && u.getAttribute('data-proxy-url');
+      return (url && url.trim()) || '/api/fal-proxy';
+    })();
 
     const passwordScreen = document.getElementById('passwordScreen');
     const genScreen = document.getElementById('genScreen');
@@ -240,33 +246,8 @@
       statusMsg.classList.remove('hidden');
     }
 
-    function pollResult(requestId) {
-      return fetch(FAL_API + '/requests/' + requestId, {
-        headers: { 'Authorization': 'Key ' + FAL_KEY }
-      }).then(r => r.json());
-    }
-
-    function pollStatus(requestId) {
-      return new Promise((resolve, reject) => {
-        const interval = setInterval(async () => {
-          try {
-            const res = await fetch(FAL_API + '/requests/' + requestId + '/status', {
-              headers: { 'Authorization': 'Key ' + FAL_KEY }
-            });
-            const data = await res.json();
-            if (data.status === 'COMPLETED') {
-              clearInterval(interval);
-              const result = await pollResult(requestId);
-              resolve(result.response);
-            } else if (data.status === 'IN_QUEUE' || data.status === 'IN_PROGRESS') {
-              setStatus(data.status === 'IN_QUEUE' ? 'รอคิว...' : 'กำลังสร้างภาพ...');
-            }
-          } catch (e) {
-            clearInterval(interval);
-            reject(e);
-          }
-        }, 1500);
-      });
+    function getProxyUrl() {
+      return PROXY_URL.startsWith('http') ? PROXY_URL : (window.location.origin + PROXY_URL);
     }
 
     runBtn.addEventListener('click', async () => {
@@ -277,21 +258,18 @@
       }
       runBtn.disabled = true;
       resultArea.classList.add('hidden');
-      setStatus('กำลังส่งคำขอ...');
+      setStatus('กำลังสร้างภาพ...');
       try {
-        const submitRes = await fetch(FAL_API, {
+        const res = await fetch(getProxyUrl(), {
           method: 'POST',
-          headers: {
-            'Authorization': 'Key ' + FAL_KEY,
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ prompt })
         });
-        const submitData = await submitRes.json();
-        if (!submitData.request_id) {
-          throw new Error(submitData.detail || submitData.message || 'ส่งคำขอไม่สำเร็จ');
+        const response = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          const err = response.error || (res.status === 404 ? 'API ไม่พบ — ต้อง deploy ไป Vercel (ดู image-gen/README.md)' : 'เกิดข้อผิดพลาด');
+          throw new Error(err);
         }
-        const response = await pollStatus(submitData.request_id);
         statusMsg.classList.add('hidden');
         if (response?.images?.length) {
           resultArea.innerHTML = '<img src="' + response.images[0].url + '" alt="Generated">';
@@ -300,7 +278,11 @@
           setStatus('ไม่พบภาพในผลลัพธ์');
         }
       } catch (e) {
-        setStatus('เกิดข้อผิดพลาด: ' + (e.message || e));
+        let msg = e.message || String(e);
+        if (msg.includes('404') || msg.includes('Failed to fetch')) {
+          msg += ' — ต้อง deploy API ไป Vercel ก่อน ดูวิธีใน image-gen/README.md';
+        }
+        setStatus('เกิดข้อผิดพลาด: ' + msg);
       }
       runBtn.disabled = false;
     });
