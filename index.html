@@ -384,6 +384,10 @@
       object-fit: contain;
     }
 
+    .qr-bank-icon--rounded {
+      border-radius: 6px;
+    }
+
     .qr-modal-account-row {
       display: flex;
       align-items: center;
@@ -432,6 +436,105 @@
     .qr-copy-btn.copied {
       background: #00C853;
       border-color: #00C853;
+    }
+
+    /* QR channel picker */
+    .qr-picker-modal {
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 36px 32px 32px;
+      max-width: 440px;
+      width: 100%;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .qr-picker-modal .qr-modal-header {
+      margin-bottom: 28px;
+    }
+
+    .qr-picker-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .qr-picker-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 118px;
+      padding: 22px 16px;
+      border-radius: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-white);
+      font-family: inherit;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    }
+
+    .qr-picker-btn:hover {
+      border-color: var(--accent);
+      background: rgba(0, 200, 83, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .qr-picker-icon {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      display: block;
+      pointer-events: none;
+    }
+
+    .qr-picker-icon--make {
+      border-radius: 14px;
+    }
+
+    .qr-picker-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .qr-picker-label--kbank {
+      color: #00e676;
+    }
+
+    .qr-picker-label--make {
+      background: linear-gradient(135deg, #69cfff 0%, #00c48c 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .qr-channel-badge {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      background: rgba(0, 138, 83, 0.25);
+      color: #00e676;
+    }
+
+    .qr-channel-badge-make {
+      background: rgba(19, 137, 255, 0.22);
+      color: #69cfff;
+    }
+
+    @media (max-width: 480px) {
+      .qr-picker-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     /* Digital Asset Modal - Minimal */
@@ -775,13 +878,35 @@
     </div>
   </section>
 
-  <!-- QR Payment Modal -->
+  <!-- QR Payment: เลือกช่องทาง -->
+  <div class="qr-modal-overlay" id="qrPickerModal">
+    <div class="qr-picker-modal">
+      <button type="button" class="qr-modal-close" id="qrPickerClose" aria-label="ปิด">×</button>
+      <div class="qr-modal-header">
+        <h2>QR Payment</h2>
+        <p>เลือกช่องทางรับเงิน</p>
+      </div>
+      <div class="qr-picker-grid">
+        <button type="button" class="qr-picker-btn" id="qrPickKbank" aria-label="KBANK — Thai QR กสิกรไทย">
+          <img src="images/kbank-logo.png" alt="" class="qr-picker-icon" width="64" height="64" decoding="async">
+          <span class="qr-picker-label qr-picker-label--kbank">KBANK</span>
+        </button>
+        <button type="button" class="qr-picker-btn" id="qrPickMake" aria-label="MAKE by KBANK">
+          <img src="images/make-by-kbank-logo.png" alt="" class="qr-picker-icon qr-picker-icon--make" width="64" height="64" decoding="async">
+          <span class="qr-picker-label qr-picker-label--make">MAKE</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Payment Modal (KBANK) -->
   <div class="qr-modal-overlay" id="qrModal">
     <div class="qr-modal">
       <button type="button" class="qr-modal-close" id="qrModalClose" aria-label="ปิด">×</button>
       <div class="qr-modal-header">
         <h2>Thai QR Payment</h2>
         <p>สแกน QR เพื่อโอนเงิน</p>
+        <span class="qr-channel-badge">KBANK</span>
       </div>
       <img src="images/qr-payment.png" alt="QR Payment - นาย พลาธิป วุฒิประยูร" class="qr-modal-image">
       <div class="qr-modal-info">
@@ -799,6 +924,37 @@
         <div class="qr-modal-info-item">
           <span class="qr-modal-info-label">ธนาคาร</span>
           <span class="qr-modal-info-value qr-bank-value"><img src="images/kbank-logo.png" alt="" class="qr-bank-icon" onerror="this.style.display='none'">กสิกรไทย</span>
+        </div>
+        <div class="qr-modal-info-footer">✓ รับเงินได้จากทุกธนาคาร</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Payment Modal (MAKE) — โครงสร้างเดียวกับ KBANK -->
+  <div class="qr-modal-overlay" id="makeQrModal">
+    <div class="qr-modal">
+      <button type="button" class="qr-modal-close" id="makeQrModalClose" aria-label="ปิด">×</button>
+      <div class="qr-modal-header">
+        <h2>Thai QR Payment</h2>
+        <p>สแกน QR เพื่อโอนเงิน</p>
+        <span class="qr-channel-badge qr-channel-badge-make">MAKE</span>
+      </div>
+      <img src="images/qr-payment-make.png" alt="QR Payment MAKE — นาย พลาธิป วุฒิประยูร" class="qr-modal-image">
+      <div class="qr-modal-info">
+        <div class="qr-modal-info-item">
+          <span class="qr-modal-info-label">ชื่อ</span>
+          <span class="qr-modal-info-value">นาย พลาธิป วุฒิประยูร</span>
+        </div>
+        <div class="qr-modal-info-item">
+          <span class="qr-modal-info-label">บัญชี</span>
+          <div class="qr-modal-account-row">
+            <span class="account-num">093-1-36473-1</span>
+            <button type="button" class="qr-copy-btn" id="makeQrCopyBtn" data-copy="093-1-36473-1">Copy</button>
+          </div>
+        </div>
+        <div class="qr-modal-info-item">
+          <span class="qr-modal-info-label">ช่องทาง</span>
+          <span class="qr-modal-info-value qr-bank-value"><img src="images/make-by-kbank-logo.png" alt="" class="qr-bank-icon qr-bank-icon--rounded" onerror="this.style.display='none'">MAKE by KBANK</span>
         </div>
         <div class="qr-modal-info-footer">✓ รับเงินได้จากทุกธนาคาร</div>
       </div>
@@ -995,26 +1151,79 @@
       setTimeout(type, 500);
     });
 
-    // QR Payment Modal
+    // QR Payment — picker + KBANK / MAKE modals
+    const qrPickerModal = document.getElementById('qrPickerModal');
+    const qrPickerClose = document.getElementById('qrPickerClose');
+    const qrPickKbank = document.getElementById('qrPickKbank');
+    const qrPickMake = document.getElementById('qrPickMake');
     const qrModal = document.getElementById('qrModal');
     const qrModalClose = document.getElementById('qrModalClose');
+    const makeQrModal = document.getElementById('makeQrModal');
+    const makeQrModalClose = document.getElementById('makeQrModalClose');
     const qrServiceItem = document.getElementById('qrServiceItem');
     const navQrLink = document.getElementById('navQrLink');
 
-    function openQrModal() {
-      qrModal.classList.add('active');
+    function qrLockBody() {
       document.body.style.overflow = 'hidden';
+    }
+
+    function qrUnlockBodyIfNone() {
+      if (!qrPickerModal.classList.contains('active') &&
+          !qrModal.classList.contains('active') &&
+          !makeQrModal.classList.contains('active')) {
+        document.body.style.overflow = '';
+      }
+    }
+
+    function openQrPicker() {
+      qrPickerModal.classList.add('active');
+      qrLockBody();
+    }
+
+    function closeQrPicker() {
+      qrPickerModal.classList.remove('active');
+      qrUnlockBodyIfNone();
+    }
+
+    function openKbankQrModal() {
+      qrModal.classList.add('active');
+      qrLockBody();
     }
 
     function closeQrModal() {
       qrModal.classList.remove('active');
-      document.body.style.overflow = '';
+      qrUnlockBodyIfNone();
     }
 
-    qrServiceItem.addEventListener('click', openQrModal);
+    function openMakeQrModal() {
+      makeQrModal.classList.add('active');
+      qrLockBody();
+    }
+
+    function closeMakeQrModal() {
+      makeQrModal.classList.remove('active');
+      qrUnlockBodyIfNone();
+    }
+
+    qrServiceItem.addEventListener('click', openQrPicker);
     navQrLink.addEventListener('click', (e) => {
       e.preventDefault();
-      openQrModal();
+      openQrPicker();
+    });
+
+    qrPickerClose.addEventListener('click', closeQrPicker);
+    qrPickerModal.addEventListener('click', (e) => {
+      if (e.target === qrPickerModal) closeQrPicker();
+    });
+
+    qrPickKbank.addEventListener('click', () => {
+      closeQrPicker();
+      openKbankQrModal();
+    });
+
+    qrPickMake.addEventListener('click', () => {
+      closeQrPicker();
+      openMakeQrModal();
     });
 
     qrModalClose.addEventListener('click', closeQrModal);
@@ -1022,22 +1231,33 @@
       if (e.target === qrModal) closeQrModal();
     });
 
-    // QR Copy button
-    const qrCopyBtn = document.getElementById('qrCopyBtn');
-    qrCopyBtn.addEventListener('click', async () => {
-      const text = qrCopyBtn.getAttribute('data-copy');
+    makeQrModalClose.addEventListener('click', closeMakeQrModal);
+    makeQrModal.addEventListener('click', (e) => {
+      if (e.target === makeQrModal) closeMakeQrModal();
+    });
+
+    // QR Copy buttons (KBANK + MAKE account)
+    async function handleQrCopyClick(btn) {
+      const text = btn.getAttribute('data-copy');
       try {
         await navigator.clipboard.writeText(text);
-        qrCopyBtn.textContent = 'Copied!';
-        qrCopyBtn.classList.add('copied');
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
         setTimeout(() => {
-          qrCopyBtn.textContent = 'Copy';
-          qrCopyBtn.classList.remove('copied');
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
         }, 1500);
       } catch (err) {
-        qrCopyBtn.textContent = 'Error';
-        setTimeout(() => { qrCopyBtn.textContent = 'Copy'; }, 1500);
+        btn.textContent = 'Error';
+        setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
       }
+    }
+
+    document.getElementById('qrCopyBtn').addEventListener('click', function () {
+      handleQrCopyClick(this);
+    });
+    document.getElementById('makeQrCopyBtn').addEventListener('click', function () {
+      handleQrCopyClick(this);
     });
 
     // Digital Asset Modal
@@ -1087,10 +1307,11 @@
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        if (assetModal.classList.contains('active')) closeAssetModal();
-        else closeQrModal();
-      }
+      if (e.key !== 'Escape') return;
+      if (assetModal.classList.contains('active')) closeAssetModal();
+      else if (makeQrModal.classList.contains('active')) closeMakeQrModal();
+      else if (qrModal.classList.contains('active')) closeQrModal();
+      else if (qrPickerModal.classList.contains('active')) closeQrPicker();
     });
   </script>
 </body>
