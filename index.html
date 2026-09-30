@@ -138,14 +138,6 @@
       display: flex;
       gap: 16px;
       flex-wrap: wrap;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.4s ease, visibility 0.4s ease;
-    }
-
-    .button-group.visible {
-      opacity: 1;
-      visibility: visible;
     }
 
     .btn {
@@ -1140,8 +1132,6 @@
           typedText.textContent += suffix.charAt(i);
           i++;
           setTimeout(addChar, typeSpeed);
-        } else {
-          document.querySelector('.button-group').classList.add('visible');
         }
       }
       addChar();
