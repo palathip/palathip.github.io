@@ -201,6 +201,94 @@
       font-size: 1.2rem;
     }
 
+    .resume-frame-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+    }
+
+    .resume-frame-overlay.active {
+      display: flex;
+    }
+
+    .resume-frame-modal {
+      display: flex;
+      flex-direction: column;
+      width: min(1100px, 100%);
+      height: min(860px, calc(100vh - 40px));
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+    }
+
+    .resume-frame-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 14px 14px 22px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .resume-frame-header h2 {
+      margin-right: auto;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .resume-frame-open {
+      color: var(--text-white);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .resume-frame-open:hover {
+      background: var(--accent-fill);
+    }
+
+    .resume-frame-close {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-white);
+      font-size: 1.5rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .resume-frame-close:hover {
+      background: var(--accent-fill);
+    }
+
+    .resume-frame-body {
+      flex: 1;
+      min-height: 0;
+      background: #fff;
+    }
+
+    .resume-frame-body iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
     @media (max-width: 768px) {
       .hero {
         padding: 100px 24px 60px;
@@ -233,6 +321,17 @@
         white-space: normal;
         min-height: 2.4em;
       }
+
+      .resume-frame-overlay {
+        padding: 0;
+      }
+
+      .resume-frame-modal {
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 0;
+      }
     }
 
     @media (max-width: 340px) {
@@ -262,7 +361,7 @@
       <p class="subtitle">I WORK WITH YOU, NOT FOR YOU</p>
     </div>
     <div class="services-grid">
-      <a href="resume.html" class="service-item highlight">
+      <a href="resume/" class="service-item highlight" id="resumeServiceItem">
         <span>Simple Resume</span>
       </a>
       <div class="service-item" id="assetServiceItem" style="cursor: pointer;">
@@ -280,6 +379,18 @@
     </div>
   </section>
 
+  <div class="resume-frame-overlay" id="resumeFrameModal" aria-hidden="true">
+    <div class="resume-frame-modal" role="dialog" aria-modal="true" aria-labelledby="resumeFrameTitle">
+      <div class="resume-frame-header">
+        <h2 id="resumeFrameTitle">Simple Resume</h2>
+        <a class="resume-frame-open" href="resume/" target="_blank" rel="noopener">Open in new tab</a>
+        <button type="button" class="resume-frame-close" id="resumeFrameClose" aria-label="ปิด">×</button>
+      </div>
+      <div class="resume-frame-body">
+        <iframe id="resumeFrameView" title="Simple Resume"></iframe>
+      </div>
+    </div>
+  </div>
 
   <script>
     // Typing effect: Developer. → Engineer. → Ordinary Man. :)
@@ -379,6 +490,42 @@
       setTimeout(type, 500);
     });
 
+  </script>
+  <script>
+    (function () {
+      var card = document.getElementById('resumeServiceItem');
+      var overlay = document.getElementById('resumeFrameModal');
+      var frame = document.getElementById('resumeFrameView');
+      var scrollY = 0;
+
+      function openResume() {
+        if (!frame.getAttribute('src')) frame.src = 'resume/';
+        scrollY = window.scrollY;
+        overlay.classList.add('active');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeResume() {
+        overlay.classList.remove('active');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        window.scrollTo(0, scrollY);
+      }
+
+      card.addEventListener('click', function (event) {
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        openResume();
+      });
+      document.getElementById('resumeFrameClose').addEventListener('click', closeResume);
+      overlay.addEventListener('click', function (event) {
+        if (event.target === overlay) closeResume();
+      });
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && overlay.classList.contains('active')) closeResume();
+      });
+    })();
   </script>
 </body>
 </html>
