@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Plus+Jakarta+Sans:wght@600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../site-nav.css">
   <style>
     :root {
       --bg-dark: #0D0D0D;
@@ -33,55 +34,8 @@
       overflow-x: hidden;
     }
 
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 24px 48px;
-      background: var(--bg-dark);
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      box-sizing: border-box;
-      max-width: 100%;
-    }
-
-    .logo {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-    }
-
-    .logo a {
-      color: var(--text-white);
-      text-decoration: none;
-    }
-
-    .nav-links a {
-      display: inline-flex;
-      align-items: center;
-      padding: 12px 20px;
-      background: var(--bg-card);
-      border-radius: 12px;
-      color: var(--text-white);
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 600;
-      border: 1px solid transparent;
-      transition: all 0.3s;
-    }
-
-    .nav-links a:hover {
-      border-color: var(--accent);
-      transform: translateX(4px);
-    }
-
     .main {
-      padding: 120px 48px 48px;
+      padding: 96px 48px 48px;
       max-width: 1400px;
       margin: 0 auto;
       width: 100%;
@@ -796,12 +750,8 @@
     }
 
     @media (max-width: 768px) {
-      .header {
-        padding: 16px 20px;
-      }
-
       .main {
-        padding: 100px 20px 32px;
+        padding: 84px 20px 32px;
         min-width: 0;
       }
 
@@ -843,14 +793,7 @@
   </style>
 </head>
 <body>
-  <header class="header">
-    <div class="logo">
-      <a href="../index.html">BOOMBIBU</a>
-    </div>
-    <nav class="nav-links">
-      <a href="../index.html">Home</a>
-    </nav>
-  </header>
+  <script src="../site-nav.js"></script>
 
   <main class="main">
     <h1 class="page-title">Dashboard</h1>

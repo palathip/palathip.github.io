@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Plus+Jakarta+Sans:wght@600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site-nav.css">
   <style>
     :root {
       --bg-dark: #0D0D0D;
@@ -29,176 +30,6 @@
       background: var(--bg-dark);
       color: var(--text-white);
       overflow-x: hidden;
-    }
-
-    /* Header */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 24px;
-      padding: 14px 48px;
-      background: linear-gradient(180deg, rgba(22, 22, 22, 0.92), rgba(13, 13, 13, 0.78));
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-    }
-
-    .header::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 1px;
-      background: linear-gradient(90deg, var(--accent), rgba(240, 53, 81, 0.2) 32%, transparent 68%);
-      pointer-events: none;
-    }
-
-    .logo {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.35rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-
-    .logo::before {
-      content: '';
-      width: 22px;
-      height: 3px;
-      border-radius: 999px;
-      background: var(--accent);
-      flex-shrink: 0;
-    }
-
-    .site-nav {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      min-width: 0;
-    }
-
-    .nav-toggle {
-      display: none;
-      position: relative;
-      align-items: center;
-      justify-content: center;
-      width: 42px;
-      height: 42px;
-      padding: 0;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text-white);
-      cursor: pointer;
-    }
-
-    .nav-toggle:hover {
-      border-color: var(--accent);
-      background: rgba(240, 53, 81, 0.12);
-    }
-
-    .nav-toggle:focus-visible,
-    .nav-links a:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    .nav-toggle-icon,
-    .nav-toggle-icon::before,
-    .nav-toggle-icon::after {
-      display: block;
-      width: 16px;
-      height: 1.5px;
-      border-radius: 2px;
-      background: currentColor;
-      position: relative;
-      transition: transform 0.2s ease, opacity 0.2s ease;
-    }
-
-    .nav-toggle-icon::before,
-    .nav-toggle-icon::after {
-      content: '';
-      position: absolute;
-      left: 0;
-    }
-
-    .nav-toggle-icon::before { top: -5px; }
-    .nav-toggle-icon::after { top: 5px; }
-
-    .nav-toggle[aria-expanded="true"] .nav-toggle-icon {
-      background: transparent;
-    }
-
-    .nav-toggle[aria-expanded="true"] .nav-toggle-icon::before {
-      top: 0;
-      transform: rotate(45deg);
-    }
-
-    .nav-toggle[aria-expanded="true"] .nav-toggle-icon::after {
-      top: 0;
-      transform: rotate(-45deg);
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-      list-style: none;
-      margin: 0;
-      padding: 4px;
-      background: #242424;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 999px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
-    }
-
-    .nav-links a {
-      display: inline-flex;
-      align-items: center;
-      padding: 8px 14px;
-      border-radius: 999px;
-      color: rgba(255, 255, 255, 0.72);
-      text-decoration: none;
-      font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
-      font-size: 0.84rem;
-      font-weight: 600;
-      letter-spacing: 0.01em;
-      white-space: nowrap;
-      border: 1px solid transparent;
-      transition: color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .nav-links a:hover:not(.active) {
-      color: var(--text-white);
-      background: #333333;
-    }
-
-    .nav-links a.active {
-      color: var(--text-white);
-      background: var(--accent);
-      box-shadow: 0 4px 14px rgba(240, 53, 81, 0.32);
     }
 
     /* Hero Section */
@@ -907,56 +738,6 @@
       border-color: #00C853;
     }
 
-    @media (max-width: 1200px) {
-      .header {
-        padding-left: 28px;
-        padding-right: 28px;
-      }
-
-      .nav-links a {
-        padding: 8px 11px;
-        font-size: 0.78rem;
-      }
-    }
-
-    @media (max-width: 920px) {
-      .header {
-        padding: 12px 20px;
-      }
-
-      .nav-toggle {
-        display: inline-flex;
-      }
-
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: calc(100% + 8px);
-        right: 16px;
-        left: 16px;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 4px;
-        padding: 8px;
-        border-radius: 16px;
-        background: rgba(22, 22, 22, 0.96);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
-      }
-
-      .nav-links.is-open {
-        display: flex;
-      }
-
-      .nav-links a {
-        padding: 12px 14px;
-        border-radius: 10px;
-        font-size: 0.95rem;
-      }
-    }
-
     @media (max-width: 768px) {
       .hero {
         padding: 100px 24px 60px;
@@ -999,23 +780,7 @@
   </style>
 </head>
 <body>
-  <header class="header">
-    <div class="logo">BOOMBIBU</div>
-    <nav class="site-nav" aria-label="Main">
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu">
-        <span class="nav-toggle-icon" aria-hidden="true"></span>
-        <span class="sr-only">Menu</span>
-      </button>
-      <ul class="nav-links" id="site-menu">
-        <li><a href="#" class="active">Home</a></li>
-        <li><a href="https://palathip.github.io/resume/">Simple Resume</a></li>
-        <li><a href="#digital-asset" id="navAssetLink">Digital Asset</a></li>
-        <li><a href="#qr" id="navQrLink">QR Payment</a></li>
-        <li><a href="dashboard/index.html">My Dashboard</a></li>
-        <li><a href="gen-flights/index.html">Gen Flights</a></li>
-      </ul>
-    </nav>
-  </header>
+  <script src="site-nav.js"></script>
 
   <section class="hero">
     <div class="hero-content">
@@ -1034,7 +799,7 @@
       <p class="subtitle">I WORK WITH YOU, NOT FOR YOU</p>
     </div>
     <div class="services-grid">
-      <a href="https://palathip.github.io/resume/" class="service-item highlight">
+      <a href="resume.html" class="service-item highlight">
         <span>Simple Resume</span>
       </a>
       <div class="service-item" id="assetServiceItem" style="cursor: pointer;">
@@ -1226,38 +991,6 @@
   </div>
 
   <script>
-    const siteHeader = document.querySelector('.header');
-    const navToggle = document.querySelector('.nav-toggle');
-    const siteMenu = document.getElementById('site-menu');
-
-    function setNavOpen(open) {
-      if (!navToggle || !siteMenu) return;
-      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      siteMenu.classList.toggle('is-open', open);
-    }
-
-    if (navToggle && siteMenu && siteHeader) {
-      navToggle.addEventListener('click', () => {
-        setNavOpen(navToggle.getAttribute('aria-expanded') !== 'true');
-      });
-
-      siteMenu.addEventListener('click', (event) => {
-        if (event.target.closest('a')) setNavOpen(false);
-      });
-
-      document.addEventListener('click', (event) => {
-        if (!siteHeader.contains(event.target)) setNavOpen(false);
-      });
-
-      document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') setNavOpen(false);
-      });
-
-      window.addEventListener('resize', () => {
-        if (window.innerWidth > 920) setNavOpen(false);
-      });
-    }
-
     // Typing effect: Developer. → Engineer. → Ordinary Man. :)
     const typedText = document.getElementById('typed-text');
     const typeSpeed = 80;
@@ -1517,6 +1250,14 @@
       else if (qrModal.classList.contains('active')) closeQrModal();
       else if (qrPickerModal.classList.contains('active')) closeQrPicker();
     });
+
+    function openFromHash() {
+      if (location.hash === '#digital-asset') openAssetModal();
+      else if (location.hash === '#qr') openQrPicker();
+    }
+
+    openFromHash();
+    window.addEventListener('hashchange', openFromHash);
   </script>
 </body>
 </html>
