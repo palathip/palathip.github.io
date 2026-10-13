@@ -311,19 +311,6 @@
       font-weight: 600;
       color: var(--text-white);
       margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .skill-level {
-      font-size: 0.68rem;
-      background: var(--accent-fill);
-      color: white;
-      padding: 2px 8px;
-      border-radius: 999px;
-      flex-shrink: 0;
     }
 
     .skill-keywords {
@@ -524,7 +511,6 @@
       "skills": [
         {
           "name": "Operating Systems",
-          "level": "Master",
           "keywords": [
             "Windows",
             "OSX",
@@ -534,43 +520,28 @@
           ]
         },
         {
-          "name": "Programming Languages (Master)",
-          "level": "Master",
+          "name": "Programming Languages",
           "keywords": [
             "Java(SpringBoot)",
-            "Python(FastAPI,Flask)"
+            "Python(FastAPI,Flask)",
+            "PHP",
+            "HTML",
+            "C",
+            "C#",
+            "Matlab",
+            "Javascript",
+            "Vue.JS"
           ]
         },
         {
-          "name": "Database (Master)",
-          "level": "Master",
+          "name": "Database",
           "keywords": [
             "MySQL",
             "Oracle"
           ]
         },
         {
-          "name": "Programming Languages (Intermediate)",
-          "level": "Intermediate",
-          "keywords": [
-            "PHP",
-            "HTML",
-            "C",
-            "C#",
-            "Matlab"
-          ]
-        },
-        {
-          "name": "Programming Languages (Beginner)",
-          "level": "Beginner",
-          "keywords": [
-            "Javascript",
-            "Vue.JS"
-          ]
-        },
-        {
           "name": "Applications & Tools",
-          "level": "Intermediate",
           "keywords": [
             "MS Office",
             "Photoshop",
@@ -865,10 +836,7 @@
           data.skills.forEach(skill => {
             skills.innerHTML += `
               <div class="skill-category">
-                <div class="skill-category-title">
-                  <span>${skill.name}</span>
-                  ${skill.level ? `<span class="skill-level">${skill.level}</span>` : ''}
-                </div>
+                <div class="skill-category-title">${skill.name}</div>
                 <div class="skill-keywords">
                   ${skill.keywords.map(k => `<span class="skill-tag">${k}</span>`).join('')}
                 </div>
