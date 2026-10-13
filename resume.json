@@ -1,0 +1,254 @@
+{
+  "basics": {
+    "name": "Palathip Wuttiprayoon",
+    "label": "Software Engineer",
+    "picture": "https://palathip.github.io/images/profile.png",
+    "email": "boom.palathip@gmail.com",
+    "phone": "080-872-6606",
+    "website": "https://palathip.github.io",
+    "summary": "Palathip Wuttiprayoon from Songkhla. You can call me 'Boom'. Earned Bachelor of Computer Engineering from the Prince of Songkhla University.",
+    "location": {
+      "address": " 2, 1 Banwarakorn Lane, Khorhong",
+      "postalCode": "90110",
+      "city": "Hat-yai",
+      "countryCode": "Thailand",
+      "region": "Songkhla"
+    },
+    "profiles": [
+      {
+        "network": "Github",
+        "username": "Palathip",
+        "url": "https://github.com/palathip"
+      },
+      {
+        "network": "Gitlab",
+        "username": "boombibu",
+        "url": "https://gitlab.com/boombibu"
+      },
+      {
+        "network": "LinkedIn",
+        "username": "Palathip Wuttiprayoon",
+        "url": "https://www.linkedin.com/in/palathip-wuttiprayoon-b785b995?trk=people-guest_profile-result-card_result-card_full-click"
+      },
+      {
+        "network": "Youtube",
+        "username": "Boombibu Channel",
+        "url": "https://www.youtube.com/channel/UCs_yfLS9cN0WIEsZIqA1MWA"
+      }
+    ]
+  },
+  "education": [
+    {
+      "institution": "Prince of Sonkhla University",
+      "area": "Computer Engineering",
+      "studyType": "Bachelor",
+      "startDate": "2010-06-01",
+      "endDate": "2015-05-01",
+      "courses": [
+        "Motorcycles Recognition Project (Matlab)"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "name": "Operating Systems",
+      "keywords": [
+        "Windows",
+        "macOS",
+        "iOS",
+        "Android",
+        "Linux"
+      ]
+    },
+    {
+      "name": "Programming Languages",
+      "keywords": [
+        "Java(SpringBoot)",
+        "Python(FastAPI,Flask)",
+        "PHP",
+        "HTML",
+        "C",
+        "C#",
+        "Matlab",
+        "JavaScript",
+        "Vue.js"
+      ]
+    },
+    {
+      "name": "Database",
+      "keywords": [
+        "MySQL",
+        "Oracle"
+      ]
+    },
+    {
+      "name": "Applications & Tools",
+      "keywords": [
+        "MS Office",
+        "Photoshop",
+        "Lightroom",
+        "VSCode",
+        "Cursor",
+        "Jetbrains",
+        "Atom",
+        "Git",
+        "Docker",
+        "OpenShift",
+        "Deta",
+        "K6",
+        "Postman",
+        "TensorFlow",
+        "Strapi",
+        "Jenkins",
+        "Kibana"
+      ]
+    }
+  ],
+  "work": [
+    {
+      "name": "CardX Company Limited",
+      "position": "Java Developer",
+      "url": "https://www.cardx.co.th",
+      "startDate": "2026-09-01",
+      "summary": "Backend developer for the CardX application."
+    },
+    {
+      "name": "Ayudhya Capital Services (AYCAP)",
+      "position": "Senior Java Developer/SA",
+      "url": "https://www.krungsri.com",
+      "startDate": "2022-03-01",
+      "endDate": "2026-08-14",
+      "summary": "Krungsri General Insurance Broker (KGIB) Developer",
+      "highlights": [
+        "Insurance - Krungsri Broker Backend Developer"
+      ]
+    },
+    {
+      "name": "Internet Thailand Public Company Limited. (INET)",
+      "position": "Software Engineer",
+      "url": "https://www.inet.co.th",
+      "startDate": "2019-09-16",
+      "endDate": "2022-02-28",
+      "summary": "Web Backend Developer",
+      "highlights": [
+        "website: Folio (Internal portfolio)",
+        "website: https://oneexpress.biz",
+        "ONE CHAT Applications (Android: https://play.google.com/store/apps/details?id=com.oneplatform.android.onechat, iOS: https://apps.apple.com/th/app/onechat/id1394435274)"
+      ]
+    },
+    {
+      "name": "Toyota Songkhla Company (Hatyai)",
+      "position": "IT Manager",
+      "url": "http://www.toyotasongkhla.com",
+      "startDate": "2016-10-01",
+      "endDate": "2019-01-19",
+      "summary": "Maintenance and monitoring of servers, databases, network, Toyota systems and IT services in the organization.",
+      "highlights": [
+        "IT infrastructure"
+      ]
+    },
+    {
+      "name": "Aeronautical Radio of Thailand Ltd.(Hatyai)",
+      "position": "Engineering Intern",
+      "url": "https://www.aerothai.co.th",
+      "startDate": "2013-03-15",
+      "endDate": "2013-06-30",
+      "summary": "Practice developing a web application and PHP programming by simulating the functionality of an aircraft landing assistance system for commercial airplanes."
+    },
+    {
+      "name": "Freelance",
+      "position": "Software Developer",
+      "url": "https://palathip.github.io",
+      "startDate": "2019-09-16",
+      "summary": "Web Backend Developer",
+      "highlights": [
+        "website: https://register.thaihealth.or.th",
+        "website: https://transliteration.orst.go.th",
+        "website: http://stock.maldives-drinkwater.com",
+        "linebot: https://lin.ee/3iXZDN3fq",
+        "website: https://centralretailcareers.com",
+        "website: http://www.socialtrendsthailand.com",
+        "website: http://fbthsurvey.com:81",
+        "website: http://fbthsurvey.com:82",
+        "website: http://fbthsurvey.com:83",
+        "website: http://fbthrenewal.com",
+        "website: http://rootlandestate.com"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "highlights": [
+        "SpringBoot Rest API",
+        "Vault",
+        "Oracle DB",
+        "OpenShift"
+      ],
+      "description": "Developed an API system to manage the offering and purchase of credit protection insurance for cash withdrawal loans via credit cards through the mobile application named \"UChoose\"",
+      "website": "https://kcc.gg/n06h",
+      "name": "UCASH PPI(Payment Protection Insurance)",
+      "startDate": "2023-12-01",
+      "endDate": "2026-08-14"
+    },
+    {
+      "highlights": [
+        "SpringBoot Rest API",
+        "VueJS",
+        "Oracle DB",
+        "OpenShift"
+      ],
+      "description": "Developed a system using the SpringBoot Framework named \"Krungsri Broker Backend\" to manage insurance sales across various channels, such as online and POS (Point of Sale). The system enables the Operation team to confirm transactions through automatic reconciliation, as well as handle the issuance of billing documents, invoices, and tax invoices, facilitating coordination with insurer companies.",
+      "website": "internal site",
+      "name": "Krungsri Broker Backend (KBB)",
+      "startDate": "2022-03-01",
+      "endDate": "2026-08-14"
+    },
+    {
+      "highlights": [
+        "PHP",
+        "MySQL",
+        "HTML5"
+      ],
+      "description": "web application for showing landing device status on webpage.",
+      "website": "internal site",
+      "name": "NAVAID Status",
+      "startDate": "2013-03-15",
+      "endDate": "2013-06-30"
+    }
+  ],
+  "volunteer": [
+    {
+      "organization": "Faculty of Computer Engineering, Prince of Songkla University (Hatyai)",
+      "position": "Volunteer Member",
+      "startDate": "2014-03-15",
+      "endDate": "2014-03-18",
+      "summary": "CoE volunteer member in Ban Kalai school, Phang-nga, Thailand. I repair school building and tool for education.",
+      "highlights": [
+        "https://www.youtube.com/watch?v=H7ORe3ldtNg"
+      ]
+    },
+    {
+      "organization": "Office of The National Broadcasting and Telecommunications Commission (NBTC)",
+      "position": "NBTC-ITU Volunteer",
+      "url": "https://www.nbtc.go.th/",
+      "startDate": "2015-05-01",
+      "endDate": "2015-07-01",
+      "summary": "NBTC volunteer member in Natalaung, Trang, Thailand. I teach IT skills to people in Natalaung Trang Thailand.",
+      "highlights": [
+        "https://www.youtube.com/watch?v=_nUkEiBAFJc"
+      ]
+    }
+  ],
+  "publications": [
+    {
+      "name": "Detection of Ponzi Schemes in Thai Advertising Messages on Facebook Posts Using Deep Learning",
+      "publisher": "ETCI Card 2021",
+      "releaseDate": "2021-04-29",
+      "url": "https://drive.google.com/file/d/1hm5Ry_lCVBKN6KYgWjvMoaOY89xVt04n/view",
+      "summary": "Detection of Ponzi Schemes in Thai Advertising Messages on Facebook Posts Using Deep Learning (peper 66)"
+    }
+  ],
+  "meta": {
+    "theme": "elegant"
+  }
+}
