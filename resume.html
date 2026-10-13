@@ -529,8 +529,8 @@
             "C",
             "C#",
             "Matlab",
-            "Javascript",
-            "Vue.JS"
+            "JavaScript",
+            "Vue.js"
           ]
         },
         {
@@ -576,7 +576,7 @@
           "endDate": "2026-08-14",
           "summary": "Krungsri General Insurance Broker (KGIB) Developer",
           "highlights": [
-            "Insuance - Krungsri Broker Backend Developer"
+            "Insurance - Krungsri Broker Backend Developer"
           ]
         },
         {
@@ -599,7 +599,7 @@
           "url": "http://www.toyotasongkhla.com",
           "startDate": "2016-10-01",
           "endDate": "2019-01-19",
-          "summary": "Maintenance, monitoring server ,database ,network ,toyota system and IT service in organization.",
+          "summary": "Maintenance and monitoring of servers, databases, network, Toyota systems and IT services in the organization.",
           "highlights": ["IT infrastructure"]
         },
         {
@@ -774,7 +774,7 @@
           data.basics.profiles.forEach(profile => {
             const networkName = profile.network === 'Twitter' ? 'X' : profile.network;
             profiles.innerHTML += `
-              <a href="${profile.url}" target="_blank" class="profile-link" title="${networkName}">
+              <a href="${profile.url}" target="_blank" rel="noopener" class="profile-link" title="${networkName}">
                 ${getSocialIcon(profile.network)}
               </a>
             `;
@@ -793,7 +793,7 @@
                   <div>
                     <div class="timeline-title">${item.name}</div>
                     <div class="timeline-subtitle">${item.position}</div>
-                    ${item.url ? `<a href="${item.url}" target="_blank" class="timeline-url">${item.url}</a>` : ''}
+                    ${item.url ? `<a href="${item.url}" target="_blank" rel="noopener" class="timeline-url">${item.url}</a>` : ''}
                   </div>
                   <div class="timeline-date">${startDate} - ${endDate}</div>
                 </div>
@@ -859,7 +859,7 @@
                 <div class="timeline-header">
                   <div>
                     <div class="timeline-title">${project.name}</div>
-                    ${project.website ? `<a href="${project.website}" target="_blank"${project.websiteLabel ? ' rel="noopener"' : ''} class="timeline-url">${project.websiteLabel || project.website}</a>` : ''}
+                    ${project.website ? `<a href="${project.website}" target="_blank" rel="noopener" class="timeline-url">${project.websiteLabel || project.website}</a>` : ''}
                   </div>
                   <div class="timeline-date">${startDate} - ${endDate}</div>
                 </div>
