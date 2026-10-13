@@ -269,6 +269,15 @@
       text-decoration: underline;
     }
 
+    .timeline-plain {
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 400;
+      margin-top: 5px;
+      display: inline-block;
+      cursor: default;
+    }
+
     .timeline-summary {
       color: var(--text-muted);
       margin-top: 4px;
@@ -433,11 +442,6 @@
       <div class="section">
         <h2 class="section-title">Publications</h2>
         <div id="publications"></div>
-      </div>
-
-      <div class="section">
-        <h2 class="section-title">Interests</h2>
-        <div id="interests"></div>
       </div>
     </div>
   </div>
@@ -683,20 +687,6 @@
           "url": "https://drive.google.com/file/d/1hm5Ry_lCVBKN6KYgWjvMoaOY89xVt04n/view",
           "summary": "Detection of Ponzi Schemes in Thai Advertising Messages on Facebook Posts Using Deep Learning (peper 66)"
         }
-      ],
-      "interests": [
-        {
-          "name": "Sport",
-          "keywords": ["Football","Basketball","English Premier League","NBA","Manchester United","Dallas Mavericks"]
-        },
-        {
-          "name": "Cryptocurrency",
-          "keywords": ["BitCoin","DogeCoin","ShibaInu","RavenCoin","BinanceCoin"]
-        },
-        {
-          "name": "Game",
-          "keywords": ["First Person Shooter (FPS)","Multiplayer Online Battle Arena (MOBA)","Valorant","Dota 2","ROV","Resident Evil","Devil May Cry"]
-        }
       ]
     };
 
@@ -762,7 +752,12 @@
         }
 
         const formatDate = (iso) => new Date(iso).toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
-        const formatRange = (start, end) => `${formatDate(start)} - ${end ? formatDate(end) : 'Present'}`;
+        const formatRange = (start, end) => {
+          const startLabel = formatDate(start);
+          if (!end) return `${startLabel} - Present`;
+          const endLabel = formatDate(end);
+          return startLabel === endLabel ? startLabel : `${startLabel} - ${endLabel}`;
+        };
 
         // Work Experience
         const work = document.getElementById('work');
@@ -835,7 +830,7 @@
           data.projects.forEach(project => {
             const range = formatRange(project.startDate, project.endDate);
             const websiteHtml = project.website === 'internal site'
-              ? '<div class="timeline-summary">INTERNAL SITE</div>'
+              ? '<div class="timeline-plain">INTERNAL SITE</div>'
               : (project.website ? `<a href="${project.website}" target="_blank" rel="noopener" class="timeline-url">${project.websiteLabel || project.website}</a>` : '');
             projects.innerHTML += `
               <div class="timeline-item">
@@ -894,28 +889,11 @@
                   <div>
                     <div class="timeline-title">${item.name}</div>
                     <div class="timeline-subtitle">${item.publisher}</div>
-                    ${item.url ? `<a href="${item.url}" target="_blank" class="timeline-url">ดูเอกสาร</a>` : ''}
+                    ${item.url ? `<a href="${item.url}" target="_blank" class="timeline-url">View document</a>` : ''}
                   </div>
                   ${releaseDate ? `<div class="timeline-date">${releaseDate}</div>` : ''}
                 </div>
                 ${item.summary ? `<div class="timeline-summary">${item.summary}</div>` : ''}
-              </div>
-            `;
-          });
-        }
-
-        // Interests
-        const interests = document.getElementById('interests');
-        if (data.interests) {
-          data.interests.forEach(interest => {
-            interests.innerHTML += `
-              <div class="skill-category">
-                <div class="skill-category-title">
-                  <span>${interest.name}</span>
-                </div>
-                <div class="skill-keywords">
-                  ${interest.keywords.map(k => `<span class="skill-tag">${k}</span>`).join('')}
-                </div>
               </div>
             `;
           });
