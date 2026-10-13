@@ -604,13 +604,14 @@
             "website: <a href=\"https://register.thaihealth.or.th\" target=\"_blank\" rel=\"noopener\">https://register.thaihealth.or.th</a>",
             "website: <a href=\"https://transliteration.orst.go.th\" target=\"_blank\" rel=\"noopener\">https://transliteration.orst.go.th</a>",
             "website: <a href=\"http://stock.maldives-drinkwater.com\" target=\"_blank\" rel=\"noopener\">http://stock.maldives-drinkwater.com</a>",
-            "website: <a href=\"https://lin.ee/3iXZDN3fq\" target=\"_blank\" rel=\"noopener\">https://lin.ee/3iXZDN3fq</a>",
+            "linebot: <a href=\"https://lin.ee/3iXZDN3fq\" target=\"_blank\" rel=\"noopener\">https://lin.ee/3iXZDN3fq</a>",
             "website: <a href=\"https://centralretailcareers.com\" target=\"_blank\" rel=\"noopener\">https://centralretailcareers.com</a>",
             "website: <a href=\"http://www.socialtrendsthailand.com\" target=\"_blank\" rel=\"noopener\">http://www.socialtrendsthailand.com</a>",
             "website: <a href=\"http://fbthsurvey.com:81\" target=\"_blank\" rel=\"noopener\">http://fbthsurvey.com:81</a>",
             "website: <a href=\"http://fbthsurvey.com:82\" target=\"_blank\" rel=\"noopener\">http://fbthsurvey.com:82</a>",
             "website: <a href=\"http://fbthsurvey.com:83\" target=\"_blank\" rel=\"noopener\">http://fbthsurvey.com:83</a>",
-            "website: <a href=\"http://fbthrenewal.com\" target=\"_blank\" rel=\"noopener\">http://fbthrenewal.com</a>"
+            "website: <a href=\"http://fbthrenewal.com\" target=\"_blank\" rel=\"noopener\">http://fbthrenewal.com</a>",
+            "website: <a href=\"http://rootlandestate.com\" target=\"_blank\" rel=\"noopener\">http://rootlandestate.com</a>"
           ]
         }
       ],
@@ -659,7 +660,6 @@
         {
           "organization": "Faculty of Computer Engineering, Prince of Songkla University (Hatyai)",
           "position": "Volunteer Member",
-          "url": "https://www.nbtc.go.th/",
           "startDate": "2014-03-15",
           "endDate": "2014-03-18",
           "summary": "CoE volunteer member in Ban Kalai school, Phang-nga, Thailand. I repair school building and tool for education.",
@@ -761,13 +761,14 @@
           });
         }
 
+        const formatDate = (iso) => new Date(iso).toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+        const formatRange = (start, end) => `${formatDate(start)} - ${end ? formatDate(end) : 'Present'}`;
+
         // Work Experience
         const work = document.getElementById('work');
         if (data.work) {
           data.work.forEach(item => {
-            const formatWorkDate = (iso) => new Date(iso).toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
-            const startDate = formatWorkDate(item.startDate);
-            const endDate = item.endDate ? formatWorkDate(item.endDate) : 'Present';
+            const range = formatRange(item.startDate, item.endDate);
             work.innerHTML += `
               <div class="timeline-item">
                 <div class="timeline-header">
@@ -776,7 +777,7 @@
                     <div class="timeline-subtitle">${item.position}</div>
                     ${item.url ? `<a href="${item.url}" target="_blank" rel="noopener" class="timeline-url">${item.url}</a>` : ''}
                   </div>
-                  <div class="timeline-date">${startDate} - ${endDate}</div>
+                  <div class="timeline-date">${range}</div>
                 </div>
                 ${item.summary ? `<div class="timeline-summary">${item.summary}</div>` : ''}
                 ${item.highlights ? `
@@ -793,8 +794,7 @@
         const education = document.getElementById('education');
         if (data.education) {
           data.education.forEach(item => {
-            const startDate = new Date(item.startDate).toLocaleDateString('th-TH', { year: 'numeric', month: 'long' });
-            const endDate = item.endDate ? new Date(item.endDate).toLocaleDateString('th-TH', { year: 'numeric', month: 'long' }) : 'ปัจจุบัน';
+            const range = formatRange(item.startDate, item.endDate);
             education.innerHTML += `
               <div class="timeline-item">
                 <div class="timeline-header">
@@ -802,7 +802,7 @@
                     <div class="timeline-title">${item.institution}</div>
                     <div class="timeline-subtitle">${item.area} - ${item.studyType}</div>
                   </div>
-                  <div class="timeline-date">${startDate} - ${endDate}</div>
+                  <div class="timeline-date">${range}</div>
                 </div>
                 ${item.courses ? `
                   <ul class="highlights">
@@ -833,16 +833,18 @@
         const projects = document.getElementById('projects');
         if (data.projects) {
           data.projects.forEach(project => {
-            const startDate = new Date(project.startDate).toLocaleDateString('th-TH', { year: 'numeric', month: 'long' });
-            const endDate = project.endDate ? new Date(project.endDate).toLocaleDateString('th-TH', { year: 'numeric', month: 'long' }) : 'ปัจจุบัน';
+            const range = formatRange(project.startDate, project.endDate);
+            const websiteHtml = project.website === 'internal site'
+              ? '<div class="timeline-summary">INTERNAL SITE</div>'
+              : (project.website ? `<a href="${project.website}" target="_blank" rel="noopener" class="timeline-url">${project.websiteLabel || project.website}</a>` : '');
             projects.innerHTML += `
               <div class="timeline-item">
                 <div class="timeline-header">
                   <div>
                     <div class="timeline-title">${project.name}</div>
-                    ${project.website ? `<a href="${project.website}" target="_blank" rel="noopener" class="timeline-url">${project.websiteLabel || project.website}</a>` : ''}
+                    ${websiteHtml}
                   </div>
-                  <div class="timeline-date">${startDate} - ${endDate}</div>
+                  <div class="timeline-date">${range}</div>
                 </div>
                 ${project.description ? `<div class="timeline-summary">${project.description}</div>` : ''}
                 ${project.highlights ? `
@@ -859,8 +861,7 @@
         const volunteer = document.getElementById('volunteer');
         if (data.volunteer) {
           data.volunteer.forEach(item => {
-            const startDate = new Date(item.startDate).toLocaleDateString('th-TH', { year: 'numeric', month: 'long' });
-            const endDate = item.endDate ? new Date(item.endDate).toLocaleDateString('th-TH', { year: 'numeric', month: 'long' }) : 'ปัจจุบัน';
+            const range = formatRange(item.startDate, item.endDate);
             volunteer.innerHTML += `
               <div class="timeline-item">
                 <div class="timeline-header">
@@ -869,7 +870,7 @@
                     <div class="timeline-subtitle">${item.position}</div>
                     ${item.url ? `<a href="${item.url}" target="_blank" class="timeline-url">${item.url}</a>` : ''}
                   </div>
-                  <div class="timeline-date">${startDate} - ${endDate}</div>
+                  <div class="timeline-date">${range}</div>
                 </div>
                 ${item.summary ? `<div class="timeline-summary">${item.summary}</div>` : ''}
                 ${item.highlights ? `
@@ -886,7 +887,7 @@
         const publications = document.getElementById('publications');
         if (data.publications) {
           data.publications.forEach(item => {
-            const releaseDate = item.releaseDate ? new Date(item.releaseDate).toLocaleDateString('th-TH', { year: 'numeric', month: 'long' }) : '';
+            const releaseDate = item.releaseDate ? formatDate(item.releaseDate) : '';
             publications.innerHTML += `
               <div class="timeline-item">
                 <div class="timeline-header">
