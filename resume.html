@@ -447,269 +447,60 @@
   </div>
 
   <script>
-    // Inline JSON data to avoid CORS issues
-    const resumeData = {
-      "basics": {
-        "name": "Palathip Wuttiprayoon",
-        "label": "Software Engineer",
-        "picture": "images/profile.png",
-        "email": "boom.palathip@gmail.com",
-        "phone": "080-872-6606",
-        "website": "https://palathip.github.io",
-        "summary": "Palathip Wuttiprayoon from Songkhla. You can call me 'Boom'. Earned Bachelor of Computer Engineering from the Prince of Songkhla University.",
-        "location": {
-          "address": " 2, 1 Banwarakorn Lane, Khorhong",
-          "postalCode": "90110",
-          "city": "Hat-yai",
-          "countryCode": "Thailand",
-          "region": "Songkhla"
-        },
-        "profiles": [
-          {
-            "network": "Github",
-            "username": "Palathip",
-            "url": "https://github.com/palathip"
-          },
-          {
-            "network": "Gitlab",
-            "username": "boombibu",
-            "url": "https://gitlab.com/boombibu"
-          },
-          {
-            "network": "LinkedIn",
-            "username": "Palathip Wuttiprayoon",
-            "url": "https://www.linkedin.com/in/palathip-wuttiprayoon-b785b995?trk=people-guest_profile-result-card_result-card_full-click"
-          },
-          {
-            "network": "Youtube",
-            "username": "Boombibu Channel",
-            "url": "https://www.youtube.com/channel/UCs_yfLS9cN0WIEsZIqA1MWA"
-          }
-        ]
-      },
-      "education": [
-        {
-          "institution": "Prince of Sonkhla University",
-          "area": "Computer Engineering",
-          "studyType": "Bachelor",
-          "startDate": "2010-06-01",
-          "endDate": "2015-05-01",
-          "courses": ["Motorcycles Recognition Project (Matlab)"]
-        }
-      ],
-      "skills": [
-        {
-          "name": "Operating Systems",
-          "keywords": [
-            "Windows",
-            "macOS",
-            "iOS",
-            "Android",
-            "Linux"
-          ]
-        },
-        {
-          "name": "Programming Languages",
-          "keywords": [
-            "Java(SpringBoot)",
-            "Python(FastAPI,Flask)",
-            "PHP",
-            "HTML",
-            "C",
-            "C#",
-            "Matlab",
-            "JavaScript",
-            "Vue.js"
-          ]
-        },
-        {
-          "name": "Database",
-          "keywords": [
-            "MySQL",
-            "Oracle"
-          ]
-        },
-        {
-          "name": "Applications & Tools",
-          "keywords": [
-            "MS Office",
-            "Photoshop",
-            "Lightroom",
-            "VSCode",
-            "Cursor",
-            "Jetbrains",
-            "Atom",
-            "Git",
-            "Docker",
-            "OpenShift",
-            "Deta",
-            "K6",
-            "Postman",
-            "TensorFlow",
-            "Strapi",
-            "Jenkins",
-            "Kibana"
-          ]
-        }
-      ],
-      "work": [
-        {
-          "name": "CardX Company Limited",
-          "position": "Java Developer",
-          "url": "https://www.cardx.co.th",
-          "startDate": "2026-09-01",
-          "summary": "Backend developer for the CardX application."
-        },
-        {
-          "name": "Ayudhya Capital Services (AYCAP)",
-          "position": "Senior Java Developer/SA",
-          "url": "https://www.krungsri.com",
-          "startDate": "2022-03-01",
-          "endDate": "2026-08-14",
-          "summary": "Krungsri General Insurance Broker (KGIB) Developer",
-          "highlights": [
-            "Insurance - Krungsri Broker Backend Developer"
-          ]
-        },
-        {
-          "name": "Internet Thailand Public Company Limited. (INET)",
-          "position": "Software Engineer",
-          "url": "https://www.inet.co.th",
-          "startDate": "2019-09-16",
-          "endDate": "2022-02-28",
-          "summary": "Web Backend Developer",
-          "highlights": [
-            "website: Folio (Internal portfolio)",
-            "website: <a href=\"https://oneexpress.biz\" target=\"_blank\" rel=\"noopener\">https://oneexpress.biz</a>",
-            "ONE CHAT Applications (<a href=\"https://play.google.com/store/apps/details?id=com.oneplatform.android.onechat\" target=\"_blank\" rel=\"noopener\">Android</a>, <a href=\"https://apps.apple.com/th/app/onechat/id1394435274\" target=\"_blank\" rel=\"noopener\">iOS</a>)"
-          ]
-        },
-        {
-          "name": "Toyota Songkhla Company (Hatyai)",
-          "position": "IT Manager",
-          "url": "http://www.toyotasongkhla.com",
-          "startDate": "2016-10-01",
-          "endDate": "2019-01-19",
-          "summary": "Maintenance and monitoring of servers, databases, network, Toyota systems and IT services in the organization.",
-          "highlights": ["IT infrastructure"]
-        },
-        {
-          "name": "Aeronautical Radio of Thailand Ltd.(Hatyai)",
-          "position": "Engineering Intern",
-          "url": "https://www.aerothai.co.th",
-          "startDate": "2013-03-15",
-          "endDate": "2013-06-30",
-          "summary": "Practice developing a web application and PHP programming by simulating the functionality of an aircraft landing assistance system for commercial airplanes."
-        },
-        {
-          "name": "Freelance",
-          "position": "Software Developer",
-          "url": "https://palathip.github.io",
-          "startDate": "2019-09-16",
-          "summary": "Web Backend Developer",
-          "highlights": [
-            "website: <a href=\"https://register.thaihealth.or.th\" target=\"_blank\" rel=\"noopener\">https://register.thaihealth.or.th</a>",
-            "website: <a href=\"https://transliteration.orst.go.th\" target=\"_blank\" rel=\"noopener\">https://transliteration.orst.go.th</a>",
-            "website: <a href=\"http://stock.maldives-drinkwater.com\" target=\"_blank\" rel=\"noopener\">http://stock.maldives-drinkwater.com</a>",
-            "linebot: <a href=\"https://lin.ee/3iXZDN3fq\" target=\"_blank\" rel=\"noopener\">https://lin.ee/3iXZDN3fq</a>",
-            "website: <a href=\"https://centralretailcareers.com\" target=\"_blank\" rel=\"noopener\">https://centralretailcareers.com</a>",
-            "website: <a href=\"http://www.socialtrendsthailand.com\" target=\"_blank\" rel=\"noopener\">http://www.socialtrendsthailand.com</a>",
-            "website: <a href=\"http://fbthsurvey.com:81\" target=\"_blank\" rel=\"noopener\">http://fbthsurvey.com:81</a>",
-            "website: <a href=\"http://fbthsurvey.com:82\" target=\"_blank\" rel=\"noopener\">http://fbthsurvey.com:82</a>",
-            "website: <a href=\"http://fbthsurvey.com:83\" target=\"_blank\" rel=\"noopener\">http://fbthsurvey.com:83</a>",
-            "website: <a href=\"http://fbthrenewal.com\" target=\"_blank\" rel=\"noopener\">http://fbthrenewal.com</a>",
-            "website: <a href=\"http://rootlandestate.com\" target=\"_blank\" rel=\"noopener\">http://rootlandestate.com</a>"
-          ]
-        }
-      ],
-      "projects": [
-        {
-          "highlights": [
-            "SpringBoot Rest API",
-            "Vault",
-            "Oracle DB",
-            "OpenShift"
-          ],
-          "description": "Developed an API system to manage the offering and purchase of credit protection insurance for cash withdrawal loans via credit cards through the mobile application named \"UChoose\"",
-          "website": "https://kcc.gg/n06h",
-          "websiteLabel": "UCHOOSE APP",
-          "name": "UCASH PPI(Payment Protection Insurance)",
-          "startDate": "2023-12-01",
-          "endDate": "2026-08-14"
-        },
-        {
-          "highlights": [
-            "SpringBoot Rest API",
-            "VueJS",
-            "Oracle DB",
-            "OpenShift"
-          ],
-          "description": "Developed a system using the SpringBoot Framework named \"Krungsri Broker Backend\" to manage insurance sales across various channels, such as online and POS (Point of Sale). The system enables the Operation team to confirm transactions through automatic reconciliation, as well as handle the issuance of billing documents, invoices, and tax invoices, facilitating coordination with insurer companies.",
-          "website": "internal site",
-          "name": "Krungsri Broker Backend (KBB)",
-          "startDate": "2022-03-01",
-          "endDate": "2026-08-14"
-        },
-        {
-          "highlights": [
-            "PHP",
-            "MySQL",
-            "HTML5"
-          ],
-          "description": "web application for showing landing device status on webpage.",
-          "website": "internal site",
-          "name": "NAVAID Status",
-          "startDate": "2013-03-15",
-          "endDate": "2013-06-30"
-        }
-      ],
-      "volunteer": [
-        {
-          "organization": "Faculty of Computer Engineering, Prince of Songkla University (Hatyai)",
-          "position": "Volunteer Member",
-          "startDate": "2014-03-15",
-          "endDate": "2014-03-18",
-          "summary": "CoE volunteer member in Ban Kalai school, Phang-nga, Thailand. I repair school building and tool for education.",
-          "highlights": ["https://www.youtube.com/watch?v=H7ORe3ldtNg"]
-        },
-        {
-          "organization": "Office of The National Broadcasting and Telecommunications Commission (NBTC)",
-          "position": "NBTC-ITU Volunteer",
-          "url": "https://www.nbtc.go.th/",
-          "startDate": "2015-05-01",
-          "endDate": "2015-07-01",
-          "summary": "NBTC volunteer member in Natalaung, Trang, Thailand. I teach IT skills to people in Natalaung Trang Thailand.",
-          "highlights": ["https://www.youtube.com/watch?v=_nUkEiBAFJc"]
-        }
-      ],
-      "publications": [
-        {
-          "name": "Detection of Ponzi Schemes in Thai Advertising Messages on Facebook Posts Using Deep Learning",
-          "publisher": "ETCI Card 2021",
-          "releaseDate": "2021-04-29",
-          "url": "https://drive.google.com/file/d/1hm5Ry_lCVBKN6KYgWjvMoaOY89xVt04n/view",
-          "summary": "Detection of Ponzi Schemes in Thai Advertising Messages on Facebook Posts Using Deep Learning (peper 66)"
-        }
-      ]
-    };
-
-    function loadResume() {
+    async function loadResume() {
       try {
-        const data = resumeData;
+        const response = await fetch('resume.json');
+        if (!response.ok) throw new Error('resume.json');
+        const data = await response.json();
 
-        // Header
-        document.getElementById('profile-picture').src = data.basics.picture;
+        const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (ch) => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        }[ch]));
+
+        const pictureSrc = (picture) => {
+          const value = String(picture || '');
+          const local = value.match(/^(?:https?:\/\/[^/]+)?\/?(images\/profile\.png)$/);
+          return local ? local[1] : value;
+        };
+
+        const highlightHtml = (text) => {
+          const source = String(text);
+          const labeled = source.match(/^(website|linebot):\s+(\S.*)$/);
+          if (labeled) {
+            const value = labeled[2].trim();
+            if (/^https?:\/\//i.test(value)) {
+              return `${escapeHtml(labeled[1])}: <a href="${escapeHtml(value)}" target="_blank" rel="noopener">${escapeHtml(value)}</a>`;
+            }
+            return escapeHtml(source);
+          }
+          const pattern = /([A-Za-z][\w.+-]*)\s*:\s*(https?:\/\/[^\s,)]+)/g;
+          let html = '';
+          let last = 0;
+          let match;
+          while ((match = pattern.exec(source))) {
+            html += escapeHtml(source.slice(last, match.index));
+            html += `<a href="${escapeHtml(match[2])}" target="_blank" rel="noopener">${escapeHtml(match[1])}</a>`;
+            last = match.index + match[0].length;
+          }
+          if (!last) return escapeHtml(source);
+          return html + escapeHtml(source.slice(last));
+        };
+
+        document.getElementById('profile-picture').src = pictureSrc(data.basics.picture);
         document.getElementById('name').textContent = data.basics.name;
         document.getElementById('label').textContent = data.basics.label;
         document.getElementById('summary').textContent = data.basics.summary;
 
-        // Contact Info
         const contactInfo = document.getElementById('contact-info');
         if (data.basics.email) {
           contactInfo.innerHTML += `
             <div class="contact-item">
               <span>📧</span>
-              <a href="mailto:${data.basics.email}">${data.basics.email}</a>
+              <a href="mailto:${escapeHtml(data.basics.email)}">${escapeHtml(data.basics.email)}</a>
             </div>
           `;
         }
@@ -717,7 +508,7 @@
           contactInfo.innerHTML += `
             <div class="contact-item">
               <span>📱</span>
-              <span>${data.basics.phone}</span>
+              <span>${escapeHtml(data.basics.phone)}</span>
             </div>
           `;
         }
@@ -726,12 +517,11 @@
           contactInfo.innerHTML += `
             <div class="contact-item">
               <span>📍</span>
-              <span>${location.city}, ${location.region}</span>
+              <span>${escapeHtml(location.city)}, ${escapeHtml(location.region)}</span>
             </div>
           `;
         }
 
-        // Profiles with logos
         const profiles = document.getElementById('profiles');
         if (data.basics.profiles) {
           const getSocialIcon = (network) => {
@@ -741,13 +531,13 @@
               'LinkedIn': `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>`,
               'Youtube': `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`
             };
-            return icons[network] || `<span class="social-icon">${network.charAt(0)}</span>`;
+            return icons[network] || `<span class="social-icon">${escapeHtml(network.charAt(0))}</span>`;
           };
-          
+
           data.basics.profiles.forEach(profile => {
             const networkName = profile.network;
             profiles.innerHTML += `
-              <a href="${profile.url}" target="_blank" rel="noopener" class="profile-link" title="${networkName}">
+              <a href="${escapeHtml(profile.url)}" target="_blank" rel="noopener" class="profile-link" title="${escapeHtml(networkName)}">
                 ${getSocialIcon(profile.network)}
               </a>
             `;
@@ -762,25 +552,28 @@
           return startLabel === endLabel ? startLabel : `${startLabel} - ${endLabel}`;
         };
 
-        // Work Experience
         const work = document.getElementById('work');
         if (data.work) {
-          data.work.forEach(item => {
+          const freelance = data.work.filter(item => item.name === 'Freelance');
+          const jobs = data.work
+            .filter(item => item.name !== 'Freelance')
+            .sort((a, b) => String(b.startDate || '').localeCompare(String(a.startDate || '')));
+          [...jobs, ...freelance].forEach(item => {
             const range = formatRange(item.startDate, item.endDate);
             work.innerHTML += `
               <div class="timeline-item">
                 <div class="timeline-header">
                   <div>
-                    <div class="timeline-title">${item.name}</div>
-                    <div class="timeline-subtitle">${item.position}</div>
-                    ${item.url ? `<a href="${item.url}" target="_blank" rel="noopener" class="timeline-url">${item.url}</a>` : ''}
+                    <div class="timeline-title">${escapeHtml(item.name)}</div>
+                    <div class="timeline-subtitle">${escapeHtml(item.position)}</div>
+                    ${item.url ? `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener" class="timeline-url">${escapeHtml(item.url)}</a>` : ''}
                   </div>
                   <div class="timeline-date">${range}</div>
                 </div>
-                ${item.summary ? `<div class="timeline-summary">${item.summary}</div>` : ''}
+                ${item.summary ? `<div class="timeline-summary">${escapeHtml(item.summary)}</div>` : ''}
                 ${item.highlights ? `
                   <ul class="highlights">
-                    ${item.highlights.map(h => `<li>${h}</li>`).join('')}
+                    ${item.highlights.map(h => `<li>${highlightHtml(h)}</li>`).join('')}
                   </ul>
                 ` : ''}
               </div>
@@ -788,7 +581,6 @@
           });
         }
 
-        // Education
         const education = document.getElementById('education');
         if (data.education) {
           data.education.forEach(item => {
@@ -797,14 +589,14 @@
               <div class="timeline-item">
                 <div class="timeline-header">
                   <div>
-                    <div class="timeline-title">${item.institution}</div>
-                    <div class="timeline-subtitle">${item.area} - ${item.studyType}</div>
+                    <div class="timeline-title">${escapeHtml(item.institution)}</div>
+                    <div class="timeline-subtitle">${escapeHtml(item.area)} - ${escapeHtml(item.studyType)}</div>
                   </div>
                   <div class="timeline-date">${range}</div>
                 </div>
                 ${item.courses ? `
                   <ul class="highlights">
-                    ${item.courses.map(c => `<li>${c}</li>`).join('')}
+                    ${item.courses.map(c => `<li>${escapeHtml(c)}</li>`).join('')}
                   </ul>
                 ` : ''}
               </div>
@@ -812,42 +604,44 @@
           });
         }
 
-        // Skills
         const skills = document.getElementById('skills');
         if (data.skills) {
           data.skills.forEach(skill => {
+            const names = (skill.keywords || []).filter(keyword => typeof keyword === 'string');
             skills.innerHTML += `
               <div class="skill-category">
-                <div class="skill-category-title">${skill.name}</div>
+                <div class="skill-category-title">${escapeHtml(skill.name)}</div>
                 <div class="skill-keywords">
-                  ${skill.keywords.map(k => `<span class="skill-tag">${k}</span>`).join('')}
+                  ${names.map(keyword => `<span class="skill-tag">${escapeHtml(keyword)}</span>`).join('')}
                 </div>
               </div>
             `;
           });
         }
 
-        // Projects
         const projects = document.getElementById('projects');
         if (data.projects) {
           data.projects.forEach(project => {
             const range = formatRange(project.startDate, project.endDate);
-            const websiteHtml = project.website === 'internal site'
+            const projectSite = project.website || project.url || '';
+            const internal = /internal/i.test(projectSite) || /internal/i.test(project.name || '');
+            const projectLabel = project.websiteLabel || (projectSite === 'https://kcc.gg/n06h' ? 'UCHOOSE APP' : projectSite);
+            const websiteHtml = internal
               ? '<div class="timeline-plain">INTERNAL SITE</div>'
-              : (project.website ? `<a href="${project.website}" target="_blank" rel="noopener" class="timeline-url">${project.websiteLabel || project.website}</a>` : '');
+              : (projectSite ? `<a href="${escapeHtml(projectSite)}" target="_blank" rel="noopener" class="timeline-url">${escapeHtml(projectLabel)}</a>` : '');
             projects.innerHTML += `
               <div class="timeline-item">
                 <div class="timeline-header">
                   <div>
-                    <div class="timeline-title">${project.name}</div>
+                    <div class="timeline-title">${escapeHtml(project.name)}</div>
                     ${websiteHtml}
                   </div>
                   <div class="timeline-date">${range}</div>
                 </div>
-                ${project.description ? `<div class="timeline-summary">${project.description}</div>` : ''}
+                ${project.description ? `<div class="timeline-summary">${escapeHtml(project.description)}</div>` : ''}
                 ${project.highlights ? `
                   <ul class="highlights">
-                    ${project.highlights.map(h => `<li>${h}</li>`).join('')}
+                    ${project.highlights.map(h => `<li>${escapeHtml(h)}</li>`).join('')}
                   </ul>
                 ` : ''}
               </div>
@@ -855,7 +649,6 @@
           });
         }
 
-        // Volunteer
         const volunteer = document.getElementById('volunteer');
         if (data.volunteer) {
           data.volunteer.forEach(item => {
@@ -864,16 +657,16 @@
               <div class="timeline-item">
                 <div class="timeline-header">
                   <div>
-                    <div class="timeline-title">${item.organization}</div>
-                    <div class="timeline-subtitle">${item.position}</div>
-                    ${item.url ? `<a href="${item.url}" target="_blank" class="timeline-url">${item.url}</a>` : ''}
+                    <div class="timeline-title">${escapeHtml(item.organization)}</div>
+                    <div class="timeline-subtitle">${escapeHtml(item.position)}</div>
+                    ${item.url ? `<a href="${escapeHtml(item.url)}" target="_blank" class="timeline-url">${escapeHtml(item.url)}</a>` : ''}
                   </div>
                   <div class="timeline-date">${range}</div>
                 </div>
-                ${item.summary ? `<div class="timeline-summary">${item.summary}</div>` : ''}
+                ${item.summary ? `<div class="timeline-summary">${escapeHtml(item.summary)}</div>` : ''}
                 ${item.highlights ? `
                   <ul class="highlights">
-                    ${item.highlights.map(h => `<li><a href="${h}" target="_blank">${h}</a></li>`).join('')}
+                    ${item.highlights.map(h => `<li><a href="${escapeHtml(h)}" target="_blank">${escapeHtml(h)}</a></li>`).join('')}
                   </ul>
                 ` : ''}
               </div>
@@ -881,7 +674,6 @@
           });
         }
 
-        // Publications
         const publications = document.getElementById('publications');
         if (data.publications) {
           data.publications.forEach(item => {
@@ -890,13 +682,13 @@
               <div class="timeline-item">
                 <div class="timeline-header">
                   <div>
-                    <div class="timeline-title">${item.name}</div>
-                    <div class="timeline-subtitle">${item.publisher}</div>
-                    ${item.url ? `<a href="${item.url}" target="_blank" class="timeline-url">View document</a>` : ''}
+                    <div class="timeline-title">${escapeHtml(item.name)}</div>
+                    <div class="timeline-subtitle">${escapeHtml(item.publisher)}</div>
+                    ${item.url ? `<a href="${escapeHtml(item.url)}" target="_blank" class="timeline-url">View document</a>` : ''}
                   </div>
                   ${releaseDate ? `<div class="timeline-date">${releaseDate}</div>` : ''}
                 </div>
-                ${item.summary ? `<div class="timeline-summary">${item.summary}</div>` : ''}
+                ${item.summary ? `<div class="timeline-summary">${escapeHtml(item.summary)}</div>` : ''}
               </div>
             `;
           });
@@ -908,7 +700,6 @@
       }
     }
 
-    // Load resume when page loads
     window.addEventListener('load', loadResume);
   </script>
 </body>
