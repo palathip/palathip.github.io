@@ -1,4 +1,9 @@
 /* Shared top bar. Colors live on the header so page themes cannot restyle it. */
+:root {
+  --accent-fill: #d02a44;
+  --accent-fill-hover: #c4263d;
+}
+
 .site-header {
   --bg-dark: #0D0D0D;
   --accent: #F03551;
@@ -175,7 +180,7 @@
 
 .site-header .nav-links a.active {
   color: var(--text-white);
-  background: var(--accent);
+  background: var(--accent-fill);
   box-shadow: 0 4px 14px rgba(240, 53, 81, 0.32);
 }
 

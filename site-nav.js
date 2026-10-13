@@ -20,7 +20,7 @@
   var homeHref = href('index.html');
   var items = [
     { id: 'home', label: 'Home', href: homeHref },
-    { id: 'resume', label: 'Simple Resume', href: href('resume.html') },
+    { id: 'resume', label: 'Resume', href: href('resume.html') },
     {
       id: 'asset',
       label: 'Digital Asset',

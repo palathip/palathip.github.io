@@ -112,18 +112,20 @@
     }
 
     .btn-outline:hover {
-      background: var(--accent);
+      background: var(--accent-fill);
+      border-color: var(--accent-fill);
       transform: translateY(-2px);
     }
 
     .btn-solid {
-      background: var(--accent);
+      background: var(--accent-fill);
       color: white;
-      border-color: var(--accent);
+      border-color: var(--accent-fill);
     }
 
     .btn-solid:hover {
-      background: #d92d47;
+      background: var(--accent-fill-hover);
+      border-color: var(--accent-fill-hover);
       transform: translateY(-2px);
       box-shadow: 0 8px 24px rgba(240, 53, 81, 0.4);
     }
@@ -182,7 +184,11 @@
     }
 
     .service-item.highlight {
-      background: var(--accent);
+      background: var(--accent-fill);
+    }
+
+    .service-item.highlight:hover {
+      background: var(--accent-fill-hover);
     }
 
     .service-item span {
@@ -246,7 +252,7 @@
     }
 
     .qr-modal-close:hover {
-      background: var(--accent);
+      background: var(--accent-fill);
       transform: rotate(90deg);
     }
 
@@ -372,8 +378,8 @@
     }
 
     .qr-copy-btn:hover {
-      background: var(--accent);
-      border-color: var(--accent);
+      background: var(--accent-fill);
+      border-color: var(--accent-fill);
     }
 
     .qr-copy-btn.copied {
@@ -729,8 +735,8 @@
     }
 
     .asset-copy-btn:hover {
-      background: var(--accent);
-      border-color: var(--accent);
+      background: var(--accent-fill);
+      border-color: var(--accent-fill);
     }
 
     .asset-copy-btn.copied {
@@ -1098,7 +1104,6 @@
     const makeQrModal = document.getElementById('makeQrModal');
     const makeQrModalClose = document.getElementById('makeQrModalClose');
     const qrServiceItem = document.getElementById('qrServiceItem');
-    const navQrLink = document.getElementById('navQrLink');
 
     function qrLockBody() {
       document.body.style.overflow = 'hidden';
@@ -1143,7 +1148,8 @@
     }
 
     qrServiceItem.addEventListener('click', openQrPicker);
-    navQrLink.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
+      if (!(e.target instanceof Element) || !e.target.closest('#navQrLink')) return;
       e.preventDefault();
       openQrPicker();
     });
@@ -1201,7 +1207,6 @@
     const assetModal = document.getElementById('assetModal');
     const assetModalClose = document.getElementById('assetModalClose');
     const assetServiceItem = document.getElementById('assetServiceItem');
-    const navAssetLink = document.getElementById('navAssetLink');
 
     function openAssetModal() {
       assetModal.classList.add('active');
@@ -1214,7 +1219,8 @@
     }
 
     assetServiceItem.addEventListener('click', openAssetModal);
-    navAssetLink.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
+      if (!(e.target instanceof Element) || !e.target.closest('#navAssetLink')) return;
       e.preventDefault();
       openAssetModal();
     });
