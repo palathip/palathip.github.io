@@ -233,3 +233,563 @@
     font-size: 0.95rem;
   }
 }
+
+/* QR Payment and Digital Asset modals. Colors are local so page themes cannot restyle them. */
+/* QR Payment Modal */
+.qr-modal-overlay {
+  --bg-card: #1A1A1A;
+  --accent: #F03551;
+  --text-white: #FFFFFF;
+  --text-muted: #888888;
+  --accent-fill: #d02a44;
+  color: #FFFFFF;
+  font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  backdrop-filter: blur(8px);
+}
+
+.qr-modal-overlay.active {
+  display: flex;
+}
+
+.qr-modal {
+  background: var(--bg-card);
+  border-radius: 24px;
+  padding: 40px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.qr-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.qr-modal-close:hover {
+  background: var(--accent-fill);
+  transform: rotate(90deg);
+}
+
+.qr-modal-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.qr-modal-header h2 {
+  font-size: 1.5rem;
+  color: var(--text-white);
+  margin-bottom: 5px;
+}
+
+.qr-modal-header p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.qr-modal-image {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto 20px;
+  display: block;
+  border-radius: 16px;
+}
+
+.qr-modal-info {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+  text-align: left;
+}
+
+.qr-modal-info-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.qr-modal-info-item:nth-last-child(2) {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.qr-modal-info-item:first-of-type {
+  padding-top: 0;
+}
+
+.qr-modal-info-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  min-width: 60px;
+}
+
+.qr-modal-info-value {
+  font-size: 0.95rem;
+  color: var(--text-white);
+  font-weight: 500;
+  flex: 1;
+  text-align: right;
+}
+
+.qr-bank-value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.qr-bank-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.qr-bank-icon--rounded {
+  border-radius: 6px;
+}
+
+.qr-modal-account-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.qr-modal-account-row .account-num {
+  font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+  font-size: 0.95rem;
+  color: var(--text-white);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.qr-modal-info-footer {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+  font-size: 0.85rem;
+  color: #00C853;
+  font-weight: 500;
+}
+
+.qr-copy-btn {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-white);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.qr-copy-btn:hover {
+  background: var(--accent-fill);
+  border-color: var(--accent-fill);
+}
+
+.qr-copy-btn.copied {
+  background: #00C853;
+  border-color: #00C853;
+}
+
+/* QR channel picker */
+.qr-picker-modal {
+  background: var(--bg-card);
+  border-radius: 24px;
+  padding: 36px 32px 32px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.qr-picker-modal .qr-modal-header {
+  margin-bottom: 28px;
+}
+
+.qr-picker-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.qr-picker-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 118px;
+  padding: 22px 16px;
+  border-radius: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-white);
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+}
+
+.qr-picker-btn:hover {
+  border-color: var(--accent);
+  background: rgba(0, 200, 83, 0.08);
+  transform: translateY(-2px);
+}
+
+.qr-picker-icon {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+}
+
+.qr-picker-icon--make {
+  border-radius: 14px;
+}
+
+.qr-picker-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.qr-picker-label--kbank {
+  color: #00e676;
+}
+
+.qr-picker-label--make {
+  background: linear-gradient(135deg, #69cfff 0%, #00c48c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.qr-channel-badge {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  background: rgba(0, 138, 83, 0.25);
+  color: #00e676;
+}
+
+.qr-channel-badge-make {
+  background: rgba(19, 137, 255, 0.22);
+  color: #69cfff;
+}
+
+@media (max-width: 480px) {
+  .qr-picker-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Digital Asset Modal - Minimal */
+.asset-modal-overlay {
+  --bg-card: #1A1A1A;
+  --accent: #F03551;
+  --text-white: #FFFFFF;
+  --text-muted: #888888;
+  --accent-fill: #d02a44;
+  color: #FFFFFF;
+  font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.asset-modal-overlay.active {
+  display: flex;
+}
+
+.asset-modal {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.asset-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.asset-modal-close:hover {
+  color: var(--text-white);
+}
+
+.asset-modal-header {
+  margin-bottom: 20px;
+  padding-right: 36px;
+}
+
+.asset-modal-header h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-white);
+  margin-bottom: 2px;
+}
+
+.asset-modal-header p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.asset-modal-footer {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.asset-modal-footer p {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.asset-modal-footer sup {
+  font-size: 0.6rem;
+}
+
+.asset-desc-coins {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.asset-desc-coins img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.asset-desc-coins span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+}
+
+.asset-section {
+  margin-bottom: 20px;
+}
+
+.asset-section:last-child {
+  margin-bottom: 0;
+}
+
+.asset-section-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.asset-section-icon-wrap {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 4px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.asset-section-icon-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.asset-wallet-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.asset-wallet-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  min-height: 56px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 480px) {
+  .asset-wallet-item {
+    flex-wrap: wrap;
+  }
+  .asset-copy-btn {
+    width: 100%;
+  }
+}
+
+.asset-wallet-item-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.asset-coin-name {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 500;
+  color: var(--text-white);
+  font-size: 0.85rem;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.asset-coin-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.asset-evm-icons-inline {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 4px;
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+
+.asset-evm-icons-inline img {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.asset-address {
+  font-family: 'JetBrains Mono', 'Consolas', monospace;
+  color: var(--text-muted);
+  word-break: break-all;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.asset-copy-btn {
+  flex-shrink: 0;
+  align-self: center;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-white);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.asset-copy-btn:hover {
+  background: var(--accent-fill);
+  border-color: var(--accent-fill);
+}
+
+.asset-copy-btn.copied {
+  background: #00C853;
+  border-color: #00C853;
+}
