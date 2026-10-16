@@ -1,6 +1,9 @@
 # Requires the repository secret GIST_TOKEN: a classic PAT with the gist scope.
 name: Sync resume gist
 
+permissions:
+  contents: read
+
 on:
   push:
     branches:
