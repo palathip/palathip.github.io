@@ -1105,30 +1105,36 @@
         const changeEl = document.getElementById(changeElId);
         const thbEl = document.getElementById(thbElId);
         if (!priceEl) return;
-        if (price) {
-          const num = typeof price === 'string' ? parseFloat(price) : price;
-          priceEl.innerHTML = '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const num = Number(price);
+        if (price == null || price === '' || !Number.isFinite(num)) {
+          priceEl.innerHTML = '<span style="color: var(--text-muted)">Unavailable</span>';
+          if (thbEl) thbEl.textContent = '';
+        } else {
+          priceEl.textContent = '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
           if (thbEl) {
-            if (isGold && thb != null) {
-              const thbNum = typeof thb === 'string' ? parseFloat(thb) : thb;
-              const goldThb = Math.round(thbNum * 0.473);
-              thbEl.textContent = goldThb.toLocaleString('th-TH') + ' ฿/บาท';
-            } else if (thb != null) {
-              const thbNum = typeof thb === 'string' ? parseFloat(thb) : thb;
-              thbEl.textContent = thbNum.toLocaleString('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' ฿';
+            const thbNum = Number(thb);
+            if (thb != null && thb !== '' && Number.isFinite(thbNum)) {
+              if (isGold) {
+                const goldThb = Math.round(thbNum * 0.473);
+                thbEl.textContent = goldThb.toLocaleString('th-TH') + ' ฿/บาท';
+              } else {
+                thbEl.textContent = thbNum.toLocaleString('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' ฿';
+              }
             } else {
               thbEl.textContent = '';
             }
           }
-          if (changeEl && change != null) {
-            const pct = typeof change === 'string' ? parseFloat(change) : change;
-            const sign = pct >= 0 ? '+' : '';
-            changeEl.innerHTML = `<span>24h ${sign}${pct.toFixed(2)}%</span>`;
-            changeEl.className = 'price-change ' + (pct > 0 ? 'positive' : pct < 0 ? 'negative' : 'neutral');
+          if (changeEl) {
+            const pct = Number(change);
+            if (change != null && change !== '' && Number.isFinite(pct)) {
+              const sign = pct >= 0 ? '+' : '';
+              const badge = document.createElement('span');
+              badge.textContent = '24h ' + sign + pct.toFixed(2) + '%';
+              changeEl.textContent = '';
+              changeEl.appendChild(badge);
+              changeEl.className = 'price-change ' + (pct > 0 ? 'positive' : pct < 0 ? 'negative' : 'neutral');
+            }
           }
-        } else {
-          priceEl.innerHTML = '<span style="color: var(--text-muted)">Unavailable</span>';
-          if (thbEl) thbEl.textContent = '';
         }
       };
 
@@ -1137,17 +1143,31 @@
         const changeEl = document.getElementById(changeElId);
         const thbEl = document.getElementById(thbElId);
         if (!priceEl) return;
-        const num = typeof usdPrice === 'string' ? parseFloat(usdPrice) : usdPrice;
-        priceEl.innerHTML = '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        if (thbEl && usdToThb) {
-          const thbNum = num * usdToThb;
-          thbEl.textContent = thbNum.toLocaleString('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' ฿';
+        const num = Number(usdPrice);
+        if (usdPrice == null || usdPrice === '' || !Number.isFinite(num)) {
+          priceEl.innerHTML = '<span style="color: var(--text-muted)">Unavailable</span>';
+          if (thbEl) thbEl.textContent = '';
+          return;
         }
-        if (changeEl && change != null) {
-          const pct = typeof change === 'string' ? parseFloat(change) : change;
-          const sign = pct >= 0 ? '+' : '';
-          changeEl.innerHTML = `<span>24h ${sign}${pct.toFixed(2)}%</span>`;
-          changeEl.className = 'price-change ' + (pct > 0 ? 'positive' : pct < 0 ? 'negative' : 'neutral');
+        priceEl.textContent = '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        if (thbEl && usdToThb) {
+          const thbNum = Number(num * Number(usdToThb));
+          if (Number.isFinite(thbNum)) {
+            thbEl.textContent = thbNum.toLocaleString('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' ฿';
+          } else {
+            thbEl.textContent = '';
+          }
+        }
+        if (changeEl) {
+          const pct = Number(change);
+          if (change != null && change !== '' && Number.isFinite(pct)) {
+            const sign = pct >= 0 ? '+' : '';
+            const badge = document.createElement('span');
+            badge.textContent = '24h ' + sign + pct.toFixed(2) + '%';
+            changeEl.textContent = '';
+            changeEl.appendChild(badge);
+            changeEl.className = 'price-change ' + (pct > 0 ? 'positive' : pct < 0 ? 'negative' : 'neutral');
+          }
         }
       };
 
