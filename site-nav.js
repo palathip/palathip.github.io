@@ -37,8 +37,7 @@
     { id: 'resume', label: 'Resume', href: href('resume.html') },
     { id: 'asset', label: 'Digital Asset', href: '#digital-asset', linkId: 'navAssetLink' },
     { id: 'qr', label: 'QR Payment', href: '#qr', linkId: 'navQrLink' },
-    { id: 'dashboard', label: 'My Dashboard', href: href('dashboard/index.html') },
-    { id: 'flights', label: 'Gen Flights', href: href('gen-flights/index.html') }
+    { id: 'dashboard', label: 'My Dashboard', href: href('dashboard/index.html') }
   ];
 
   var links = items.map(function (item) {
