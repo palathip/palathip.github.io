@@ -28,6 +28,8 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    [hidden] { display: none !important; }
+
     body {
       min-height: 100vh;
       font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -49,6 +51,11 @@
       grid-template-columns: minmax(280px, 380px) 1fr;
       gap: 32px;
       align-items: start;
+    }
+
+    .layout.is-locked {
+      grid-template-columns: minmax(280px, 420px);
+      justify-content: center;
     }
 
     @media (max-width: 900px) {
@@ -437,7 +444,7 @@
 <body>
   <script src="../site-nav.js"></script>
 
-  <div class="layout">
+  <div class="layout is-locked" id="flightLayout">
     <div class="panel">
       <div class="auth-bar">
         <p id="authStatus" role="status" aria-live="polite">กำลังตรวจสอบสิทธิ์…</p>
@@ -446,6 +453,7 @@
           <button type="button" class="btn-auth btn-auth-secondary" id="btnLogout" hidden>ออกจากระบบ</button>
         </div>
       </div>
+      <div id="flightEditor" hidden>
       <h2>ข้อมูลตั๋ว</h2>
       <p style="font-size:0.8rem;color:rgba(255,255,255,0.45);margin:-8px 0 14px;line-height:1.45">สายการบินแสดงเป็น <strong style="color:rgba(255,255,255,0.75)">AirAsia</strong> โดยอัตโนมัติ</p>
       <div class="field">
@@ -527,9 +535,10 @@
         <input type="text" id="bookingRef" value="V882YQ9">
       </div>
       <button type="button" class="btn-gen" id="btnGen" disabled>Update boarding pass</button>
+      </div>
     </div>
 
-    <div class="bp-wrap">
+    <div class="bp-wrap" id="flightPreview" hidden>
       <div class="bp-card" id="bpCard" aria-live="polite">
         <div class="bp-topbar">
           <div class="bp-back">

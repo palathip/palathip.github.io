@@ -14,6 +14,7 @@ import {
   invalidInputMessage,
   isSafeAPIBase,
   parseHandoffFragment,
+  showsFlightWorkspace,
   viewModel,
 } from "./client.js";
 
@@ -150,8 +151,17 @@ test("public page does not keep the old in-browser generator", async () => {
   assert.equal(configuredURL.pathname, "/");
   assert.equal(configuredURL.search, "");
   assert.equal(configuredURL.hash, "");
-  assert.equal(nav.includes("Gen Flights"), false);
-  assert.equal(nav.includes('href("gen-flights'), false);
+  assert.match(html, /id="flightEditor" hidden/);
+  assert.match(html, /id="flightPreview" hidden/);
+  assert.equal(showsFlightWorkspace("logged-out"), false);
+  assert.equal(showsFlightWorkspace("forbidden"), false);
+  assert.equal(showsFlightWorkspace("expired"), false);
+  assert.equal(showsFlightWorkspace("logout"), false);
+  assert.equal(showsFlightWorkspace("loading"), false);
+  assert.equal(showsFlightWorkspace("ready"), true);
+  assert.equal(showsFlightWorkspace("working"), true);
+  assert.equal(showsFlightWorkspace("invalid-input"), true);
+  assert.match(nav, /label: 'Gen Flights', href: href\('gen-flights\/index\.html'\)/);
 });
 
 test("website tree does not contain the Go API or secret material", async () => {
