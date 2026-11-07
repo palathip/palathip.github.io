@@ -76,11 +76,11 @@ test("return_to canonicalizes only the two allowlisted GitHub Pages URLs", () =>
   );
   assert.equal(
     buildStartURL(
-      "https://boombibu-api-palathips-projects.vercel.app",
+      "https://boombibu-api.vercel.app",
       canonicalReturnTo("https://palathip.github.io/gen-flights"),
       "abc",
     ),
-    "https://boombibu-api-palathips-projects.vercel.app/v1/auth/github/start?return_to=https%3A%2F%2Fpalathip.github.io%2Fgen-flights%2F&handoff_challenge=abc",
+    "https://boombibu-api.vercel.app/v1/auth/github/start?return_to=https%3A%2F%2Fpalathip.github.io%2Fgen-flights%2F&handoff_challenge=abc",
   );
   for (const bad of [
     "https://palathip.github.io/gen-flights/extra",
@@ -146,7 +146,7 @@ test("public page does not keep the old in-browser generator", async () => {
   const configured = cfg.match(/window\.GEN_FLIGHTS_API_BASE\s*=\s*"([^"]*)"\s*;/);
   assert.ok(configured);
   const configuredURL = new URL(configured[1]);
-  assert.equal(configuredURL.origin, "https://boombibu-api-palathips-projects.vercel.app");
+  assert.equal(configuredURL.origin, "https://boombibu-api.vercel.app");
   assert.equal(configuredURL.pathname, "/");
   assert.equal(configuredURL.search, "");
   assert.equal(configuredURL.hash, "");

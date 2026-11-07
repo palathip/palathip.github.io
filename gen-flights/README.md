@@ -2,7 +2,7 @@
 
 This page draws a boarding pass. The pass is calculated by a separate private API, not in this public repository.
 
-`window.GEN_FLIGHTS_API_BASE` in `api-config.js` is the API origin `https://boombibu-api-palathips-projects.vercel.app` with no path. Vercel Authentication on that host can still block the browser. This page does not bypass that protection.
+`window.GEN_FLIGHTS_API_BASE` in `api-config.js` is the API origin `https://boombibu-api.vercel.app` with no path. This page does not change API protection or send tokens in the URL.
 
 The page keeps a short-lived bearer token in `sessionStorage` for this tab only. A reload of the same tab keeps it. Other tabs do not. Logout deletes that copy. A token that was copied elsewhere keeps working until it expires, because the API does not store a revocation list.
 
