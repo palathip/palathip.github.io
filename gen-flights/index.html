@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
   <title>Gen Flights — BOOMBIBU</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -130,6 +131,48 @@
     .btn-gen:hover {
       background: var(--accent-dark);
       transform: translateY(-1px);
+    }
+
+    .btn-gen:disabled,
+    .btn-gen:disabled:hover {
+      background: var(--accent);
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .auth-bar {
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .auth-bar p {
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .auth-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn-auth {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      background: var(--accent);
+      color: #fff;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-auth-secondary {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     /* —— Boarding pass —— */
@@ -396,6 +439,13 @@
 
   <div class="layout">
     <div class="panel">
+      <div class="auth-bar">
+        <p id="authStatus" role="status" aria-live="polite">กำลังตรวจสอบสิทธิ์…</p>
+        <div class="auth-actions">
+          <button type="button" class="btn-auth" id="btnLogin" hidden>เข้าสู่ระบบด้วย GitHub</button>
+          <button type="button" class="btn-auth btn-auth-secondary" id="btnLogout" hidden>ออกจากระบบ</button>
+        </div>
+      </div>
       <h2>ข้อมูลตั๋ว</h2>
       <p style="font-size:0.8rem;color:rgba(255,255,255,0.45);margin:-8px 0 14px;line-height:1.45">สายการบินแสดงเป็น <strong style="color:rgba(255,255,255,0.75)">AirAsia</strong> โดยอัตโนมัติ</p>
       <div class="field">
@@ -476,7 +526,7 @@
         <label for="bookingRef">Booking reference (สำหรับ QR)</label>
         <input type="text" id="bookingRef" value="V882YQ9">
       </div>
-      <button type="button" class="btn-gen" id="btnGen">Update boarding pass</button>
+      <button type="button" class="btn-gen" id="btnGen" disabled>Update boarding pass</button>
     </div>
 
     <div class="bp-wrap">
@@ -575,72 +625,7 @@
     </div>
   </div>
 
-  <script>
-    function val(id) {
-      const el = document.getElementById(id);
-      return el ? el.value.trim() : '';
-    }
-
-    function render() {
-      document.getElementById('outStatusSmall').textContent = val('statusLabel') || '—';
-      var fn = val('flightNo') || '—';
-      var dest = (val('toCity') || '—').toUpperCase();
-      document.getElementById('outBannerLine').textContent = fn + ' TO ' + dest;
-      document.getElementById('outPassenger').textContent = val('passengerName') || '—';
-      document.getElementById('outFlight').textContent = val('flightNo') || '—';
-      document.getElementById('outFromCityTitle').textContent = val('fromCity') || '—';
-      document.getElementById('outToCityTitle').textContent = val('toCity') || '—';
-      var fromDetail = val('fromAirportDetail');
-      var toDetail = val('toAirportDetail');
-      document.getElementById('outFromDetail').textContent = fromDetail;
-      document.getElementById('outToDetail').textContent = toDetail;
-      var rowEl = document.getElementById('outRouteDetailsRow');
-      rowEl.style.display = fromDetail || toDetail ? 'grid' : 'none';
-      document.getElementById('outFromCode').textContent = (val('fromCode') || '—').toUpperCase();
-      document.getElementById('outToCode').textContent = (val('toCode') || '—').toUpperCase();
-      document.getElementById('outGate').textContent = val('gate') || '—';
-      document.getElementById('outBoarding').textContent = val('boarding') || '—';
-      document.getElementById('outSeat').textContent = val('seat') || '—';
-      document.getElementById('outClass').textContent = (val('flightClass') || '—').toUpperCase();
-      document.getElementById('outDate').textContent = val('flightDate') || '—';
-      document.getElementById('outZone').textContent = (val('zone') || '—').toUpperCase();
-
-      const ref = val('bookingRef') || 'REF';
-      document.getElementById('outBookingRef').textContent = 'BOOKING REF: ' + ref;
-
-      const qrEl = document.getElementById('qrcode');
-      qrEl.innerHTML = '';
-      const payload = JSON.stringify({
-        airline: 'AirAsia',
-        ref: ref,
-        flight: val('flightNo'),
-        from: val('fromCode'),
-        to: val('toCode'),
-        passenger: val('passengerName')
-      });
-      try {
-        if (typeof QRCode === 'undefined') throw new Error('no QR');
-        var opts = {
-          text: payload,
-          width: 180,
-          height: 180,
-          colorDark: '#000000',
-          colorLight: '#ffffff'
-        };
-        if (QRCode.CorrectLevel) opts.correctLevel = QRCode.CorrectLevel.M;
-        new QRCode(qrEl, opts);
-      } catch (e) {
-        qrEl.innerHTML = '<p style="color:#6b7280;font-size:0.8rem">โหลด QR ไม่สำเร็จ — ลองรีเฟรชหน้า</p>';
-      }
-    }
-
-    document.getElementById('btnGen').addEventListener('click', render);
-    document.querySelectorAll('.panel input').forEach(function (inp) {
-      inp.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') render();
-      });
-    });
-    render();
-  </script>
+  <script src="./api-config.js"></script>
+  <script type="module" src="./client.js"></script>
 </body>
 </html>

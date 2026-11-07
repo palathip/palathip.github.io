@@ -1,1 +1,5 @@
 .sass-cache/
+
+# Private API lives in palathip/boombibu-api. Never commit it here.
+/backend/
+/personal-api/
