@@ -166,6 +166,26 @@
       margin-top: 10px;
     }
 
+    .layout.is-locked .panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 280px;
+      padding: 48px 28px;
+      text-align: center;
+    }
+
+    .layout.is-locked .auth-bar {
+      width: 100%;
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .layout.is-locked .auth-actions {
+      justify-content: center;
+    }
+
     .btn-auth {
       border: none;
       border-radius: 10px;
@@ -447,10 +467,10 @@
   <div class="layout is-locked" id="flightLayout">
     <div class="panel">
       <div class="auth-bar">
-        <p id="authStatus" role="status" aria-live="polite">กำลังตรวจสอบสิทธิ์…</p>
+        <p id="authStatus" role="status" aria-live="polite">Checking authorization…</p>
         <div class="auth-actions">
-          <button type="button" class="btn-auth" id="btnLogin" hidden>เข้าสู่ระบบด้วย GitHub</button>
-          <button type="button" class="btn-auth btn-auth-secondary" id="btnLogout" hidden>ออกจากระบบ</button>
+          <button type="button" class="btn-auth" id="btnLogin" hidden>Github Auth</button>
+          <button type="button" class="btn-auth btn-auth-secondary" id="btnLogout" hidden>Log out</button>
         </div>
       </div>
       <div id="flightEditor" hidden>
