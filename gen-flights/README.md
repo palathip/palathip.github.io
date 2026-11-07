@@ -10,4 +10,4 @@ Sign-in redirects to the API and back to exactly `https://palathip.github.io/gen
 
 The previous in-browser generator remains in the public git history of this site. Deleting it from the current file does not make that history secret.
 
-The site menu still does not link to this page.
+The top menu links here again. Until GitHub sign-in succeeds, the page shows only the sign-in panel: no ticket form and no boarding-pass preview.

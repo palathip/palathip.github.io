@@ -43,12 +43,14 @@ const STATES = {
     login: false,
     logout: true,
     generate: true,
+    workspace: true,
   },
   "invalid-input": {
     message: "ข้อมูลตั๋วไม่ผ่านการตรวจสอบ — แก้ช่องที่ยาวหรือมีอักขระแปลก แล้วกดสร้างอีกครั้ง",
     login: false,
     logout: true,
     generate: true,
+    workspace: true,
   },
   logout: {
     message: "ออกจากระบบแล้ว โทเค็นในแท็บนี้ถูกลบ แต่โทเค็นที่ถูกคัดลอกไปจะยังใช้ได้จนกว่าจะหมดอายุ",
@@ -61,14 +63,20 @@ const STATES = {
     login: false,
     logout: true,
     generate: true,
+    workspace: true,
   },
   working: {
     message: "กำลังสร้างตั๋ว…",
     login: false,
     logout: true,
     generate: false,
+    workspace: true,
   },
 };
+
+export function showsFlightWorkspace(stateName) {
+  return Boolean(STATES[stateName] && STATES[stateName].workspace);
+}
 
 export function isSafeAPIBase(base) {
   try {
@@ -218,7 +226,14 @@ function setState(name, message) {
   if (login) login.hidden = !spec.login;
   if (logout) logout.hidden = !spec.logout;
   if (gen) gen.disabled = !spec.generate;
-  if (name !== "ready" && name !== "working" && name !== "error-retry" && name !== "invalid-input") renderQR("");
+  const showWorkspace = showsFlightWorkspace(name);
+  const editor = document.getElementById("flightEditor");
+  const preview = document.getElementById("flightPreview");
+  const layout = document.getElementById("flightLayout");
+  if (editor) editor.hidden = !showWorkspace;
+  if (preview) preview.hidden = !showWorkspace;
+  if (layout) layout.classList.toggle("is-locked", !showWorkspace);
+  if (!showWorkspace) renderQR("");
 }
 
 function value(id) {
