@@ -1,4 +1,3 @@
-// Origin of the separate private API (scheme, host, and port only; no path).
-// Leave this empty until that API is deployed. This file is public: do not put
-// tokens, client secrets, or GitHub ids here. An empty value keeps generation off.
-window.GEN_FLIGHTS_API_BASE = "";
+// HTTPS origin of the separate API. No path, token, or secret.
+// Vercel Authentication on this host can still block the browser. This file does not bypass it.
+window.GEN_FLIGHTS_API_BASE = "https://boombibu-api-palathips-projects.vercel.app";

@@ -44,6 +44,12 @@ const STATES = {
     logout: true,
     generate: true,
   },
+  "invalid-input": {
+    message: "ข้อมูลตั๋วไม่ผ่านการตรวจสอบ — แก้ช่องที่ยาวหรือมีอักขระแปลก แล้วกดสร้างอีกครั้ง",
+    login: false,
+    logout: true,
+    generate: true,
+  },
   logout: {
     message: "ออกจากระบบแล้ว โทเค็นในแท็บนี้ถูกลบ แต่โทเค็นที่ถูกคัดลอกไปจะยังใช้ได้จนกว่าจะหมดอายุ",
     login: true,
@@ -104,6 +110,57 @@ export function classifyAuthFailure(status, body) {
   return "error";
 }
 
+const FIELD_LABELS = {
+  passengerName: "ชื่อผู้โดยสาร",
+  flightNo: "เที่ยวบิน",
+  statusLabel: "สถานะ",
+  fromCode: "รหัสต้นทาง",
+  fromCity: "เมืองต้นทาง",
+  toCode: "รหัสปลายทาง",
+  toCity: "เมืองปลายทาง",
+  fromAirportDetail: "ชื่อสนามบินต้นทาง",
+  toAirportDetail: "ชื่อสนามบินปลายทาง",
+  gate: "Gate",
+  boarding: "Boarding",
+  seat: "ที่นั่ง",
+  flightClass: "Class",
+  flightDate: "วันที่",
+  zone: "Zone",
+  bookingRef: "Booking reference",
+};
+
+export function classifyGenerationFailure(status, body) {
+  if (status === 400 || status === 413 || status === 415) return "invalid-input";
+  return classifyAuthFailure(status, body);
+}
+
+export function invalidInputMessage(body) {
+  const field = body && typeof body.field === "string" ? FIELD_LABELS[body.field] : "";
+  if (field) return `ข้อมูลไม่ถูกต้องที่ช่อง ${field} — แก้ความยาวหรืออักขระพิเศษ แล้วกดสร้างอีกครั้ง`;
+  return "ข้อมูลตั๋วไม่ผ่านการตรวจสอบ — แก้ช่องที่ยาวหรือมีอักขระแปลก แล้วกดสร้างอีกครั้ง";
+}
+
+const ALLOWED_RETURNS = new Set([
+  "https://palathip.github.io/gen-flights/",
+  "https://palathip.github.io/gen-flights/index.html",
+]);
+
+export function canonicalReturnTo(pageURL) {
+  let u;
+  try {
+    u = new URL(pageURL);
+  } catch {
+    return "";
+  }
+  if (u.username || u.password || u.port) return "";
+  if (u.protocol !== "https:" || u.hostname !== "palathip.github.io") return "";
+  let path = u.pathname;
+  if (path.includes("\\") || path.includes("..") || path.includes("//")) return "";
+  if (path === "/gen-flights") path = "/gen-flights/";
+  const out = "https://palathip.github.io" + path;
+  return ALLOWED_RETURNS.has(out) ? out : "";
+}
+
 export function viewModel(pass) {
   const text = (v) => (v === undefined || v === null || v === "" ? "\u2014" : String(v));
   return {
@@ -161,7 +218,7 @@ function setState(name, message) {
   if (login) login.hidden = !spec.login;
   if (logout) logout.hidden = !spec.logout;
   if (gen) gen.disabled = !spec.generate;
-  if (name !== "ready" && name !== "working" && name !== "error-retry") renderQR("");
+  if (name !== "ready" && name !== "working" && name !== "error-retry" && name !== "invalid-input") renderQR("");
 }
 
 function value(id) {
@@ -272,8 +329,13 @@ async function generate() {
     });
     const body = await readJSON(res);
     if (!res.ok) {
+      const next = classifyGenerationFailure(res.status, body);
+      if (next === "invalid-input") {
+        setState(next, invalidInputMessage(body));
+        return;
+      }
       if (res.status === 401 || res.status === 403) sessionStorage.removeItem(TOKEN_KEY);
-      setState(classifyAuthFailure(res.status, body));
+      setState(next);
       return;
     }
     if (!body.qrPayload) {
@@ -293,10 +355,14 @@ async function login() {
     setState("unconfigured");
     return;
   }
+  const returnTo = canonicalReturnTo(location.href);
+  if (!returnTo) {
+    setState("error", "หน้านี้ไม่ใช่ที่อยู่ที่อนุญาตให้กลับจาก GitHub");
+    return;
+  }
   const verifierValue = randomVerifier();
   const challenge = await challengeFromVerifier(verifierValue);
   sessionStorage.setItem(VERIFIER_KEY, verifierValue);
-  const returnTo = location.origin + location.pathname;
   location.assign(buildStartURL(base, returnTo, challenge));
 }
 

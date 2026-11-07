@@ -7,8 +7,11 @@ import { fileURLToPath } from "node:url";
 import {
   apiOrigin,
   buildStartURL,
+  canonicalReturnTo,
   challengeFromVerifier,
   classifyAuthFailure,
+  classifyGenerationFailure,
+  invalidInputMessage,
   isSafeAPIBase,
   parseHandoffFragment,
   viewModel,
@@ -41,6 +44,56 @@ test("handoff fragment and auth failures", () => {
   assert.equal(classifyAuthFailure(401, {}), "logged-out");
   assert.equal(classifyAuthFailure(403, {}), "forbidden");
   assert.equal(classifyAuthFailure(503, {}), "error");
+});
+
+test("generation 400 stays a retry, while 401 and 403 stay auth results", () => {
+  assert.equal(classifyGenerationFailure(400, { error: "invalid_request", field: "passengerName" }), "invalid-input");
+  assert.equal(classifyGenerationFailure(413, {}), "invalid-input");
+  assert.equal(classifyGenerationFailure(415, {}), "invalid-input");
+  assert.equal(classifyGenerationFailure(401, { reason: "expired" }), "expired");
+  assert.equal(classifyGenerationFailure(401, { reason: "invalid" }), "logged-out");
+  assert.equal(classifyGenerationFailure(403, { error: "forbidden" }), "forbidden");
+  assert.equal(
+    invalidInputMessage({ field: "passengerName" }),
+    "ข้อมูลไม่ถูกต้องที่ช่อง ชื่อผู้โดยสาร — แก้ความยาวหรืออักขระพิเศษ แล้วกดสร้างอีกครั้ง",
+  );
+  assert.equal(invalidInputMessage({ field: "<script>" }).includes("<script>"), false);
+  assert.match(invalidInputMessage({}), /ไม่ผ่านการตรวจสอบ/);
+});
+
+test("return_to canonicalizes only the two allowlisted GitHub Pages URLs", () => {
+  assert.equal(
+    canonicalReturnTo("https://palathip.github.io/gen-flights"),
+    "https://palathip.github.io/gen-flights/",
+  );
+  assert.equal(
+    canonicalReturnTo("https://palathip.github.io/gen-flights/"),
+    "https://palathip.github.io/gen-flights/",
+  );
+  assert.equal(
+    canonicalReturnTo("https://palathip.github.io/gen-flights/index.html?x=1#gf_code=nope"),
+    "https://palathip.github.io/gen-flights/index.html",
+  );
+  assert.equal(
+    buildStartURL(
+      "https://boombibu-api-palathips-projects.vercel.app",
+      canonicalReturnTo("https://palathip.github.io/gen-flights"),
+      "abc",
+    ),
+    "https://boombibu-api-palathips-projects.vercel.app/v1/auth/github/start?return_to=https%3A%2F%2Fpalathip.github.io%2Fgen-flights%2F&handoff_challenge=abc",
+  );
+  for (const bad of [
+    "https://palathip.github.io/gen-flights/extra",
+    "https://palathip.github.io/gen-flights.evil/",
+    "https://palathip.github.io.evil.com/gen-flights/",
+    "https://evil.example/gen-flights/",
+    "http://palathip.github.io/gen-flights/",
+    "https://user@palathip.github.io/gen-flights/",
+    "https://palathip.github.io/gen-flights/../",
+    "https://127.0.0.1:5500/gen-flights/",
+  ]) {
+    assert.equal(canonicalReturnTo(bad), "", bad);
+  }
 });
 
 test("view model displays server text and does not rebuild the qr payload", () => {
@@ -87,7 +140,16 @@ test("public page does not keep the old in-browser generator", async () => {
   assert.equal(client.includes("JSON.stringify({\n        airline"), false);
   assert.match(client, /sessionStorage/);
   assert.match(client, /credentials:\s*"omit"/);
-  assert.match(cfg, /window\.GEN_FLIGHTS_API_BASE\s*=\s*""\s*;/);
+  assert.match(client, /history\.replaceState/);
+  assert.match(client, /canonicalReturnTo\(location\.href\)/);
+  assert.equal(client.includes("location.origin + location.pathname"), false);
+  const configured = cfg.match(/window\.GEN_FLIGHTS_API_BASE\s*=\s*"([^"]*)"\s*;/);
+  assert.ok(configured);
+  const configuredURL = new URL(configured[1]);
+  assert.equal(configuredURL.origin, "https://boombibu-api-palathips-projects.vercel.app");
+  assert.equal(configuredURL.pathname, "/");
+  assert.equal(configuredURL.search, "");
+  assert.equal(configuredURL.hash, "");
   assert.equal(nav.includes("Gen Flights"), false);
   assert.equal(nav.includes('href("gen-flights'), false);
 });
