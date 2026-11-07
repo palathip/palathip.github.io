@@ -3,43 +3,43 @@ const VERIFIER_KEY = "genflights.handoffVerifier";
 
 const STATES = {
   unconfigured: {
-    message: "ยังไม่ได้ตั้งค่า API — การสร้างตั๋วยังไม่พร้อมใช้งาน",
+    message: "The API is not configured, so ticket creation is unavailable.",
     login: false,
     logout: false,
     generate: false,
   },
   loading: {
-    message: "กำลังตรวจสอบสิทธิ์…",
+    message: "Checking authorization…",
     login: false,
     logout: false,
     generate: false,
   },
   "logged-out": {
-    message: "เข้าสู่ระบบด้วย GitHub ของเจ้าของเพื่อสร้างตั๋ว",
+    message: "Identity Verification",
     login: true,
     logout: false,
     generate: false,
   },
   forbidden: {
-    message: "บัญชี GitHub นี้ไม่ได้รับอนุญาต",
+    message: "This GitHub account is not authorized.",
     login: true,
     logout: false,
     generate: false,
   },
   expired: {
-    message: "เซสชันหมดอายุแล้ว โปรดเข้าสู่ระบบใหม่",
+    message: "Your session has expired. Please sign in again.",
     login: true,
     logout: false,
     generate: false,
   },
   error: {
-    message: "เกิดข้อผิดพลาด โปรดลองอีกครั้ง",
+    message: "Something went wrong. Please try again.",
     login: true,
     logout: false,
     generate: false,
   },
   "error-retry": {
-    message: "เกิดข้อผิดพลาด โปรดลองอีกครั้ง",
+    message: "Something went wrong. Please try again.",
     login: false,
     logout: true,
     generate: true,
@@ -53,13 +53,13 @@ const STATES = {
     workspace: true,
   },
   logout: {
-    message: "ออกจากระบบแล้ว โทเค็นในแท็บนี้ถูกลบ แต่โทเค็นที่ถูกคัดลอกไปจะยังใช้ได้จนกว่าจะหมดอายุ",
+    message: "Signed out. The token in this tab was removed, but a copied token remains valid until it expires.",
     login: true,
     logout: false,
     generate: false,
   },
   ready: {
-    message: "เข้าสู่ระบบแล้ว สามารถสร้างตั๋วได้",
+    message: "Signed in. You can create a ticket.",
     login: false,
     logout: true,
     generate: true,
@@ -281,7 +281,7 @@ function renderQR(payload) {
   if (!payload) {
     const note = document.createElement("p");
     note.className = "bp-hint";
-    note.textContent = "เข้าสู่ระบบเพื่อสร้าง QR";
+    note.textContent = "Sign in to generate a QR code.";
     qrEl.appendChild(note);
     return;
   }
@@ -372,7 +372,7 @@ async function login() {
   }
   const returnTo = canonicalReturnTo(location.href);
   if (!returnTo) {
-    setState("error", "หน้านี้ไม่ใช่ที่อยู่ที่อนุญาตให้กลับจาก GitHub");
+    setState("error", "This page is not an allowed GitHub return address.");
     return;
   }
   const verifierValue = randomVerifier();
@@ -397,7 +397,7 @@ async function logout() {
 function applyFragmentError(code) {
   if (code === "forbidden") setState("forbidden");
   else if (code === "expired") setState("expired");
-  else if (code === "access_denied") setState("logged-out", "ยกเลิกการอนุญาต GitHub");
+  else if (code === "access_denied") setState("logged-out", "GitHub authorization was cancelled.");
   else if (code === "not_configured") setState("unconfigured");
   else setState("error");
 }

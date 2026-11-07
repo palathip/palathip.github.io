@@ -164,6 +164,24 @@ test("public page does not keep the old in-browser generator", async () => {
   assert.match(nav, /label: 'Gen Flights', href: href\('gen-flights\/index\.html'\)/);
 });
 
+test("sign-in and sign-out copy is English", async () => {
+  const html = await readFile(path.join(root, "gen-flights/index.html"), "utf8");
+  const client = await readFile(path.join(root, "gen-flights/client.js"), "utf8");
+  assert.match(html, />Github Auth</);
+  assert.match(html, />Log out</);
+  assert.match(html, /Checking authorization…/);
+  assert.match(html, /\.layout\.is-locked \.auth-actions \{\s*justify-content: center;/);
+  assert.equal(html.includes("เข้าสู่ระบบ"), false);
+  assert.equal(html.includes("ออกจากระบบ"), false);
+  assert.match(client, /message: "Identity Verification"/);
+  assert.match(client, /Signed out\. The token in this tab was removed/);
+  assert.match(client, /Signed in\. You can create a ticket\./);
+  assert.match(client, /Sign in to generate a QR code\./);
+  assert.match(client, /GitHub authorization was cancelled\./);
+  assert.equal(client.includes("เข้าสู่ระบบ"), false);
+  assert.equal(client.includes("ออกจากระบบ"), false);
+});
+
 test("website tree does not contain the Go API or secret material", async () => {
   const bannedName = new Set(["go.mod", "go.sum", "vercel.json"]);
   const secretNeedles = [
