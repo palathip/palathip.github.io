@@ -66,7 +66,7 @@ const STATES = {
     workspace: true,
   },
   working: {
-    message: "กำลังสร้างตั๋ว…",
+    message: "Creating a ticket…",
     login: false,
     logout: true,
     generate: false,
