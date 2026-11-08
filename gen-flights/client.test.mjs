@@ -176,6 +176,8 @@ test("sign-in and sign-out copy is English", async () => {
   assert.match(client, /message: "Identity Verification"/);
   assert.match(client, /Signed out\. The token in this tab was removed/);
   assert.match(client, /Signed in\. You can create a ticket\./);
+  assert.match(client, /Creating a ticket…/);
+  assert.equal(client.includes("กำลังสร้างตั๋ว"), false);
   assert.match(client, /Sign in to generate a QR code\./);
   assert.match(client, /GitHub authorization was cancelled\./);
   assert.equal(client.includes("เข้าสู่ระบบ"), false);
