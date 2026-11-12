@@ -213,7 +213,13 @@ test("sign-in and sign-out copy is English", async () => {
   assert.match(html, /\.layout\.is-locked \.auth-actions \{\s*justify-content: center;/);
   assert.equal(html.includes("เข้าสู่ระบบ"), false);
   assert.equal(html.includes("ออกจากระบบ"), false);
-  assert.match(client, /Only an authorized GitHub account can create a boarding pass\./);
+  assert.match(html, />Sign in to continue</);
+  const headingRule = html.match(/\.auth-card h1 \{[\s\S]*?\n    \}/);
+  assert.ok(headingRule);
+  assert.match(headingRule[0], /Plus Jakarta Sans/);
+  assert.equal(headingRule[0].includes("Syne"), false);
+  assert.match(client, /message: "GitHub account required\."/);
+  assert.match(client, /"logged-out": "Sign in to continue"/);
   assert.match(client, /Signed out\. The token in this tab was removed/);
   assert.match(client, /Signed in\. You can create a ticket\./);
   assert.match(client, /Creating a ticket…/);
