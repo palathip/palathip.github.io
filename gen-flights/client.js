@@ -15,7 +15,7 @@ const STATES = {
     generate: false,
   },
   "logged-out": {
-    message: "Only an authorized GitHub account can create a boarding pass.",
+    message: "GitHub account required.",
     login: true,
     logout: false,
     generate: false,
@@ -140,7 +140,7 @@ const FIELD_LABELS = {
 const TITLES = {
   unconfigured: "Generator unavailable",
   loading: "Checking authorization",
-  "logged-out": "Sign in to create a boarding pass",
+  "logged-out": "Sign in to continue",
   forbidden: "Account not authorized",
   expired: "Session expired",
   error: "Could not continue",
