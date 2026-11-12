@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,23 +43,50 @@
       box-shadow: none;
     }
 
+    html {
+      scroll-padding-top: 88px;
+      color-scheme: dark;
+    }
+
+    ::selection {
+      background: rgba(240, 53, 81, 0.38);
+      color: #fff;
+    }
+
     .layout {
       max-width: 1100px;
       margin: 0 auto;
       padding: 96px 48px 48px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .workspace {
       display: grid;
       grid-template-columns: minmax(280px, 380px) 1fr;
       gap: 32px;
       align-items: start;
+      min-width: 0;
     }
 
-    .layout.is-locked {
-      grid-template-columns: minmax(280px, 420px);
-      justify-content: center;
+    .layout.is-locked .workspace {
+      filter: blur(7px) brightness(0.58);
+      opacity: 0.78;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .layout.is-locked #flightEditor[hidden] {
+      display: block !important;
+    }
+
+    .layout.is-locked #flightPreview[hidden] {
+      display: flex !important;
     }
 
     @media (max-width: 900px) {
-      .layout {
+      .workspace {
         grid-template-columns: 1fr;
       }
     }
@@ -67,6 +94,12 @@
     @media (max-width: 768px) {
       .layout {
         padding: 84px 20px 32px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .layout {
+        padding: 78px 16px 28px;
       }
     }
 
@@ -92,7 +125,7 @@
       display: block;
       font-size: 0.75rem;
       font-weight: 600;
-      color: rgba(255, 255, 255, 0.55);
+      color: #c5cad3;
       margin-bottom: 6px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -110,8 +143,9 @@
     }
 
     .field input:focus {
-      outline: none;
-      border-color: var(--accent);
+      outline: 2px solid #F03551;
+      outline-offset: 2px;
+      border-color: #F03551;
     }
 
     .field-row {
@@ -123,21 +157,26 @@
     .btn-gen {
       width: 100%;
       margin-top: 8px;
+      min-height: 48px;
       padding: 14px 20px;
       border: none;
       border-radius: 12px;
-      background: var(--accent);
+      background: #C4263D;
       color: #fff;
       font-family: inherit;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 1rem;
       cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
+      transition: background 0.18s ease;
     }
 
     .btn-gen:hover {
-      background: var(--accent-dark);
-      transform: translateY(-1px);
+      background: #a81f34;
+    }
+
+    .btn-gen:focus-visible {
+      outline: 2px solid #F03551;
+      outline-offset: 3px;
     }
 
     .btn-gen:disabled,
@@ -148,38 +187,150 @@
       transform: none;
     }
 
-    .auth-bar {
-      margin-bottom: 16px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    .auth-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 88px 20px 32px;
+      pointer-events: none;
     }
 
-    .auth-bar p {
-      font-size: 0.85rem;
-      line-height: 1.45;
-      color: rgba(255, 255, 255, 0.8);
+    .layout.is-locked .auth-layer {
+      display: flex;
+      overflow: auto;
+    }
+
+    .layout:not(.is-locked) .auth-layer {
+      position: static;
+      display: block;
+      order: -1;
+      padding: 0;
+      margin: 0 0 16px;
+      pointer-events: none;
+    }
+
+    .layout[data-auth-state="ready"] .auth-layer {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .auth-card {
+      width: min(440px, 100%);
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 22px;
+      padding: 36px 36px 32px;
+      border-radius: 16px;
+      background: #1b1b22;
+      box-shadow: 0 22px 50px rgba(0, 0, 0, 0.45);
+      color: #f6f7f9;
+      pointer-events: auto;
+      text-align: left;
+    }
+
+    .layout:not(.is-locked) .auth-card {
+      width: 100%;
+      min-height: 0;
+      padding: 12px 16px;
+      gap: 0;
+      border-radius: 12px;
+      background: #1c1c22;
+      box-shadow: none;
+    }
+
+    .layout:not(.is-locked) #authHeading,
+    .layout:not(.is-locked) .auth-skeleton,
+    .layout:not(.is-locked) .auth-actions {
+      display: none;
+    }
+
+    .auth-card h1 {
+      font-family: 'Syne', 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.85rem, 3vw, 2.35rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+      margin: 0 0 12px;
+      text-wrap: balance;
+    }
+
+    .auth-bar p,
+    #authStatus {
+      font-size: 1.0625rem;
+      line-height: 1.5;
+      color: #d5d8e0;
+      max-width: 38ch;
+    }
+
+    .layout[data-auth-state="forbidden"] #authStatus,
+    .layout[data-auth-state="expired"] #authStatus,
+    .layout[data-auth-state="error"] #authStatus,
+    .layout[data-auth-state="unconfigured"] #authStatus,
+    .layout[data-auth-state="error-retry"] #authStatus,
+    .layout[data-auth-state="invalid-input"] #authStatus {
+      color: #ffd5dc;
+    }
+
+    .auth-skeleton {
+      display: none;
+      gap: 12px;
+    }
+
+    .layout[data-auth-state="loading"] .auth-skeleton,
+    .layout[data-auth-phase="returning"] .auth-skeleton {
+      display: grid;
+    }
+
+    .layout[data-auth-state="loading"] #authHeading,
+    .layout[data-auth-phase="returning"] #authHeading,
+    .layout[data-auth-state="loading"] .auth-actions,
+    .layout[data-auth-phase="returning"] .auth-actions,
+    .layout[data-auth-state="loading"]:not([data-auth-phase="returning"]) #authStatus {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .sk {
+      display: block;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .sk-title { height: 28px; width: 78%; }
+    .sk-line { width: 100%; }
+    .sk-short { width: 62%; }
+    .sk-btn { height: 48px; width: 100%; border-radius: 12px; margin-top: 8px; }
+
+    .layout[data-auth-state="loading"] .sk,
+    .layout[data-auth-phase="returning"] .sk {
+      animation: auth-pulse 1.4s ease-in-out infinite;
     }
 
     .auth-actions {
       display: flex;
       gap: 8px;
-      margin-top: 10px;
-    }
-
-    .layout.is-locked .panel {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 280px;
-      padding: 48px 28px;
-      text-align: center;
-    }
-
-    .layout.is-locked .auth-bar {
-      width: 100%;
-      margin-bottom: 0;
-      padding-bottom: 0;
-      border-bottom: none;
+      margin-top: 22px;
     }
 
     .layout.is-locked .auth-actions {
@@ -188,18 +339,175 @@
 
     .btn-auth {
       border: none;
-      border-radius: 10px;
-      padding: 10px 14px;
-      background: var(--accent);
-      color: #fff;
+      border-radius: 12px;
+      min-height: 48px;
+      padding: 12px 18px;
+      background: #F03551;
+      color: #1a0a10;
       font-family: inherit;
       font-weight: 700;
+      font-size: 1rem;
       cursor: pointer;
+      transition: background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .btn-github {
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #f4f5f7;
+      color: #16181d;
+    }
+
+    .btn-github:hover {
+      background: #e6e8ec;
+    }
+
+    .btn-github[aria-busy="true"] {
+      cursor: progress;
+    }
+
+    .btn-github[aria-busy="true"] .github-mark {
+      visibility: hidden;
+      width: 0;
+    }
+
+    .btn-github[aria-busy="true"]::before {
+      content: "";
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid rgba(22, 24, 29, 0.25);
+      border-top-color: #16181d;
+      animation: auth-spin 0.7s linear infinite;
+    }
+
+    .btn-auth:focus-visible,
+    .account-chip:focus-visible,
+    .btn-gen:focus-visible {
+      outline: 2px solid #F03551;
+      outline-offset: 3px;
     }
 
     .btn-auth-secondary {
+      width: 100%;
       background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      color: #f6f7f9;
+      text-align: left;
+    }
+
+    .btn-auth-secondary:hover {
+      background: rgba(240, 53, 81, 0.14);
+      border-color: rgba(240, 53, 81, 0.55);
+    }
+
+    .account-menu {
+      position: relative;
+      order: -2;
+      align-self: flex-end;
+      z-index: 50;
+      margin: 0 0 16px;
+    }
+
+    .account-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      max-width: min(280px, calc(100vw - 32px));
+      padding: 6px 12px 6px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: #1c1c22;
+      color: #f6f7f9;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+      transition: background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .account-chip:hover,
+    .account-chip[aria-expanded="true"] {
+      background: #26262e;
+      border-color: rgba(255, 255, 255, 0.28);
+    }
+
+    .account-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      background: #111114;
+      color: #f6f7f9;
+      flex: 0 0 auto;
+    }
+
+    .account-avatar img {
+      width: 32px;
+      height: 32px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .account-avatar:has(img:not([hidden])) .account-fallback {
+      display: none;
+    }
+
+    #authUser {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .account-chevron {
+      flex: 0 0 auto;
+      opacity: 0.8;
+    }
+
+    .account-popover {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 200px;
+      padding: 6px;
+      border-radius: 14px;
+      background: #1c1c22;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    @keyframes auth-pulse {
+      0%, 100% { opacity: 0.45; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes auth-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .auth-card {
+        padding: 28px 22px 24px;
+        min-height: 300px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .sk,
+      .btn-github[aria-busy="true"]::before,
+      .btn-gen,
+      .btn-auth,
+      .account-chip {
+        animation: none;
+        transition: none;
+      }
     }
 
     /* —— Boarding pass —— */
@@ -464,61 +772,53 @@
 <body>
   <script src="../site-nav.js"></script>
 
-  <div class="layout is-locked" id="flightLayout">
+  <div class="layout is-locked" id="flightLayout" data-auth-state="loading">
+    <div class="workspace" id="flightWorkspace" inert aria-hidden="true">
     <div class="panel">
-      <div class="auth-bar">
-        <p id="authStatus" role="status" aria-live="polite">Checking authorization…</p>
-        <div class="auth-actions">
-          <button type="button" class="btn-auth" id="btnLogin" hidden>Github Auth</button>
-          <button type="button" class="btn-auth btn-auth-secondary" id="btnLogout" hidden>Log out</button>
-        </div>
-      </div>
       <div id="flightEditor" hidden>
-      <h2>ข้อมูลตั๋ว</h2>
-      <p style="font-size:0.8rem;color:rgba(255,255,255,0.45);margin:-8px 0 14px;line-height:1.45">สายการบินแสดงเป็น <strong style="color:rgba(255,255,255,0.75)">AirAsia</strong> โดยอัตโนมัติ</p>
+      <h2>Ticket details</h2>
+      <p style="font-size:0.95rem;color:#c5cad3;margin:-8px 0 14px;line-height:1.5">The airline is shown as <strong style="color:#f6f7f9">AirAsia</strong> automatically.</p>
       <div class="field">
-        <label for="passengerName">ชื่อผู้โดยสาร</label>
+        <label for="passengerName">Passenger name</label>
         <input type="text" id="passengerName" value="PALATHIP WUTTIPRAYOON" autocomplete="name">
       </div>
       <div class="field-row">
         <div class="field">
-          <label for="flightNo">เที่ยวบิน</label>
+          <label for="flightNo">Flight</label>
           <input type="text" id="flightNo" value="FD-3110">
         </div>
         <div class="field">
-          <label for="statusLabel">สถานะ (แถบบน)</label>
+          <label for="statusLabel">Status (top banner)</label>
           <input type="text" id="statusLabel" value="FLIGHT READY">
         </div>
       </div>
       <div class="field-row">
         <div class="field">
-          <label for="fromCode">รหัสต้นทาง</label>
+          <label for="fromCode">Origin code</label>
           <input type="text" id="fromCode" value="HDY">
         </div>
         <div class="field">
-          <label for="fromCity">เมืองต้นทาง</label>
+          <label for="fromCity">Origin city</label>
           <input type="text" id="fromCity" value="HATYAI">
         </div>
       </div>
       <div class="field-row">
         <div class="field">
-          <label for="toCode">รหัสปลายทาง</label>
+          <label for="toCode">Destination code</label>
           <input type="text" id="toCode" value="DMK">
         </div>
         <div class="field">
-          <label for="toCity">เมืองปลายทาง</label>
+          <label for="toCity">Destination city</label>
           <input type="text" id="toCity" value="BANGKOK">
         </div>
       </div>
-      <div class="field-row">
-        <div class="field">
-          <label for="fromAirportDetail">ชื่อสนามบินเต็ม ต้นทาง (ไม่บังคับ)</label>
-          <input type="text" id="fromAirportDetail" value="Hat Yai International Airport" placeholder="เช่น Hat Yai International Airport">
-        </div>
-        <div class="field">
-          <label for="toAirportDetail">ชื่อสนามบินเต็ม ปลายทาง (ไม่บังคับ)</label>
-          <input type="text" id="toAirportDetail" value="Don Mueang International Airport" placeholder="เช่น Don Mueang International Airport">
-        </div>
+      <div class="field">
+        <label for="fromAirportDetail">Full airport name, origin (optional)</label>
+        <input type="text" id="fromAirportDetail" value="Hat Yai International Airport" placeholder="e.g. Hat Yai International Airport">
+      </div>
+      <div class="field">
+        <label for="toAirportDetail">Full airport name, destination (optional)</label>
+        <input type="text" id="toAirportDetail" value="Don Mueang International Airport" placeholder="e.g. Don Mueang International Airport">
       </div>
       <div class="field-row">
         <div class="field">
@@ -532,7 +832,7 @@
       </div>
       <div class="field-row">
         <div class="field">
-          <label for="seat">ที่นั่ง</label>
+          <label for="seat">Seat</label>
           <input type="text" id="seat" value="14A">
         </div>
         <div class="field">
@@ -542,7 +842,7 @@
       </div>
       <div class="field-row">
         <div class="field">
-          <label for="flightDate">วันที่</label>
+          <label for="flightDate">Date</label>
           <input type="text" id="flightDate" value="24 OCT 23">
         </div>
         <div class="field">
@@ -551,7 +851,7 @@
         </div>
       </div>
       <div class="field">
-        <label for="bookingRef">Booking reference (สำหรับ QR)</label>
+        <label for="bookingRef">Booking reference (for the QR code)</label>
         <input type="text" id="bookingRef" value="V882YQ9">
       </div>
       <button type="button" class="btn-gen" id="btnGen" disabled>Update boarding pass</button>
@@ -650,6 +950,48 @@
           <div class="bp-ref" id="outBookingRef">BOOKING REF: V882YQ9</div>
           <div class="bp-hint">Scan at gate or kiosk for verification</div>
         </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="auth-layer auth-bar">
+      <div class="auth-card">
+        <div class="auth-skeleton" aria-hidden="true">
+          <span class="sk sk-title"></span>
+          <span class="sk sk-line"></span>
+          <span class="sk sk-line sk-short"></span>
+          <span class="sk sk-btn"></span>
+        </div>
+        <div class="auth-copy">
+          <h1 id="authHeading">Sign in to create a boarding pass</h1>
+          <p id="authStatus" role="status" aria-live="polite">Checking authorization…</p>
+          <div class="auth-actions">
+            <button type="button" class="btn-auth btn-github" id="btnLogin" hidden>
+              <svg class="github-mark" viewBox="0 0 16 16" width="20" height="20" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+              </svg>
+              <span>Sign in with GitHub</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="account-menu" id="accountMenu" hidden>
+      <button type="button" class="account-chip" id="btnAccount" aria-haspopup="menu" aria-expanded="false" aria-controls="accountPopover">
+        <span class="account-avatar" aria-hidden="true">
+          <img id="authAvatar" alt="" width="28" height="28" hidden referrerpolicy="no-referrer">
+          <svg class="github-mark account-fallback" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+        </span>
+        <span id="authUser">Signed in</span>
+        <svg class="account-chevron" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" focusable="false">
+          <path fill="currentColor" d="M5.5 7.5 10 12l4.5-4.5 1.2 1.2L10 14.4 4.3 8.7z"/>
+        </svg>
+      </button>
+      <div class="account-popover" id="accountPopover" role="menu" hidden>
+        <button type="button" class="btn-auth btn-auth-secondary" id="btnLogout" role="menuitem" hidden>Log out</button>
       </div>
     </div>
   </div>
