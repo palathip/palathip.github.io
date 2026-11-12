@@ -242,7 +242,7 @@
 
     .layout.is-locked .auth-layer {
       display: flex;
-      overflow: auto;
+      overflow: visible;
     }
 
     .layout:not(.is-locked) .auth-layer {
@@ -308,9 +308,13 @@
       font-size: clamp(1.375rem, 1.05rem + 1vw, 1.75rem);
       font-weight: 700;
       letter-spacing: -0.02em;
-      line-height: 1.45;
+      line-height: 1.5;
+      padding-bottom: 0.15em;
       margin: 0 0 12px;
       overflow: visible;
+      background-clip: border-box;
+      -webkit-background-clip: border-box;
+      -webkit-text-fill-color: currentColor;
     }
 
     .auth-bar p,
