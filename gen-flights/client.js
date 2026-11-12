@@ -15,7 +15,7 @@ const STATES = {
     generate: false,
   },
   "logged-out": {
-    message: "Identity Verification",
+    message: "Only an authorized GitHub account can create a boarding pass.",
     login: true,
     logout: false,
     generate: false,
@@ -46,7 +46,7 @@ const STATES = {
     workspace: true,
   },
   "invalid-input": {
-    message: "ข้อมูลตั๋วไม่ผ่านการตรวจสอบ — แก้ช่องที่ยาวหรือมีอักขระแปลก แล้วกดสร้างอีกครั้ง",
+    message: "The ticket details did not pass validation. Adjust any field that is too long or has unusual characters, then try again.",
     login: false,
     logout: true,
     generate: true,
@@ -119,22 +119,36 @@ export function classifyAuthFailure(status, body) {
 }
 
 const FIELD_LABELS = {
-  passengerName: "ชื่อผู้โดยสาร",
-  flightNo: "เที่ยวบิน",
-  statusLabel: "สถานะ",
-  fromCode: "รหัสต้นทาง",
-  fromCity: "เมืองต้นทาง",
-  toCode: "รหัสปลายทาง",
-  toCity: "เมืองปลายทาง",
-  fromAirportDetail: "ชื่อสนามบินต้นทาง",
-  toAirportDetail: "ชื่อสนามบินปลายทาง",
+  passengerName: "Passenger name",
+  flightNo: "Flight",
+  statusLabel: "Status",
+  fromCode: "Origin code",
+  fromCity: "Origin city",
+  toCode: "Destination code",
+  toCity: "Destination city",
+  fromAirportDetail: "Origin airport",
+  toAirportDetail: "Destination airport",
   gate: "Gate",
   boarding: "Boarding",
-  seat: "ที่นั่ง",
+  seat: "Seat",
   flightClass: "Class",
-  flightDate: "วันที่",
+  flightDate: "Date",
   zone: "Zone",
   bookingRef: "Booking reference",
+};
+
+const TITLES = {
+  unconfigured: "Generator unavailable",
+  loading: "Checking authorization",
+  "logged-out": "Sign in to create a boarding pass",
+  forbidden: "Account not authorized",
+  expired: "Session expired",
+  error: "Could not continue",
+  "error-retry": "Could not create the ticket",
+  "invalid-input": "Check the ticket details",
+  logout: "Signed out",
+  ready: "Signed in",
+  working: "Creating a ticket",
 };
 
 export function classifyGenerationFailure(status, body) {
@@ -144,8 +158,39 @@ export function classifyGenerationFailure(status, body) {
 
 export function invalidInputMessage(body) {
   const field = body && typeof body.field === "string" ? FIELD_LABELS[body.field] : "";
-  if (field) return `ข้อมูลไม่ถูกต้องที่ช่อง ${field} — แก้ความยาวหรืออักขระพิเศษ แล้วกดสร้างอีกครั้ง`;
-  return "ข้อมูลตั๋วไม่ผ่านการตรวจสอบ — แก้ช่องที่ยาวหรือมีอักขระแปลก แล้วกดสร้างอีกครั้ง";
+  if (field) return `The ${field} field is not valid. Adjust the length or special characters, then try again.`;
+  return "The ticket details did not pass validation. Adjust any field that is too long or has unusual characters, then try again.";
+}
+
+export function accountFromSession(body) {
+  if (!body || typeof body !== "object") return { login: "", avatarUrl: "" };
+  return {
+    login: cleanLogin(body.login ?? body.username ?? body.name),
+    avatarUrl: cleanAvatar(body.avatarUrl ?? body.avatar_url ?? body.avatar),
+  };
+}
+
+function cleanLogin(value) {
+  if (typeof value !== "string") return "";
+  const text = value.trim();
+  if (!/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/.test(text)) return "";
+  return text;
+}
+
+function cleanAvatar(value) {
+  if (typeof value !== "string" || value.length > 512) return "";
+  let url;
+  try {
+    url = new URL(value);
+  } catch {
+    return "";
+  }
+  if (url.protocol !== "https:" || url.username || url.password) return "";
+  const host = url.hostname.toLowerCase();
+  if (host !== "avatars.githubusercontent.com" && host !== "github.com" && !host.endsWith(".githubusercontent.com")) {
+    return "";
+  }
+  return url.href;
 }
 
 const ALLOWED_RETURNS = new Set([
@@ -216,23 +261,87 @@ function readBase() {
   return String(window.GEN_FLIGHTS_API_BASE || "").trim();
 }
 
+function closeAccountMenu() {
+  const pop = document.getElementById("accountPopover");
+  const trigger = document.getElementById("btnAccount");
+  if (pop) pop.hidden = true;
+  if (trigger) trigger.setAttribute("aria-expanded", "false");
+}
+
+function applyAccount(body) {
+  const account = accountFromSession(body);
+  const user = document.getElementById("authUser");
+  const avatar = document.getElementById("authAvatar");
+  const trigger = document.getElementById("btnAccount");
+  const label = account.login || "Signed in";
+  if (user) user.textContent = label;
+  if (trigger) {
+    trigger.setAttribute("aria-label", `Account menu, ${label}`);
+  }
+  if (!avatar) return;
+  if (account.avatarUrl) {
+    avatar.src = account.avatarUrl;
+    avatar.hidden = false;
+  } else {
+    avatar.removeAttribute("src");
+    avatar.hidden = true;
+  }
+}
+
+function mountFlightWorkspace() {
+  const mount = document.getElementById("flightMount");
+  const template = document.getElementById("flightWorkspaceTemplate");
+  if (!mount || !template || mount.childElementCount > 0) return;
+  mount.append(template.content.cloneNode(true));
+  const editor = document.getElementById("flightEditor");
+  const preview = document.getElementById("flightPreview");
+  if (editor) editor.hidden = false;
+  if (preview) preview.hidden = false;
+  const placeholder = document.getElementById("flightPlaceholder");
+  if (placeholder) placeholder.hidden = true;
+}
+
+function unmountFlightWorkspace() {
+  const mount = document.getElementById("flightMount");
+  if (mount) mount.replaceChildren();
+  const placeholder = document.getElementById("flightPlaceholder");
+  if (placeholder) placeholder.hidden = false;
+}
+
 function setState(name, message) {
   const spec = STATES[name] || STATES.error;
   const status = document.getElementById("authStatus");
   if (status) status.textContent = message || spec.message;
+  const heading = document.getElementById("authHeading");
+  if (heading && TITLES[name]) heading.textContent = TITLES[name];
   const login = document.getElementById("btnLogin");
   const logout = document.getElementById("btnLogout");
+  const showWorkspace = showsFlightWorkspace(name);
+  if (showWorkspace) mountFlightWorkspace();
+  else unmountFlightWorkspace();
   const gen = document.getElementById("btnGen");
-  if (login) login.hidden = !spec.login;
+  if (login) {
+    login.hidden = !spec.login;
+    login.removeAttribute("aria-busy");
+  }
   if (logout) logout.hidden = !spec.logout;
   if (gen) gen.disabled = !spec.generate;
-  const showWorkspace = showsFlightWorkspace(name);
-  const editor = document.getElementById("flightEditor");
-  const preview = document.getElementById("flightPreview");
   const layout = document.getElementById("flightLayout");
-  if (editor) editor.hidden = !showWorkspace;
-  if (preview) preview.hidden = !showWorkspace;
-  if (layout) layout.classList.toggle("is-locked", !showWorkspace);
+  const workspace = document.getElementById("flightWorkspace");
+  const account = document.getElementById("accountMenu");
+  if (workspace) {
+    workspace.inert = !showWorkspace;
+    if (showWorkspace) workspace.removeAttribute("aria-hidden");
+    else workspace.setAttribute("aria-hidden", "true");
+  }
+  if (layout) {
+    layout.classList.toggle("is-locked", !showWorkspace);
+    layout.dataset.authState = name;
+    delete layout.dataset.authPhase;
+  }
+  if (account) account.hidden = !spec.logout;
+  closeAccountMenu();
+  if (!spec.logout) applyAccount(null);
   if (!showWorkspace) renderQR("");
 }
 
@@ -289,7 +398,7 @@ function renderQR(payload) {
     const note = document.createElement("p");
     note.style.color = "#6b7280";
     note.style.fontSize = "0.8rem";
-    note.textContent = "โหลด QR ไม่สำเร็จ — ลองรีเฟรชหน้า";
+    note.textContent = "Could not load the QR code. Refresh the page and try again.";
     qrEl.appendChild(note);
     return;
   }
@@ -378,6 +487,12 @@ async function login() {
   const verifierValue = randomVerifier();
   const challenge = await challengeFromVerifier(verifierValue);
   sessionStorage.setItem(VERIFIER_KEY, verifierValue);
+  const layout = document.getElementById("flightLayout");
+  const status = document.getElementById("authStatus");
+  const button = document.getElementById("btnLogin");
+  if (layout) layout.dataset.authPhase = "redirecting";
+  if (status) status.textContent = "Redirecting to GitHub…";
+  if (button) button.setAttribute("aria-busy", "true");
   location.assign(buildStartURL(base, returnTo, challenge));
 }
 
@@ -420,6 +535,10 @@ async function boot() {
       return;
     }
     if (handoff.code) {
+      const layout = document.getElementById("flightLayout");
+      const status = document.getElementById("authStatus");
+      if (layout) layout.dataset.authPhase = "returning";
+      if (status) status.textContent = "Completing sign-in…";
       const verifierValue = sessionStorage.getItem(VERIFIER_KEY) || "";
       sessionStorage.removeItem(VERIFIER_KEY);
       if (!verifierValue) {
@@ -449,6 +568,7 @@ async function boot() {
       setState(classifyAuthFailure(res.status, body));
       return;
     }
+    applyAccount(body);
     setState("ready");
     await generate();
   } catch {
@@ -456,21 +576,63 @@ async function boot() {
   }
 }
 
+function initAccountMenu() {
+  const trigger = document.getElementById("btnAccount");
+  const pop = document.getElementById("accountPopover");
+  const logout = document.getElementById("btnLogout");
+  const avatar = document.getElementById("authAvatar");
+  if (avatar) {
+    avatar.addEventListener("error", () => {
+      avatar.hidden = true;
+    });
+  }
+  if (!trigger || !pop) return;
+  trigger.addEventListener("click", () => {
+    if (!pop.hidden) {
+      closeAccountMenu();
+      return;
+    }
+    if (!logout || logout.hidden) return;
+    pop.hidden = false;
+    trigger.setAttribute("aria-expanded", "true");
+    logout.focus();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || pop.hidden) return;
+    event.preventDefault();
+    closeAccountMenu();
+    trigger.focus();
+  });
+  document.addEventListener("pointerdown", (event) => {
+    const menu = document.getElementById("accountMenu");
+    if (pop.hidden || !menu || menu.contains(event.target)) return;
+    closeAccountMenu();
+  });
+  pop.addEventListener("focusout", (event) => {
+    const menu = document.getElementById("accountMenu");
+    const next = event.relatedTarget;
+    if (pop.hidden || (menu && next && menu.contains(next))) return;
+    closeAccountMenu();
+  });
+}
+
 function init() {
+  initAccountMenu();
   document.getElementById("btnLogin").addEventListener("click", () => {
     login().catch(() => setState("error"));
   });
   document.getElementById("btnLogout").addEventListener("click", () => {
     logout();
   });
-  document.getElementById("btnGen").addEventListener("click", () => {
-    generate();
-  });
-  document.querySelectorAll(".panel input").forEach((inp) => {
-    inp.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") generate();
+  const mount = document.getElementById("flightMount");
+  if (mount) {
+    mount.addEventListener("click", (event) => {
+      if (event.target.closest("#btnGen")) generate();
     });
-  });
+    mount.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && event.target.matches("input")) generate();
+    });
+  }
   boot();
 }
 

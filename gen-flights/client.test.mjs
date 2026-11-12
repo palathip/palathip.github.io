@@ -14,6 +14,7 @@ import {
   invalidInputMessage,
   isSafeAPIBase,
   parseHandoffFragment,
+  accountFromSession,
   showsFlightWorkspace,
   viewModel,
 } from "./client.js";
@@ -56,10 +57,25 @@ test("generation 400 stays a retry, while 401 and 403 stay auth results", () => 
   assert.equal(classifyGenerationFailure(403, { error: "forbidden" }), "forbidden");
   assert.equal(
     invalidInputMessage({ field: "passengerName" }),
-    "ข้อมูลไม่ถูกต้องที่ช่อง ชื่อผู้โดยสาร — แก้ความยาวหรืออักขระพิเศษ แล้วกดสร้างอีกครั้ง",
+    "The Passenger name field is not valid. Adjust the length or special characters, then try again.",
   );
   assert.equal(invalidInputMessage({ field: "<script>" }).includes("<script>"), false);
-  assert.match(invalidInputMessage({}), /ไม่ผ่านการตรวจสอบ/);
+  assert.match(invalidInputMessage({}), /did not pass validation/);
+});
+
+test("session account fields are optional and cannot inject a url", () => {
+  assert.deepEqual(accountFromSession(null), { login: "", avatarUrl: "" });
+  assert.deepEqual(accountFromSession({ authenticated: true }), { login: "", avatarUrl: "" });
+  assert.deepEqual(
+    accountFromSession({
+      login: "palathip",
+      avatarUrl: "https://avatars.githubusercontent.com/u/1?v=4",
+    }),
+    { login: "palathip", avatarUrl: "https://avatars.githubusercontent.com/u/1?v=4" },
+  );
+  assert.equal(accountFromSession({ login: "../admin", avatar_url: "javascript:alert(1)" }).login, "");
+  assert.equal(accountFromSession({ avatar: "https://evil.example/a.png" }).avatarUrl, "");
+  assert.equal(accountFromSession({ avatarUrl: "http://avatars.githubusercontent.com/u/1" }).avatarUrl, "");
 });
 
 test("return_to canonicalizes only the two allowlisted GitHub Pages URLs", () => {
@@ -164,16 +180,40 @@ test("public page does not keep the old in-browser generator", async () => {
   assert.match(nav, /label: 'Gen Flights', href: href\('gen-flights\/index\.html'\)/);
 });
 
+test("signed-out document has no ticket form controls", async () => {
+  const html = await readFile(path.join(root, "gen-flights/index.html"), "utf8");
+  const live = html.replace(/<template\b[^>]*>[\s\S]*?<\/template>/gi, "");
+  assert.equal(/<input\b/i.test(live), false);
+  assert.equal(/<textarea\b/i.test(live), false);
+  assert.equal(/<select\b/i.test(live), false);
+  assert.equal(live.includes('id="btnGen"'), false);
+  assert.equal(live.includes('id="passengerName"'), false);
+  assert.equal(live.includes('id="flightEditor"'), false);
+  assert.equal(live.includes('id="flightPreview"'), false);
+  const placeholder = live.slice(
+    live.indexOf('id="flightPlaceholder"'),
+    live.indexOf('id="flightMount"'),
+  );
+  assert.equal(/<input\b/i.test(placeholder), false);
+  assert.equal(/<button\b/i.test(placeholder), false);
+  assert.match(placeholder, /aria-hidden="true"/);
+  assert.match(html, /<template\b[^>]*id="flightWorkspaceTemplate"/);
+  assert.match(html, /id="btnGen" disabled/);
+  const client = await readFile(path.join(root, "gen-flights/client.js"), "utf8");
+  assert.match(client, /function unmountFlightWorkspace/);
+  assert.match(client, /mount\.replaceChildren\(\)/);
+});
+
 test("sign-in and sign-out copy is English", async () => {
   const html = await readFile(path.join(root, "gen-flights/index.html"), "utf8");
   const client = await readFile(path.join(root, "gen-flights/client.js"), "utf8");
-  assert.match(html, />Github Auth</);
+  assert.match(html, />Sign in with GitHub</);
   assert.match(html, />Log out</);
   assert.match(html, /Checking authorization…/);
   assert.match(html, /\.layout\.is-locked \.auth-actions \{\s*justify-content: center;/);
   assert.equal(html.includes("เข้าสู่ระบบ"), false);
   assert.equal(html.includes("ออกจากระบบ"), false);
-  assert.match(client, /message: "Identity Verification"/);
+  assert.match(client, /Only an authorized GitHub account can create a boarding pass\./);
   assert.match(client, /Signed out\. The token in this tab was removed/);
   assert.match(client, /Signed in\. You can create a ticket\./);
   assert.match(client, /Creating a ticket…/);

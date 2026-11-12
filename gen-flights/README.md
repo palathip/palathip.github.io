@@ -10,4 +10,4 @@ Sign-in redirects to the API and back to exactly `https://palathip.github.io/gen
 
 The previous in-browser generator remains in the public git history of this site. Deleting it from the current file does not make that history secret.
 
-The top menu links here again. Until GitHub sign-in succeeds, the page shows only the sign-in panel: no ticket form and no boarding-pass preview.
+The top menu links here again. Until GitHub sign-in succeeds, a decorative placeholder stays dimmed behind the sign-in card. The real ticket form lives in a template and is not in the document until the session is confirmed. Logout and an expired session remove it again. After sign-in, a compact account chip shows the GitHub login and avatar when the session response includes them.
