@@ -180,6 +180,30 @@ test("public page does not keep the old in-browser generator", async () => {
   assert.match(nav, /label: 'Gen Flights', href: href\('gen-flights\/index\.html'\)/);
 });
 
+test("signed-out document has no ticket form controls", async () => {
+  const html = await readFile(path.join(root, "gen-flights/index.html"), "utf8");
+  const live = html.replace(/<template\b[^>]*>[\s\S]*?<\/template>/gi, "");
+  assert.equal(/<input\b/i.test(live), false);
+  assert.equal(/<textarea\b/i.test(live), false);
+  assert.equal(/<select\b/i.test(live), false);
+  assert.equal(live.includes('id="btnGen"'), false);
+  assert.equal(live.includes('id="passengerName"'), false);
+  assert.equal(live.includes('id="flightEditor"'), false);
+  assert.equal(live.includes('id="flightPreview"'), false);
+  const placeholder = live.slice(
+    live.indexOf('id="flightPlaceholder"'),
+    live.indexOf('id="flightMount"'),
+  );
+  assert.equal(/<input\b/i.test(placeholder), false);
+  assert.equal(/<button\b/i.test(placeholder), false);
+  assert.match(placeholder, /aria-hidden="true"/);
+  assert.match(html, /<template\b[^>]*id="flightWorkspaceTemplate"/);
+  assert.match(html, /id="btnGen" disabled/);
+  const client = await readFile(path.join(root, "gen-flights/client.js"), "utf8");
+  assert.match(client, /function unmountFlightWorkspace/);
+  assert.match(client, /mount\.replaceChildren\(\)/);
+});
+
 test("sign-in and sign-out copy is English", async () => {
   const html = await readFile(path.join(root, "gen-flights/index.html"), "utf8");
   const client = await readFile(path.join(root, "gen-flights/client.js"), "utf8");

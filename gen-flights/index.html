@@ -77,16 +77,56 @@
       user-select: none;
     }
 
-    .layout.is-locked #flightEditor[hidden] {
-      display: block !important;
+    .workspace-placeholder {
+      display: grid;
+      grid-column: 1 / -1;
+      grid-template-columns: minmax(280px, 380px) 1fr;
+      gap: 32px;
+      align-items: start;
+      pointer-events: none;
+      user-select: none;
     }
 
-    .layout.is-locked #flightPreview[hidden] {
-      display: flex !important;
+    #flightMount {
+      display: contents;
+    }
+
+    .ph-title,
+    .ph-line,
+    .ph-field,
+    .ph-button {
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .ph-title { height: 18px; width: 46%; margin-bottom: 14px; }
+    .ph-line { height: 12px; width: 72%; margin: 0 0 18px; }
+    .ph-field { height: 42px; }
+    .ph-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .ph-stack { display: grid; gap: 12px; }
+    .ph-button {
+      height: 48px;
+      margin-top: 8px;
+      background: rgba(196, 38, 61, 0.55);
+    }
+
+    .placeholder-pass .ph-bar {
+      height: 14px;
+      width: 38%;
+      border-radius: 999px;
+      background: #e5e7eb;
+    }
+
+    .placeholder-pass .ph-code {
+      height: 28px;
+      width: 64px;
+      border-radius: 8px;
+      background: rgba(229, 57, 53, 0.18);
     }
 
     @media (max-width: 900px) {
-      .workspace {
+      .workspace,
+      .workspace-placeholder {
         grid-template-columns: 1fr;
       }
     }
@@ -781,6 +821,59 @@
 
   <div class="layout is-locked" id="flightLayout" data-auth-state="loading">
     <div class="workspace" id="flightWorkspace" inert aria-hidden="true">
+    <div class="workspace-placeholder" id="flightPlaceholder" aria-hidden="true">
+      <div class="panel">
+        <div class="ph-title"></div>
+        <div class="ph-line"></div>
+        <div class="ph-stack">
+          <div class="ph-field"></div>
+          <div class="ph-row">
+            <div class="ph-field"></div>
+            <div class="ph-field"></div>
+          </div>
+          <div class="ph-row">
+            <div class="ph-field"></div>
+            <div class="ph-field"></div>
+          </div>
+          <div class="ph-field"></div>
+          <div class="ph-field"></div>
+          <div class="ph-row">
+            <div class="ph-field"></div>
+            <div class="ph-field"></div>
+          </div>
+          <div class="ph-button"></div>
+        </div>
+      </div>
+      <div class="bp-wrap">
+        <div class="bp-card placeholder-pass">
+          <div class="bp-topbar">
+            <div class="ph-bar"></div>
+            <div class="ph-bar"></div>
+          </div>
+          <div class="bp-status">
+            <div class="ph-bar"></div>
+            <div class="ph-bar" style="width:70%;margin-top:8px"></div>
+          </div>
+          <div class="bp-main">
+            <div class="bp-route-iat">
+              <div class="ph-code"></div>
+              <div class="bp-route-plane" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>
+              </div>
+              <div class="ph-code"></div>
+            </div>
+          </div>
+          <div class="bp-qr-block">
+            <div class="ph-code" style="width:120px;height:120px;margin:0 auto 12px"></div>
+            <div class="ph-bar" style="width:50%;margin:0 auto"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="flightMount"></div>
+    </div>
+
+    <template id="flightWorkspaceTemplate">
     <div class="panel">
       <div id="flightEditor" hidden>
       <h2>Ticket details</h2>
@@ -959,7 +1052,7 @@
         </div>
       </div>
     </div>
-    </div>
+    </template>
 
     <div class="auth-layer auth-bar">
       <div class="auth-card">

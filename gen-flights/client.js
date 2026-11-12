@@ -288,6 +288,26 @@ function applyAccount(body) {
   }
 }
 
+function mountFlightWorkspace() {
+  const mount = document.getElementById("flightMount");
+  const template = document.getElementById("flightWorkspaceTemplate");
+  if (!mount || !template || mount.childElementCount > 0) return;
+  mount.append(template.content.cloneNode(true));
+  const editor = document.getElementById("flightEditor");
+  const preview = document.getElementById("flightPreview");
+  if (editor) editor.hidden = false;
+  if (preview) preview.hidden = false;
+  const placeholder = document.getElementById("flightPlaceholder");
+  if (placeholder) placeholder.hidden = true;
+}
+
+function unmountFlightWorkspace() {
+  const mount = document.getElementById("flightMount");
+  if (mount) mount.replaceChildren();
+  const placeholder = document.getElementById("flightPlaceholder");
+  if (placeholder) placeholder.hidden = false;
+}
+
 function setState(name, message) {
   const spec = STATES[name] || STATES.error;
   const status = document.getElementById("authStatus");
@@ -296,6 +316,9 @@ function setState(name, message) {
   if (heading && TITLES[name]) heading.textContent = TITLES[name];
   const login = document.getElementById("btnLogin");
   const logout = document.getElementById("btnLogout");
+  const showWorkspace = showsFlightWorkspace(name);
+  if (showWorkspace) mountFlightWorkspace();
+  else unmountFlightWorkspace();
   const gen = document.getElementById("btnGen");
   if (login) {
     login.hidden = !spec.login;
@@ -303,14 +326,9 @@ function setState(name, message) {
   }
   if (logout) logout.hidden = !spec.logout;
   if (gen) gen.disabled = !spec.generate;
-  const showWorkspace = showsFlightWorkspace(name);
-  const editor = document.getElementById("flightEditor");
-  const preview = document.getElementById("flightPreview");
   const layout = document.getElementById("flightLayout");
   const workspace = document.getElementById("flightWorkspace");
   const account = document.getElementById("accountMenu");
-  if (editor) editor.hidden = false;
-  if (preview) preview.hidden = false;
   if (workspace) {
     workspace.inert = !showWorkspace;
     if (showWorkspace) workspace.removeAttribute("aria-hidden");
@@ -606,14 +624,15 @@ function init() {
   document.getElementById("btnLogout").addEventListener("click", () => {
     logout();
   });
-  document.getElementById("btnGen").addEventListener("click", () => {
-    generate();
-  });
-  document.querySelectorAll(".panel input").forEach((inp) => {
-    inp.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") generate();
+  const mount = document.getElementById("flightMount");
+  if (mount) {
+    mount.addEventListener("click", (event) => {
+      if (event.target.closest("#btnGen")) generate();
     });
-  });
+    mount.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && event.target.matches("input")) generate();
+    });
+  }
   boot();
 }
 
