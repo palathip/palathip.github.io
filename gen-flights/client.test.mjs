@@ -204,6 +204,20 @@ test("signed-out document has no ticket form controls", async () => {
   assert.match(client, /mount\.replaceChildren\(\)/);
 });
 
+test("locked sign-in card hugs its content", async () => {
+  const html = await readFile(path.join(root, "gen-flights/index.html"), "utf8");
+  const cardRule = html.match(/\n {4}\.auth-card \{[\s\S]*?\n {4}\}/);
+  assert.ok(cardRule, "base auth-card rule");
+  assert.equal(/\bmin-height\s*:/.test(cardRule[0]), false);
+  assert.match(cardRule[0], /padding:\s*36px 36px 32px/);
+  const mobileCard = html.match(/@media \(max-width: 768px\) \{\n {6}\.auth-card \{[\s\S]*?\n {6}\}/);
+  assert.ok(mobileCard, "mobile auth-card rule");
+  assert.match(mobileCard[0], /padding:\s*28px 22px 24px/);
+  assert.equal(/\bmin-height\s*:/.test(mobileCard[0]), false);
+  assert.match(html, /\.layout\.is-locked \.auth-layer \{[\s\S]*?display:\s*flex;/);
+  assert.match(html, /\.auth-layer \{[\s\S]*?align-items:\s*center;[\s\S]*?justify-content:\s*center;/);
+});
+
 test("sign-in and sign-out copy is English", async () => {
   const html = await readFile(path.join(root, "gen-flights/index.html"), "utf8");
   const client = await readFile(path.join(root, "gen-flights/client.js"), "utf8");
