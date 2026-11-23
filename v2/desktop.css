@@ -126,7 +126,11 @@ button, a { touch-action: manipulation; }
   height: min(640px, calc(100% - 28px - var(--dock-space)));
 }
 
-.window[data-app="asset"],
+.window[data-app="asset"] {
+  width: min(780px, calc(100% - 40px));
+  height: min(720px, calc(100% - 28px - var(--dock-space)));
+}
+
 .window[data-app="qr"] {
   width: min(780px, calc(100% - 40px));
   height: min(640px, calc(100% - 28px - var(--dock-space)));
@@ -324,7 +328,28 @@ button, a { touch-action: manipulation; }
   border-radius: 6px;
 }
 
-.wallet-kind img { width: 16px; height: 16px; }
+.wallet-kind img { width: 16px; height: 16px; border-radius: 50%; }
+
+.evm-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 4px;
+}
+
+.evm-icons img,
+.tag img {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
 
 .wallet-address,
 .account-num {
@@ -716,7 +741,7 @@ a.chip:hover, .entry-url:hover, .highlights a:hover, .entry-site a:hover { text-
 
 .icon-about { background: linear-gradient(180deg, #8eb6ff 0%, #3d72e4 58%, #2a56c4 100%); }
 .icon-resume { background: linear-gradient(180deg, #ff958e 0%, #f0443c 55%, #d22528 100%); }
-.icon-asset { background: linear-gradient(180deg, #cbb0ff 0%, #8d5cf6 55%, #6b3ad4 100%); }
+.icon-asset { background: linear-gradient(180deg, #ffe56a 0%, #f5c400 55%, #e6a400 100%); }
 .icon-guides { background: linear-gradient(180deg, #8ae497 0%, #37b24d 55%, #2b8a3e 100%); }
 .icon-flights { background: linear-gradient(180deg, #8adcf2 0%, #1c9cb5 55%, #0b7285 100%); }
 .icon-qr { background: linear-gradient(180deg, #ffc98a 0%, #f76707 55%, #e8590c 100%); }
