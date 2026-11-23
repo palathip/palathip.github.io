@@ -379,6 +379,10 @@ button, a { touch-action: manipulation; }
 
 .copy-btn:hover { border-color: var(--red); color: var(--red); }
 .copy-btn.is-copied { color: var(--red); }
+.copy-btn:focus-visible {
+  outline: 2px solid #0a84ff;
+  outline-offset: 2px;
+}
 
 .asset-note {
   margin: 16px 0 8px;
@@ -470,7 +474,7 @@ button, a { touch-action: manipulation; }
 
 .about-mac-tagline {
   margin: 4px 0 0;
-  color: #86868b;
+  color: var(--muted);
   font-size: 15px;
   font-weight: 400;
 }
@@ -499,7 +503,7 @@ button, a { touch-action: manipulation; }
 .about-mac-specs dd {
   margin: 0;
   text-align: left;
-  color: #86868b;
+  color: var(--muted);
   font-weight: 400;
 }
 
@@ -530,8 +534,8 @@ button, a { touch-action: manipulation; }
 .about-mac-footer {
   margin: auto 0 2px;
   padding-top: 28px;
-  color: #86868b;
-  font-size: 11px;
+  color: var(--muted);
+  font-size: 12px;
   font-weight: 400;
   line-height: 1.45;
   letter-spacing: 0.02em;
@@ -979,7 +983,29 @@ a.chip:hover, .entry-url:hover, .highlights a:hover, .entry-site a:hover { text-
   .entry-top { flex-direction: column; }
   .entry-date { white-space: normal; }
   .pay-card { grid-template-columns: 1fr; justify-items: center; text-align: center; }
-  .pay-channel, .wallet, .pay-row { justify-content: center; }
+  .pay-channel, .pay-row { justify-content: center; }
+
+  .wallet {
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .wallet > div {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .wallet-kind,
+  .evm-icons {
+    flex-wrap: wrap;
+  }
+
+  .copy-btn {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 14px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -987,7 +1013,6 @@ a.chip:hover, .entry-url:hover, .highlights a:hover, .entry-site a:hover { text-
   .window.is-open:not(.is-min),
   .window.is-minimizing,
   .app-icon,
-  .dock-label,
   .home-item:active .app-icon {
     animation: none !important;
     transition: none !important;
