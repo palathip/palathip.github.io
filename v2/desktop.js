@@ -461,7 +461,7 @@
         '<p class="about-mac-tagline">I\'m an Ordinary Man. :)</p>' +
         '<dl class="about-mac-specs">' +
           "<div><dt>Role</dt><dd>" + escapeHtml(currentRole(data)) + "</dd></div>" +
-          "<div><dt>Location</dt><dd>Bangkok, Thailand</dd></div>" +
+          "<div><dt>Location</dt><dd>Hatyai, Thailand</dd></div>" +
           "<div><dt>Age</dt><dd>" + escapeHtml(ageInYears()) + "</dd></div>" +
           "<div><dt>Gender</dt><dd>Male</dd></div>" +
           "<div><dt>MBTI</dt><dd>ISFP</dd></div>" +
