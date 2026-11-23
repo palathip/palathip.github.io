@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07111c">
+  <meta name="format-detection" content="telephone=no">
+  <title>Boom — Palathip Wuttiprayoon</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23F03551'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="desktop.css">
+</head>
+<body>
+  <svg class="sprite" aria-hidden="true">
+    <symbol id="i-about" viewBox="0 0 32 32">
+      <circle cx="16" cy="11" r="4.2" fill="currentColor"/>
+      <path fill="currentColor" d="M8.2 24.8c.7-4.3 3.5-6.6 7.8-6.6s7.1 2.3 7.8 6.6c.2.9-.5 1.7-1.4 1.7H9.6c-.9 0-1.6-.8-1.4-1.7z"/>
+    </symbol>
+    <symbol id="i-resume" viewBox="0 0 32 32">
+      <path fill="currentColor" fill-rule="evenodd" d="M9 5.5h8.8L24.5 12.2V26a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V7.5a2 2 0 0 1 2-2zm7.2 1.6V12h4.9l-4.9-4.9zM10.5 16.2h11v1.5h-11v-1.5zm0 3.8h11v1.5h-11V20zm0 3.8h7.2v1.5h-7.2v-1.5z"/>
+    </symbol>
+    <symbol id="i-projects" viewBox="0 0 32 32">
+      <path fill="currentColor" d="M6 11.2c0-1.3 1-2.4 2.4-2.4H13l1.7 2h8.9c1.3 0 2.4 1.1 2.4 2.4v8.2c0 1.3-1.1 2.4-2.4 2.4H8.4C7 23.8 6 22.7 6 21.4v-10.2z"/>
+    </symbol>
+    <symbol id="i-guides" viewBox="0 0 32 32">
+      <path fill="currentColor" d="M7.2 12.4h17.6a4.2 4.2 0 0 1 4.2 4.2v.8a4.7 4.7 0 0 1-7.4 3.8l-1.4-1.3h-8.4l-1.4 1.3a4.7 4.7 0 0 1-7.4-3.8v-.8a4.2 4.2 0 0 1 4.2-4.2z"/>
+      <path fill="currentColor" d="M10 16.2h1.5v-1.6h1.6v1.6H15v1.6h-1.9v1.6h-1.6v-1.6H10v-1.6zm10.2-.4a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zm2.8 2.6a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z" opacity=".35"/>
+    </symbol>
+    <symbol id="i-flights" viewBox="0 0 32 32">
+      <path fill="currentColor" d="M2.2 16.6h6.4L14.2 8h2.8l-2.2 8.6H24l2.7-3.1h2.6L27.2 17l2.1 4.6h-2.6L24 18.4H14.8l2.2 9H14l-5.6-8.6H2.2c-.9 0-.9-2.2 0-2.2z"/>
+    </symbol>
+    <symbol id="i-contact" viewBox="0 0 32 32">
+      <path fill="currentColor" d="M6 10.2h20a2 2 0 0 1 2 2v10.2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V12.2a2 2 0 0 1 2-2zm0 2.3 10 6.4 10-6.4v-.3H6v.3z"/>
+    </symbol>
+    <symbol id="i-close" viewBox="0 0 12 12">
+      <path d="M3.1 3.1l5.8 5.8M8.9 3.1L3.1 8.9" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-min" viewBox="0 0 12 12">
+      <path d="M2.4 6h7.2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-max" viewBox="0 0 12 12">
+      <path d="M6 2.6v6.8M2.6 6h6.8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </symbol>
+  </svg>
+
+  <div class="desktop">
+    <header class="topbar">
+      <h1>Boom</h1>
+      <time id="clock"></time>
+    </header>
+
+    <div class="stage" id="stage">
+      <section class="window" id="window-about" data-app="about" data-cascade="0" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="title-about" tabindex="-1" inert>
+        <div class="titlebar">
+          <div class="traffic" role="group" aria-label="About window controls">
+            <button type="button" class="light light-close" data-action="close" aria-label="Close About"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+            <button type="button" class="light light-min" data-action="minimize" aria-label="Minimize About"><svg aria-hidden="true"><use href="#i-min"/></svg></button>
+            <button type="button" class="light light-max" data-action="maximize" aria-label="Maximize About"><svg aria-hidden="true"><use href="#i-max"/></svg></button>
+          </div>
+          <h2 class="title" id="title-about">About</h2>
+          <button type="button" class="mobile-back" data-action="close">Back</button>
+        </div>
+        <div class="window-body" id="about-body">
+          <p class="loading">Loading…</p>
+        </div>
+      </section>
+
+      <section class="window" id="window-resume" data-app="resume" data-cascade="36" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="title-resume" tabindex="-1" inert>
+        <div class="titlebar">
+          <div class="traffic" role="group" aria-label="Resume window controls">
+            <button type="button" class="light light-close" data-action="close" aria-label="Close Resume"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+            <button type="button" class="light light-min" data-action="minimize" aria-label="Minimize Resume"><svg aria-hidden="true"><use href="#i-min"/></svg></button>
+            <button type="button" class="light light-max" data-action="maximize" aria-label="Maximize Resume"><svg aria-hidden="true"><use href="#i-max"/></svg></button>
+          </div>
+          <h2 class="title" id="title-resume">Resume</h2>
+          <button type="button" class="mobile-back" data-action="close">Back</button>
+        </div>
+        <div class="window-body" id="resume-body">
+          <p class="loading">Loading…</p>
+        </div>
+      </section>
+
+      <section class="window" id="window-projects" data-app="projects" data-cascade="64" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="title-projects" tabindex="-1" inert>
+        <div class="titlebar">
+          <div class="traffic" role="group" aria-label="Projects window controls">
+            <button type="button" class="light light-close" data-action="close" aria-label="Close Projects"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+            <button type="button" class="light light-min" data-action="minimize" aria-label="Minimize Projects"><svg aria-hidden="true"><use href="#i-min"/></svg></button>
+            <button type="button" class="light light-max" data-action="maximize" aria-label="Maximize Projects"><svg aria-hidden="true"><use href="#i-max"/></svg></button>
+          </div>
+          <h2 class="title" id="title-projects">Projects</h2>
+          <button type="button" class="mobile-back" data-action="close">Back</button>
+        </div>
+        <div class="window-body">
+          <div class="placeholder">
+            <span class="app-icon icon-projects" aria-hidden="true"><svg><use href="#i-projects"/></svg></span>
+            <h3>Projects</h3>
+            <p>This window is a placeholder. The Projects app will be added in a later update. Work and project history is already listed in Resume.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="window" id="window-contact" data-app="contact" data-cascade="18" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="title-contact" tabindex="-1" inert>
+        <div class="titlebar">
+          <div class="traffic" role="group" aria-label="Contact window controls">
+            <button type="button" class="light light-close" data-action="close" aria-label="Close Contact"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+            <button type="button" class="light light-min" data-action="minimize" aria-label="Minimize Contact"><svg aria-hidden="true"><use href="#i-min"/></svg></button>
+            <button type="button" class="light light-max" data-action="maximize" aria-label="Maximize Contact"><svg aria-hidden="true"><use href="#i-max"/></svg></button>
+          </div>
+          <h2 class="title" id="title-contact">Contact</h2>
+          <button type="button" class="mobile-back" data-action="close">Back</button>
+        </div>
+        <div class="window-body">
+          <div class="placeholder">
+            <span class="app-icon icon-contact" aria-hidden="true"><svg><use href="#i-contact"/></svg></span>
+            <h3>Contact</h3>
+            <p>This window is a placeholder. A full Contact app will be added in a later update.</p>
+            <div id="contact-now"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <nav class="dock" aria-label="Dock">
+      <button type="button" class="dock-item" data-app="about" aria-controls="window-about" aria-expanded="false">
+        <span class="app-icon icon-about" aria-hidden="true"><svg><use href="#i-about"/></svg></span>
+        <span class="dock-dot" aria-hidden="true"></span>
+        <span class="dock-label">About</span>
+        <span class="sr-only" data-state></span>
+      </button>
+      <button type="button" class="dock-item" data-app="resume" aria-controls="window-resume" aria-expanded="false">
+        <span class="app-icon icon-resume" aria-hidden="true"><svg><use href="#i-resume"/></svg></span>
+        <span class="dock-dot" aria-hidden="true"></span>
+        <span class="dock-label">Resume</span>
+        <span class="sr-only" data-state></span>
+      </button>
+      <button type="button" class="dock-item" data-app="projects" aria-controls="window-projects" aria-expanded="false">
+        <span class="app-icon icon-projects" aria-hidden="true"><svg><use href="#i-projects"/></svg></span>
+        <span class="dock-dot" aria-hidden="true"></span>
+        <span class="dock-label">Projects</span>
+        <span class="sr-only" data-state></span>
+      </button>
+      <a class="dock-item" href="/game-guides/">
+        <span class="app-icon icon-guides" aria-hidden="true"><svg><use href="#i-guides"/></svg></span>
+        <span class="dock-dot" aria-hidden="true"></span>
+        <span class="dock-label">Game Guides</span>
+      </a>
+      <a class="dock-item" href="/gen-flights/">
+        <span class="app-icon icon-flights" aria-hidden="true"><svg><use href="#i-flights"/></svg></span>
+        <span class="dock-dot" aria-hidden="true"></span>
+        <span class="dock-label">Gen Flights</span>
+      </a>
+      <button type="button" class="dock-item" data-app="contact" aria-controls="window-contact" aria-expanded="false">
+        <span class="app-icon icon-contact" aria-hidden="true"><svg><use href="#i-contact"/></svg></span>
+        <span class="dock-dot" aria-hidden="true"></span>
+        <span class="dock-label">Contact</span>
+        <span class="sr-only" data-state></span>
+      </button>
+    </nav>
+
+    <div class="home" id="home">
+      <div class="home-grid">
+        <button type="button" class="home-item" data-app="about" aria-controls="window-about" aria-expanded="false">
+          <span class="app-icon icon-about" aria-hidden="true"><svg><use href="#i-about"/></svg></span>
+          <span class="home-label">About</span>
+        </button>
+        <button type="button" class="home-item" data-app="resume" aria-controls="window-resume" aria-expanded="false">
+          <span class="app-icon icon-resume" aria-hidden="true"><svg><use href="#i-resume"/></svg></span>
+          <span class="home-label">Resume</span>
+        </button>
+        <button type="button" class="home-item" data-app="projects" aria-controls="window-projects" aria-expanded="false">
+          <span class="app-icon icon-projects" aria-hidden="true"><svg><use href="#i-projects"/></svg></span>
+          <span class="home-label">Projects</span>
+        </button>
+        <a class="home-item" href="/game-guides/">
+          <span class="app-icon icon-guides" aria-hidden="true"><svg><use href="#i-guides"/></svg></span>
+          <span class="home-label">Game Guides</span>
+        </a>
+        <a class="home-item" href="/gen-flights/">
+          <span class="app-icon icon-flights" aria-hidden="true"><svg><use href="#i-flights"/></svg></span>
+          <span class="home-label">Gen Flights</span>
+        </a>
+        <button type="button" class="home-item" data-app="contact" aria-controls="window-contact" aria-expanded="false">
+          <span class="app-icon icon-contact" aria-hidden="true"><svg><use href="#i-contact"/></svg></span>
+          <span class="home-label">Contact</span>
+        </button>
+      </div>
+      <div class="home-indicator" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <noscript>
+    <p class="noscript">JavaScript is required to open the desktop apps. Resume data still lives in resume.json.</p>
+  </noscript>
+  <script src="desktop.js"></script>
+</body>
+</html>

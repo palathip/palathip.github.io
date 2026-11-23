@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="img" aria-label="">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#07111c"/>
+      <stop offset="0.22" stop-color="#122844"/>
+      <stop offset="0.42" stop-color="#3a4d86"/>
+      <stop offset="0.56" stop-color="#c45b68"/>
+      <stop offset="0.68" stop-color="#f0a56a"/>
+      <stop offset="0.8" stop-color="#6a4058"/>
+      <stop offset="1" stop-color="#0b121c"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a2940"/>
+      <stop offset="1" stop-color="#070c14"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffe1b5" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#ffe1b5" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+  <circle cx="1080" cy="470" r="220" fill="url(#glow)"/>
+  <circle cx="1080" cy="500" r="42" fill="#fff1d4"/>
+  <path fill="#31466c" d="M0 640l120-40 150 50 160-130 180 90 150-150 190 120 160-90 170 80 160-70 160 90V820H0V640z"/>
+  <path fill="#1b2b46" d="M0 720l140-70 170 60 190-120 200 110 150-80 180 90 170-70 180 80 220-50V860H0V720z"/>
+  <path fill="#101a2c" d="M0 800l180-50 220 40 200-90 240 80 220-60 220 70 320-40V900H0V800z"/>
+  <rect y="860" width="1600" height="140" fill="url(#water)"/>
+</svg>
