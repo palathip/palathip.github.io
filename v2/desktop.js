@@ -281,6 +281,38 @@
     });
   });
 
+  document.addEventListener("click", function (event) {
+    var button = event.target.closest("[data-copy]");
+    if (!button) return;
+    var text = button.getAttribute("data-copy");
+    var mark = function (ok) {
+      button.textContent = ok ? "Copied!" : "Copy";
+      button.classList.toggle("is-copied", ok);
+      window.setTimeout(function () {
+        button.textContent = "Copy";
+        button.classList.remove("is-copied");
+      }, 1500);
+    };
+    function fallback() {
+      var area = document.createElement("textarea");
+      area.value = text;
+      area.setAttribute("readonly", "");
+      area.style.position = "fixed";
+      area.style.left = "-9999px";
+      document.body.appendChild(area);
+      area.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (err) { ok = false; }
+      area.remove();
+      mark(ok);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { mark(true); }, fallback);
+    } else {
+      fallback();
+    }
+  });
+
   document.addEventListener("keydown", function (event) {
     if (event.key !== "Escape") return;
     var win = frontWindow();
@@ -506,19 +538,6 @@
       '<h3 class="block-title">Publications</h3>' + publications;
   }
 
-  function renderContact(data) {
-    var basics = data.basics || {};
-    var slot = document.getElementById("contact-now");
-    if (!slot) return;
-    var lines = "";
-    if (basics.email) {
-      lines += '<a href="' + escapeHtml(safeUrl("mailto:" + basics.email)) + '">' + escapeHtml(basics.email) + "</a>";
-    }
-    if (basics.phone) lines += "<span>" + escapeHtml(basics.phone) + "</span>";
-    if (basics.location) lines += "<span>" + escapeHtml(basics.location.city) + ", " + escapeHtml(basics.location.region) + "</span>";
-    slot.innerHTML = lines ? '<div class="contact-lines">' + lines + "</div>" : "";
-  }
-
   function showLoadError() {
     var message = "The resume data could not be loaded.";
     document.getElementById("about-body").textContent = message;
@@ -536,7 +555,6 @@
     .then(function (data) {
       document.getElementById("about-body").innerHTML = renderAbout(data);
       document.getElementById("resume-body").innerHTML = renderResume(data);
-      renderContact(data);
       var about = document.getElementById("window-about");
       if (isDesktop() && about.classList.contains("is-open") && !about.classList.contains("is-max") && about.dataset.moved !== "1") {
         placeWindow(about);

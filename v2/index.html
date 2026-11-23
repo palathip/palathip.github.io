@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#07111c">
   <meta name="format-detection" content="telephone=no">
-  <title>Boom — Palathip Wuttiprayoon</title>
+  <title>Boombibu — Palathip Wuttiprayoon</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23F03551'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="desktop.css">
 </head>
@@ -18,8 +18,8 @@
     <symbol id="i-resume" viewBox="0 0 32 32">
       <path fill="currentColor" fill-rule="evenodd" d="M9 5.5h8.8L24.5 12.2V26a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V7.5a2 2 0 0 1 2-2zm7.2 1.6V12h4.9l-4.9-4.9zM10.5 16.2h11v1.5h-11v-1.5zm0 3.8h11v1.5h-11V20zm0 3.8h7.2v1.5h-7.2v-1.5z"/>
     </symbol>
-    <symbol id="i-projects" viewBox="0 0 32 32">
-      <path fill="currentColor" d="M6 11.2c0-1.3 1-2.4 2.4-2.4H13l1.7 2h8.9c1.3 0 2.4 1.1 2.4 2.4v8.2c0 1.3-1.1 2.4-2.4 2.4H8.4C7 23.8 6 22.7 6 21.4v-10.2z"/>
+    <symbol id="i-asset" viewBox="0 0 32 32">
+      <path fill="currentColor" fill-rule="evenodd" d="M8 9h16a2.5 2.5 0 0 1 2.5 2.5v9A2.5 2.5 0 0 1 24 23H8a2.5 2.5 0 0 1-2.5-2.5v-9A2.5 2.5 0 0 1 8 9zm8 2.6a4.4 4.4 0 1 0 .01 0z"/>
     </symbol>
     <symbol id="i-guides" viewBox="0 0 32 32">
       <path fill="currentColor" d="M7.2 12.4h17.6a4.2 4.2 0 0 1 4.2 4.2v.8a4.7 4.7 0 0 1-7.4 3.8l-1.4-1.3h-8.4l-1.4 1.3a4.7 4.7 0 0 1-7.4-3.8v-.8a4.2 4.2 0 0 1 4.2-4.2z"/>
@@ -28,8 +28,8 @@
     <symbol id="i-flights" viewBox="0 0 32 32">
       <path fill="currentColor" d="M2.2 16.6h6.4L14.2 8h2.8l-2.2 8.6H24l2.7-3.1h2.6L27.2 17l2.1 4.6h-2.6L24 18.4H14.8l2.2 9H14l-5.6-8.6H2.2c-.9 0-.9-2.2 0-2.2z"/>
     </symbol>
-    <symbol id="i-contact" viewBox="0 0 32 32">
-      <path fill="currentColor" d="M6 10.2h20a2 2 0 0 1 2 2v10.2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V12.2a2 2 0 0 1 2-2zm0 2.3 10 6.4 10-6.4v-.3H6v.3z"/>
+    <symbol id="i-qr" viewBox="0 0 32 32">
+      <path fill="currentColor" d="M6 6h8v8H6V6zm1.8 1.8v4.4h4.4V7.8H7.8zM18 6h8v8h-8V6zm1.8 1.8v4.4h4.4V7.8h-4.4zM6 18h8v8H6v-8zm1.8 1.8v4.4h4.4v-4.4H7.8zM18 18h3.2v3.2H18V18zm4.8 0H26v3.2h-3.2V18zM18 22.8h3.2V26H18v-3.2zm4.8 0H26V26h-3.2v-3.2z"/>
     </symbol>
     <symbol id="i-close" viewBox="0 0 12 12">
       <path d="M3.1 3.1l5.8 5.8M8.9 3.1L3.1 8.9" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
@@ -44,7 +44,7 @@
 
   <div class="desktop">
     <header class="topbar">
-      <h1>Boom</h1>
+      <h1>Boombibu</h1>
       <time id="clock"></time>
     </header>
 
@@ -79,42 +79,117 @@
         </div>
       </section>
 
-      <section class="window" id="window-projects" data-app="projects" data-cascade="64" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="title-projects" tabindex="-1" inert>
+      <section class="window" id="window-asset" data-app="asset" data-cascade="64" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="title-asset" tabindex="-1" inert>
         <div class="titlebar">
-          <div class="traffic" role="group" aria-label="Projects window controls">
-            <button type="button" class="light light-close" data-action="close" aria-label="Close Projects"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
-            <button type="button" class="light light-min" data-action="minimize" aria-label="Minimize Projects"><svg aria-hidden="true"><use href="#i-min"/></svg></button>
-            <button type="button" class="light light-max" data-action="maximize" aria-label="Maximize Projects"><svg aria-hidden="true"><use href="#i-max"/></svg></button>
+          <div class="traffic" role="group" aria-label="Digital Asset window controls">
+            <button type="button" class="light light-close" data-action="close" aria-label="Close Digital Asset"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+            <button type="button" class="light light-min" data-action="minimize" aria-label="Minimize Digital Asset"><svg aria-hidden="true"><use href="#i-min"/></svg></button>
+            <button type="button" class="light light-max" data-action="maximize" aria-label="Maximize Digital Asset"><svg aria-hidden="true"><use href="#i-max"/></svg></button>
           </div>
-          <h2 class="title" id="title-projects">Projects</h2>
+          <h2 class="title" id="title-asset">Digital Asset</h2>
           <button type="button" class="mobile-back" data-action="close">Back</button>
         </div>
         <div class="window-body">
-          <div class="placeholder">
-            <span class="app-icon icon-projects" aria-hidden="true"><svg><use href="#i-projects"/></svg></span>
-            <h3>Projects</h3>
-            <p>This window is a placeholder. The Projects app will be added in a later update. Work and project history is already listed in Resume.</p>
+          <p class="about-kicker">Wallet addresses</p>
+          <section class="pay-block">
+            <h3 class="app-heading">OKX</h3>
+            <div class="wallet">
+              <div>
+                <p class="wallet-kind">EVM</p>
+                <p class="wallet-address">0xa58b55dfce2d0afc4ac416b113effddee0a5b702</p>
+              </div>
+              <button type="button" class="copy-btn" data-copy="0xa58b55dfce2d0afc4ac416b113effddee0a5b702">Copy</button>
+            </div>
+          </section>
+          <section class="pay-block">
+            <h3 class="app-heading">Binance</h3>
+            <div class="wallet">
+              <div>
+                <p class="wallet-kind">EVM</p>
+                <p class="wallet-address">0x1f100bfcf7820ce79157fd6adb9b6618345f198c</p>
+              </div>
+              <button type="button" class="copy-btn" data-copy="0x1f100bfcf7820ce79157fd6adb9b6618345f198c">Copy</button>
+            </div>
+          </section>
+          <section class="pay-block">
+            <h3 class="app-heading"><img src="../images/walletofsatoshi-icon.png" alt="" width="22" height="22">Wallet of Satoshi</h3>
+            <div class="wallet">
+              <div>
+                <p class="wallet-kind"><img src="../images/lightning-icon.png" alt="" width="16" height="16">BTC LIGHTNING</p>
+                <p class="wallet-address">boombibu@walletofsatoshi.com</p>
+              </div>
+              <button type="button" class="copy-btn" data-copy="boombibu@walletofsatoshi.com">Copy</button>
+            </div>
+          </section>
+          <section class="pay-block">
+            <h3 class="app-heading"><img src="../images/hardware-wallet-icon.svg" alt="" width="22" height="22">My Wallet</h3>
+            <div class="wallet">
+              <div>
+                <p class="wallet-kind">BTC ON-CHAIN</p>
+                <p class="wallet-address">bc1qh4z460g6nsh630s9wyfh8zlweuykc5f97rtrr2</p>
+              </div>
+              <button type="button" class="copy-btn" data-copy="bc1qh4z460g6nsh630s9wyfh8zlweuykc5f97rtrr2">Copy</button>
+            </div>
+            <div class="wallet">
+              <div>
+                <p class="wallet-kind">EVM</p>
+                <p class="wallet-address">0x37cFA9f9fd9D5031492C3D1B87379206ffA4838F</p>
+              </div>
+              <button type="button" class="copy-btn" data-copy="0x37cFA9f9fd9D5031492C3D1B87379206ffA4838F">Copy</button>
+            </div>
+          </section>
+          <p class="asset-note"><sup>*</sup> EVM address supports tokens on EVM networks such as</p>
+          <div class="tags">
+            <span class="tag">Ethereum</span>
+            <span class="tag">ETC</span>
+            <span class="tag">BNB</span>
+            <span class="tag">X Layer</span>
+            <span class="tag">USDT</span>
+            <span class="tag">USDC</span>
+            <span class="tag">POL</span>
+            <span class="tag">DAI</span>
+            <span class="tag">AVAL</span>
+            <span class="tag">Base</span>
+            <span class="tag">Arbitrum</span>
+            <span class="tag">OP</span>
+            <span class="tag">Uniswap</span>
           </div>
         </div>
       </section>
 
-      <section class="window" id="window-contact" data-app="contact" data-cascade="18" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="title-contact" tabindex="-1" inert>
+      <section class="window" id="window-qr" data-app="qr" data-cascade="18" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="title-qr" tabindex="-1" inert>
         <div class="titlebar">
-          <div class="traffic" role="group" aria-label="Contact window controls">
-            <button type="button" class="light light-close" data-action="close" aria-label="Close Contact"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
-            <button type="button" class="light light-min" data-action="minimize" aria-label="Minimize Contact"><svg aria-hidden="true"><use href="#i-min"/></svg></button>
-            <button type="button" class="light light-max" data-action="maximize" aria-label="Maximize Contact"><svg aria-hidden="true"><use href="#i-max"/></svg></button>
+          <div class="traffic" role="group" aria-label="QR Payment window controls">
+            <button type="button" class="light light-close" data-action="close" aria-label="Close QR Payment"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+            <button type="button" class="light light-min" data-action="minimize" aria-label="Minimize QR Payment"><svg aria-hidden="true"><use href="#i-min"/></svg></button>
+            <button type="button" class="light light-max" data-action="maximize" aria-label="Maximize QR Payment"><svg aria-hidden="true"><use href="#i-max"/></svg></button>
           </div>
-          <h2 class="title" id="title-contact">Contact</h2>
+          <h2 class="title" id="title-qr">QR Payment</h2>
           <button type="button" class="mobile-back" data-action="close">Back</button>
         </div>
         <div class="window-body">
-          <div class="placeholder">
-            <span class="app-icon icon-contact" aria-hidden="true"><svg><use href="#i-contact"/></svg></span>
-            <h3>Contact</h3>
-            <p>This window is a placeholder. A full Contact app will be added in a later update.</p>
-            <div id="contact-now"></div>
-          </div>
+          <p class="about-kicker">เลือกช่องทางรับเงิน</p>
+          <p class="about-summary">สแกน QR เพื่อโอนเงิน</p>
+          <article class="pay-card">
+            <img class="pay-qr" src="../images/qr-payment.png" alt="QR Payment - นาย พลาธิป วุฒิประยูร" width="280" height="280">
+            <div>
+              <h3 class="pay-channel"><img src="../images/kbank-logo.png" alt="" width="28" height="28">KBANK</h3>
+              <p class="pay-row"><span>ชื่อ</span> นาย พลาธิป วุฒิประยูร</p>
+              <p class="pay-row"><span>บัญชี</span> <strong class="account-num">517-2-15834-1</strong> <button type="button" class="copy-btn" data-copy="517-2-15834-1">Copy</button></p>
+              <p class="pay-row"><span>ธนาคาร</span> กสิกรไทย</p>
+              <p class="pay-foot">✓ รับเงินได้จากทุกธนาคาร</p>
+            </div>
+          </article>
+          <article class="pay-card">
+            <img class="pay-qr" src="../images/qr-payment-make.png" alt="QR Payment MAKE — นาย พลาธิป วุฒิประยูร" width="280" height="280">
+            <div>
+              <h3 class="pay-channel"><img src="../images/make-by-kbank-logo.png" alt="" width="28" height="28">MAKE</h3>
+              <p class="pay-row"><span>ชื่อ</span> นาย พลาธิป วุฒิประยูร</p>
+              <p class="pay-row"><span>บัญชี</span> <strong class="account-num">093-1-36473-1</strong> <button type="button" class="copy-btn" data-copy="093-1-36473-1">Copy</button></p>
+              <p class="pay-row"><span>ช่องทาง</span> MAKE by KBANK</p>
+              <p class="pay-foot">✓ รับเงินได้จากทุกธนาคาร</p>
+            </div>
+          </article>
         </div>
       </section>
     </div>
@@ -132,10 +207,10 @@
         <span class="dock-label">Resume</span>
         <span class="sr-only" data-state></span>
       </button>
-      <button type="button" class="dock-item" data-app="projects" aria-controls="window-projects" aria-expanded="false">
-        <span class="app-icon icon-projects" aria-hidden="true"><svg><use href="#i-projects"/></svg></span>
+      <button type="button" class="dock-item" data-app="asset" aria-controls="window-asset" aria-expanded="false">
+        <span class="app-icon icon-asset" aria-hidden="true"><svg><use href="#i-asset"/></svg></span>
         <span class="dock-dot" aria-hidden="true"></span>
-        <span class="dock-label">Projects</span>
+        <span class="dock-label">Digital Asset</span>
         <span class="sr-only" data-state></span>
       </button>
       <a class="dock-item" href="/game-guides/">
@@ -148,10 +223,10 @@
         <span class="dock-dot" aria-hidden="true"></span>
         <span class="dock-label">Gen Flights</span>
       </a>
-      <button type="button" class="dock-item" data-app="contact" aria-controls="window-contact" aria-expanded="false">
-        <span class="app-icon icon-contact" aria-hidden="true"><svg><use href="#i-contact"/></svg></span>
+      <button type="button" class="dock-item" data-app="qr" aria-controls="window-qr" aria-expanded="false">
+        <span class="app-icon icon-qr" aria-hidden="true"><svg><use href="#i-qr"/></svg></span>
         <span class="dock-dot" aria-hidden="true"></span>
-        <span class="dock-label">Contact</span>
+        <span class="dock-label">QR Payment</span>
         <span class="sr-only" data-state></span>
       </button>
     </nav>
@@ -166,9 +241,9 @@
           <span class="app-icon icon-resume" aria-hidden="true"><svg><use href="#i-resume"/></svg></span>
           <span class="home-label">Resume</span>
         </button>
-        <button type="button" class="home-item" data-app="projects" aria-controls="window-projects" aria-expanded="false">
-          <span class="app-icon icon-projects" aria-hidden="true"><svg><use href="#i-projects"/></svg></span>
-          <span class="home-label">Projects</span>
+        <button type="button" class="home-item" data-app="asset" aria-controls="window-asset" aria-expanded="false">
+          <span class="app-icon icon-asset" aria-hidden="true"><svg><use href="#i-asset"/></svg></span>
+          <span class="home-label">Digital Asset</span>
         </button>
         <a class="home-item" href="/game-guides/">
           <span class="app-icon icon-guides" aria-hidden="true"><svg><use href="#i-guides"/></svg></span>
@@ -178,9 +253,9 @@
           <span class="app-icon icon-flights" aria-hidden="true"><svg><use href="#i-flights"/></svg></span>
           <span class="home-label">Gen Flights</span>
         </a>
-        <button type="button" class="home-item" data-app="contact" aria-controls="window-contact" aria-expanded="false">
-          <span class="app-icon icon-contact" aria-hidden="true"><svg><use href="#i-contact"/></svg></span>
-          <span class="home-label">Contact</span>
+        <button type="button" class="home-item" data-app="qr" aria-controls="window-qr" aria-expanded="false">
+          <span class="app-icon icon-qr" aria-hidden="true"><svg><use href="#i-qr"/></svg></span>
+          <span class="home-label">QR Payment</span>
         </button>
       </div>
       <div class="home-indicator" aria-hidden="true"></div>

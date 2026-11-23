@@ -126,10 +126,10 @@ button, a { touch-action: manipulation; }
   height: min(640px, calc(100% - 28px - var(--dock-space)));
 }
 
-.window[data-app="projects"],
-.window[data-app="contact"] {
-  width: min(480px, calc(100% - 40px));
-  height: min(340px, calc(100% - 28px - var(--dock-space)));
+.window[data-app="asset"],
+.window[data-app="qr"] {
+  width: min(780px, calc(100% - 40px));
+  height: min(640px, calc(100% - 28px - var(--dock-space)));
 }
 
 .window.is-open { display: flex; }
@@ -279,28 +279,128 @@ button, a { touch-action: manipulation; }
 
 .loading { color: var(--muted); margin: 8px 0; }
 
-.placeholder {
-  min-height: 100%;
+.wallet {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0 12px;
+}
+
+.wallet-kind {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 4px;
+  color: var(--red);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.app-heading {
+  display: flex;
+  align-items: center;
   gap: 8px;
+  margin: 18px 0 8px;
+  font-size: 16px;
   color: var(--ink);
 }
 
-.placeholder .app-icon { width: 64px; height: 64px; }
-.placeholder h3 { margin: 6px 0 0; font-size: 20px; }
-.placeholder p { margin: 0; max-width: 34em; color: var(--muted); line-height: 1.45; }
-.placeholder a { color: var(--red); font-weight: 650; }
+.app-heading::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: #f03551;
+  flex: none;
+}
 
-.contact-lines {
-  margin-top: 8px;
+.wallet-kind img,
+.app-heading img,
+.pay-channel img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+
+.wallet-kind img { width: 16px; height: 16px; }
+
+.wallet-address,
+.account-num {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.copy-btn {
+  flex: none;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.copy-btn:hover { border-color: var(--red); color: var(--red); }
+.copy-btn.is-copied { color: var(--red); }
+
+.asset-note {
+  margin: 16px 0 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.pay-card {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 18px;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.pay-qr {
+  width: 200px;
+  height: auto;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid var(--line);
+}
+
+.pay-channel {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 10px;
+  font-size: 18px;
+}
+
+.pay-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
   font-size: 15px;
+}
+
+.pay-row span {
+  min-width: 4.5em;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.pay-foot {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13px;
 }
 
 .about-layout {
@@ -512,9 +612,9 @@ a.chip:hover, .entry-url:hover, .highlights a:hover, .entry-site a:hover { text-
   bottom: 10px;
   transform: translateX(-50%);
   display: flex;
-  align-items: flex-end;
-  gap: 2px;
-  padding: 8px 10px 6px;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 12px;
   border-radius: 22px;
   background: rgba(255, 255, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.38);
@@ -569,11 +669,15 @@ a.chip:hover, .entry-url:hover, .highlights a:hover, .entry-site a:hover { text-
 }
 
 .dock-dot {
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 50%;
   width: 5px;
   height: 5px;
-  margin-top: 5px;
+  margin: 0;
   border-radius: 50%;
   background: transparent;
+  transform: translateX(-50%);
 }
 
 .dock-item.is-open .dock-dot { background: #fff; }
@@ -597,7 +701,7 @@ a.chip:hover, .entry-url:hover, .highlights a:hover, .entry-site a:hover { text-
     inset 0 1px 0 rgba(255, 255, 255, 0.4),
     inset 0 0 0 1px rgba(255, 255, 255, 0.16),
     0 1px 2px rgba(0, 0, 0, 0.28);
-  transform-origin: center bottom;
+  transform-origin: center center;
 }
 
 .app-icon::after {
@@ -612,10 +716,10 @@ a.chip:hover, .entry-url:hover, .highlights a:hover, .entry-site a:hover { text-
 
 .icon-about { background: linear-gradient(180deg, #8eb6ff 0%, #3d72e4 58%, #2a56c4 100%); }
 .icon-resume { background: linear-gradient(180deg, #ff958e 0%, #f0443c 55%, #d22528 100%); }
-.icon-projects { background: linear-gradient(180deg, #cbb0ff 0%, #8d5cf6 55%, #6b3ad4 100%); }
+.icon-asset { background: linear-gradient(180deg, #cbb0ff 0%, #8d5cf6 55%, #6b3ad4 100%); }
 .icon-guides { background: linear-gradient(180deg, #8ae497 0%, #37b24d 55%, #2b8a3e 100%); }
 .icon-flights { background: linear-gradient(180deg, #8adcf2 0%, #1c9cb5 55%, #0b7285 100%); }
-.icon-contact { background: linear-gradient(180deg, #ffc98a 0%, #f76707 55%, #e8590c 100%); }
+.icon-qr { background: linear-gradient(180deg, #ffc98a 0%, #f76707 55%, #e8590c 100%); }
 
 .home {
   display: none;
@@ -633,7 +737,7 @@ a.chip:hover, .entry-url:hover, .highlights a:hover, .entry-site a:hover { text-
 @media (hover: hover) and (pointer: fine) {
   .dock-item:hover .app-icon,
   .dock-item:focus-visible .app-icon {
-    transform: translateY(-8px) scale(1.08);
+    transform: scale(1.1);
   }
 
   .app-icon, .dock-label {
@@ -686,7 +790,7 @@ a.chip:hover, .entry-url:hover, .highlights a:hover, .entry-site a:hover { text-
 
   .home-label {
     margin-top: 6px;
-    max-width: 76px;
+    max-width: 84px;
     font-size: 11px;
     font-weight: 500;
     line-height: 1.2;
@@ -749,6 +853,8 @@ a.chip:hover, .entry-url:hover, .highlights a:hover, .entry-site a:hover { text-
   .chips, .profiles { justify-content: center; }
   .entry-top { flex-direction: column; }
   .entry-date { white-space: normal; }
+  .pay-card { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .pay-channel, .wallet, .pay-row { justify-content: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
