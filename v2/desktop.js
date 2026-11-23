@@ -443,6 +443,14 @@
     return age;
   }
 
+  function currentRole(data) {
+    var newest = (data.work || []).reduce(function (best, item) {
+      if (!best) return item;
+      return String(item.startDate || "") > String(best.startDate || "") ? item : best;
+    }, null);
+    return newest && newest.position ? newest.position : "";
+  }
+
   function renderAbout(data) {
     var basics = data.basics || {};
     var name = basics.name || "";
@@ -452,6 +460,8 @@
         '<h3 class="about-mac-name">' + escapeHtml(name) + "</h3>" +
         '<p class="about-mac-tagline">I\'m an Ordinary Man. :)</p>' +
         '<dl class="about-mac-specs">' +
+          "<div><dt>Role</dt><dd>" + escapeHtml(currentRole(data)) + "</dd></div>" +
+          "<div><dt>Location</dt><dd>Bangkok, Thailand</dd></div>" +
           "<div><dt>Age</dt><dd>" + escapeHtml(ageInYears()) + "</dd></div>" +
           "<div><dt>Gender</dt><dd>Male</dd></div>" +
           "<div><dt>MBTI</dt><dd>ISFP</dd></div>" +
