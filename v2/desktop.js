@@ -321,6 +321,12 @@
     closeApp(win);
   });
 
+  document.addEventListener("click", function (event) {
+    var opener = event.target.closest("[data-open-app]");
+    if (!opener) return;
+    openApp(opener.getAttribute("data-open-app"));
+  });
+
   mobileQuery.addEventListener("change", function () {
     windows().forEach(function (win) { win.classList.remove("is-minimizing"); });
     syncChrome();
@@ -428,20 +434,30 @@
     return '<p class="entry-site">website: <a href="' + escapeHtml(href) + '" target="_blank" rel="noopener noreferrer">' + escapeHtml(label) + "</a></p>";
   }
 
+  function ageInYears(now) {
+    var today = now || new Date();
+    var age = today.getFullYear() - 1991;
+    var month = today.getMonth();
+    var day = today.getDate();
+    if (month < 7 || (month === 7 && day < 7)) age -= 1;
+    return age;
+  }
+
   function renderAbout(data) {
     var basics = data.basics || {};
+    var name = basics.name || "";
     return '' +
-      '<div class="about-layout">' +
-        '<img class="about-photo" src="' + escapeHtml(pictureSrc(basics.picture)) + '" alt="Portrait of ' + escapeHtml(basics.name) + '" width="128" height="128">' +
-        '<div>' +
-          '<p class="about-kicker">I\'m an Ordinary Man. :)</p>' +
-          '<h3 class="about-name">' + escapeHtml(basics.name) + "</h3>" +
-          '<p class="about-label">' + escapeHtml(basics.label) + "</p>" +
-          '<p class="about-summary">' + escapeHtml(basics.summary) + "</p>" +
-          chipsHtml(basics) +
-          profilesHtml(basics.profiles) +
-          '<p class="about-motto">I WORK WITH YOU, NOT FOR YOU</p>' +
-        "</div>" +
+      '<div class="about-mac">' +
+        '<img class="about-mac-photo" src="' + escapeHtml(pictureSrc(basics.picture)) + '" alt="Portrait of ' + escapeHtml(name) + '" width="168" height="168" draggable="false">' +
+        '<h3 class="about-mac-name">' + escapeHtml(name) + "</h3>" +
+        '<p class="about-mac-tagline">I\'m an Ordinary Man. :)</p>' +
+        '<dl class="about-mac-specs">' +
+          "<div><dt>Age</dt><dd>" + escapeHtml(ageInYears()) + "</dd></div>" +
+          "<div><dt>Gender</dt><dd>Male</dd></div>" +
+          "<div><dt>MBTI</dt><dd>ISFP</dd></div>" +
+        "</dl>" +
+        '<button type="button" class="about-mac-more" data-open-app="resume">More Info...</button>' +
+        '<p class="about-mac-footer">I WORK WITH YOU, NOT FOR YOU</p>' +
       "</div>";
   }
 
