@@ -736,6 +736,35 @@
 
     html.is-embed .converter-dropdown-option:hover { background: rgba(0, 0, 0, 0.05); }
 
+    /* Same type as the /v2 windows: system UI font, with tabular figures instead of a mono face for numbers. */
+    html.is-embed body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+    }
+
+    /* !important only to beat the page's per-component font-family rules, and only in embed mode. */
+    html.is-embed body * { font-family: inherit !important; }
+
+    html.is-embed .price-card-compact .price-value,
+    html.is-embed .price-card-compact .price-value-thb,
+    html.is-embed .price-change,
+    html.is-embed .converter-input-wrap input,
+    html.is-embed .converter-result-input-wrap {
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0;
+    }
+
+    html.is-embed .price-card-compact .price-value {
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    html.is-embed .price-change { font-weight: 600; }
+
+    html.is-embed .converter-title { font-weight: 600; }
+
+    html.is-embed .converter-field label,
+    html.is-embed .converter-result-label { letter-spacing: 0.02em; }
+
     @media (max-width: 768px) {
       html.is-embed .main { padding: 16px 16px 24px; }
     }
