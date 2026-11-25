@@ -102,6 +102,7 @@
     }
 
     .price-card-compact {
+      min-width: 0;
       background: var(--bg-card);
       border-radius: 12px;
       padding: 14px 18px;
@@ -627,7 +628,7 @@
       }
 
       .price-list-compact {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .page-subtitle {
@@ -662,10 +663,78 @@
       }
     }
 
+    /* Two narrow columns on phones: put the coin icon above the numbers so prices fit. */
+    @media (max-width: 480px) {
+      .price-card-compact {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 12px 14px;
+      }
+
+      .price-card-compact .price-value {
+        font-size: 1rem;
+        overflow-wrap: anywhere;
+      }
+    }
+
     html.is-embed .site-header,
     html.is-embed .page-title { display: none; }
 
     html.is-embed .main { padding: 20px 24px 28px; }
+
+    /* Light theme inside the /v2 window, to match the other app windows there. */
+    html.is-embed {
+      color-scheme: light;
+      --bg-dark: #F5F5F7;
+      --bg-card: #FFFFFF;
+      --text-white: #1D1D1F;
+      --text-muted: #6E6E73;
+      --green: #0F7B6C;
+      --red: #C62828;
+    }
+
+    html.is-embed .price-card-compact,
+    html.is-embed .btc-compact,
+    html.is-embed .converter-card {
+      border-color: rgba(0, 0, 0, 0.08);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    html.is-embed .price-card-compact:hover,
+    html.is-embed .btc-compact:hover { border-color: var(--accent); }
+
+    html.is-embed .price-change.neutral,
+    html.is-embed .chart-modal-close:hover { background: rgba(0, 0, 0, 0.06); }
+
+    html.is-embed .chart-modal-overlay { background: rgba(0, 0, 0, 0.45); }
+
+    html.is-embed .chart-modal,
+    html.is-embed .chart-modal-header { border-color: rgba(0, 0, 0, 0.08); }
+
+    html.is-embed .converter-input-wrap,
+    html.is-embed .converter-result-item {
+      background: #F5F5F7;
+      border-color: rgba(0, 0, 0, 0.08);
+    }
+
+    html.is-embed .converter-input-wrap:focus-within { border-color: var(--accent); }
+
+    html.is-embed .converter-dropdown-trigger {
+      background: #FFFFFF;
+      border-color: rgba(0, 0, 0, 0.12);
+    }
+
+    html.is-embed .converter-dropdown-trigger:hover { border-color: rgba(0, 0, 0, 0.24); }
+
+    html.is-embed .converter-dropdown.open .converter-dropdown-trigger { border-color: var(--accent); }
+
+    html.is-embed .converter-dropdown-list {
+      border-color: rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    html.is-embed .converter-dropdown-option:hover { background: rgba(0, 0, 0, 0.05); }
 
     @media (max-width: 768px) {
       html.is-embed .main { padding: 16px 16px 24px; }
@@ -1200,7 +1269,8 @@
     function openChartModal(src, title) {
       if (src && title) {
         chartModalTitle.textContent = title;
-        chartModalIframe.src = src;
+        /* Light charts when embedded in the light /v2 window. */
+        chartModalIframe.src = document.documentElement.classList.contains('is-embed') ? src.replace('theme=dark', 'theme=light') : src;
         chartModal.classList.add('visible');
         chartModal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
