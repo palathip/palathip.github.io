@@ -904,10 +904,10 @@
           <div class="price-change" id="avax-change"><span>24h</span></div>
         </div>
       </div>
-      <div class="price-card-compact" id="tonPriceCard" role="button" tabindex="0" data-chart-src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_ton_chart&symbol=BINANCE:TONUSDT&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=1&theme=dark&style=1&timezone=Asia%2FBangkok&withdateranges=1&showpopupbutton=1&studies=%5B%5D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=th" data-chart-title="กราฟราคา TON/USDT">
-        <div class="coin-icon"><img src="../images/crypto/ton.svg" alt="TON"></div>
+      <div class="price-card-compact" id="tonPriceCard" role="button" tabindex="0" data-chart-src="https://www.tradingview.com/widgetembed/?frameElementId=tradingview_gram_chart&symbol=BINANCE:GRAMUSDT&interval=D&hidesidetoolbar=0&symboledit=1&saveimage=1&theme=dark&style=1&timezone=Asia%2FBangkok&withdateranges=1&showpopupbutton=1&studies=%5B%5D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=th" data-chart-title="กราฟราคา GRAM/USDT">
+        <div class="coin-icon"><img src="../images/crypto/gram.svg" alt="GRAM"></div>
         <div class="price-info">
-          <div class="coin-name">TON</div>
+          <div class="coin-name">GRAM</div>
           <div class="price-values">
             <div class="price-value" id="ton-price"><span class="loading">...</span></div>
             <div class="price-value-thb" id="ton-price-thb"></div>
@@ -950,7 +950,7 @@
               <option value="xlm">XLM</option>
               <option value="ada">ADA</option>
               <option value="avax">AVAX</option>
-              <option value="ton">TON</option>
+              <option value="ton">GRAM</option>
             </select>
           </div>
         </div>
@@ -1189,6 +1189,24 @@
         updatePrice(data.cardano, 'ada-price', 'ada-change', 'ada-price-thb');
         updatePrice(data['avalanche-2'], 'avax-price', 'avax-change', 'avax-price-thb');
         updatePrice(data['the-open-network'], 'ton-price', 'ton-change', 'ton-price-thb');
+        // Toncoin (TON) was renamed Gram (GRAM) in June 2026. If CoinGecko has no quote, use Binance GRAMUSDT.
+        if (data['the-open-network']?.usd == null) {
+          try {
+            const [gramPriceRes, gramChangeRes] = await Promise.all([
+              fetch('https://api.binance.com/api/v3/ticker/price?symbol=GRAMUSDT'),
+              fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=GRAMUSDT')
+            ]);
+            const gramPriceData = await gramPriceRes.json();
+            const gramChangeData = await gramChangeRes.json();
+            if (gramPriceData?.price) {
+              const gramUsd = parseFloat(gramPriceData.price);
+              const usdToThb = data?.bitcoin?.thb && data?.bitcoin?.usd ? data.bitcoin.thb / data.bitcoin.usd : null;
+              window.dashboardPrices.ton.usd = gramUsd;
+              window.dashboardPrices.ton.thb = usdToThb ? gramUsd * usdToThb : null;
+              updatePriceWithUsdThb(gramPriceData.price, usdToThb, 'ton-price', 'ton-change', 'ton-price-thb', gramChangeData?.priceChangePercent);
+            }
+          } catch (_) { /* keep CoinGecko's result */ }
+        }
         updatePrice(data['pax-gold'], 'gold-price', 'gold-change', 'gold-price-thb', true);
 
       } catch (err) {
@@ -1221,7 +1239,7 @@
       { id: 'xlm', label: 'XLM', icon: '../images/crypto/xlm.svg' },
       { id: 'ada', label: 'ADA', icon: '../images/crypto/ada.svg' },
       { id: 'avax', label: 'AVAX', icon: '../images/crypto/avax.svg' },
-      { id: 'ton', label: 'TON', icon: '../images/crypto/ton.svg' }
+      { id: 'ton', label: 'GRAM', icon: '../images/crypto/gram.svg' }
     ];
 
     let iconIdSeed = 0;
