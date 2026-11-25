@@ -116,8 +116,10 @@
   }
 
   function focusLauncher(id) {
-    var selector = (isDesktop() ? ".dock-item" : ".home-item") + '[data-app="' + id + '"]';
-    var opener = document.querySelector(selector);
+    var scope = isDesktop() ? [".dock-item", ".desktop-icon"] : [".home-item"];
+    var opener = document.querySelector(scope.map(function (cls) {
+      return cls + '[data-app="' + id + '"]';
+    }).join(", "));
     if (opener) opener.focus();
   }
 
@@ -127,6 +129,9 @@
     var already = win.classList.contains("is-open") && !win.classList.contains("is-min");
     win.dataset.minToken = "";
     win.classList.remove("is-min", "is-minimizing");
+    /* Embedded apps load on first open, not with the page. */
+    var frame = win.querySelector("iframe[data-src]");
+    if (frame && !frame.getAttribute("src")) frame.src = frame.dataset.src;
     if (!win.dataset.placed && isDesktop()) {
       win.classList.add("is-open");
       placeWindow(win);
@@ -146,8 +151,8 @@
   }
 
   function labelFor(id) {
-    var item = document.querySelector('.dock-item[data-app="' + id + '"] .dock-label');
-    return item ? item.textContent : id;
+    var title = document.getElementById("title-" + id);
+    return title ? title.textContent : id;
   }
 
   function closeApp(win) {
@@ -283,7 +288,7 @@
     bar.addEventListener("pointercancel", endDrag);
   });
 
-  document.querySelectorAll(".dock-item, .home-item").forEach(function (item) {
+  document.querySelectorAll(".dock-item, .home-item, .desktop-icon").forEach(function (item) {
     if (item.tagName === "A") return;
     item.addEventListener("click", function () {
       openApp(item.dataset.app);
@@ -334,6 +339,16 @@
     var opener = event.target.closest("[data-open-app]");
     if (!opener) return;
     openApp(opener.getAttribute("data-open-app"));
+  });
+
+  /* Clicks inside an embedded app never reach this document; raise its window when it takes focus. */
+  window.addEventListener("blur", function () {
+    window.setTimeout(function () {
+      var active = document.activeElement;
+      if (!active || active.tagName !== "IFRAME") return;
+      var win = active.closest(".window");
+      if (win && win.classList.contains("is-open")) bringToFront(win);
+    }, 0);
   });
 
   /* Keep open windows reachable after the viewport changes size. */
