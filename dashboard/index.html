@@ -661,9 +661,22 @@
         height: 44px;
       }
     }
+
+    html.is-embed .site-header,
+    html.is-embed .page-title { display: none; }
+
+    html.is-embed .main { padding: 20px 24px 28px; }
+
+    @media (max-width: 768px) {
+      html.is-embed .main { padding: 16px 16px 24px; }
+    }
   </style>
 </head>
 <body>
+  <script>
+    /* /v2 opens this page in a window with ?embed=1: drop the site chrome there. */
+    if (new URLSearchParams(location.search).has('embed')) document.documentElement.classList.add('is-embed');
+  </script>
   <script src="../site-nav.js"></script>
 
   <main class="main">

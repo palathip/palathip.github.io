@@ -40,6 +40,11 @@
     <symbol id="i-max" viewBox="0 0 12 12">
       <path d="M6 2.6v6.8M2.6 6h6.8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
     </symbol>
+    <symbol id="i-dashboard" viewBox="0 0 32 32">
+      <path fill="currentColor" opacity=".38" d="M7 22h3.4v4H7zm5.6-3h3.4v7h-3.4zm5.6 2h3.4v5h-3.4zm5.6-6H27v11h-3.2z"/>
+      <path d="M6 17.5l6-5.2 4.6 3.4L26 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="26" cy="7" r="2.2" fill="currentColor"/>
+    </symbol>
     <symbol id="i-check" viewBox="0 0 16 16">
       <path d="M3.5 8.4l2.9 2.9 6.1-6.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
     </symbol>
@@ -52,6 +57,16 @@
     </header>
 
     <div class="stage" id="stage">
+      <ul class="desktop-icons" aria-label="Desktop">
+        <li>
+          <button type="button" class="desktop-icon" data-app="dashboard" aria-controls="window-dashboard" aria-expanded="false">
+            <span class="app-icon icon-dashboard" aria-hidden="true"><svg><use href="#i-dashboard"/></svg></span>
+            <span class="desktop-label">Dashboard</span>
+            <span class="sr-only" data-state></span>
+          </button>
+        </li>
+      </ul>
+
       <section class="window" id="window-about" data-app="about" data-cascade="0" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="title-about" tabindex="-1" inert>
         <div class="titlebar">
           <div class="traffic" role="group" aria-label="About window controls">
@@ -185,6 +200,21 @@
           </article>
         </div>
       </section>
+
+      <section class="window window-dark" id="window-dashboard" data-app="dashboard" data-cascade="28" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="title-dashboard" tabindex="-1" inert>
+        <div class="titlebar">
+          <div class="traffic" role="group" aria-label="Dashboard window controls">
+            <button type="button" class="light light-close" data-action="close" aria-label="Close Dashboard"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+            <button type="button" class="light light-min" data-action="minimize" aria-label="Minimize Dashboard"><svg aria-hidden="true"><use href="#i-min"/></svg></button>
+            <button type="button" class="light light-max" data-action="maximize" aria-label="Maximize Dashboard"><svg aria-hidden="true"><use href="#i-max"/></svg></button>
+          </div>
+          <h2 class="title" id="title-dashboard">Dashboard</h2>
+          <button type="button" class="mobile-back" data-action="close">Back</button>
+        </div>
+        <div class="window-body window-body-frame">
+          <iframe class="app-frame" title="Dashboard: prices and asset converter" data-src="../dashboard/?embed=1"></iframe>
+        </div>
+      </section>
     </div>
 
     <nav class="dock" aria-label="Dock">
@@ -249,6 +279,10 @@
         <button type="button" class="home-item" data-app="qr" aria-controls="window-qr" aria-expanded="false">
           <span class="app-icon icon-qr" aria-hidden="true"><svg><use href="#i-qr"/></svg></span>
           <span class="home-label">QR Payment</span>
+        </button>
+        <button type="button" class="home-item" data-app="dashboard" aria-controls="window-dashboard" aria-expanded="false">
+          <span class="app-icon icon-dashboard" aria-hidden="true"><svg><use href="#i-dashboard"/></svg></span>
+          <span class="home-label">Dashboard</span>
         </button>
       </div>
       <div class="home-indicator" aria-hidden="true"></div>
