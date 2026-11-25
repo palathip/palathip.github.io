@@ -63,18 +63,6 @@
       max-width: 100%;
     }
 
-    .dashboard-hero {
-      display: flex;
-      gap: 24px;
-      margin-bottom: 32px;
-      flex-wrap: wrap;
-    }
-
-    .dashboard-hero-right {
-      flex: 1;
-      min-width: 280px;
-    }
-
     .btc-compact {
       background: var(--bg-card);
       border-radius: 16px;
@@ -103,116 +91,6 @@
     .btc-compact .price-change {
       padding: 4px 10px;
       font-size: 0.8rem;
-    }
-
-    .public-pool-card {
-      background: var(--bg-card);
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      overflow: hidden;
-      position: relative;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
-    }
-
-    .public-pool-header {
-      padding: 20px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .public-pool-header-left {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .public-pool-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #F03551 0%, #c92a43 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-    }
-
-    .public-pool-icon svg {
-      width: 22px;
-      height: 22px;
-    }
-
-    .public-pool-title-wrap h3 {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text-white);
-      margin-bottom: 2px;
-      letter-spacing: -0.3px;
-    }
-
-    .public-pool-cta {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      padding: 8px 14px;
-      background: rgba(240, 53, 81, 0.15);
-      border: 1px solid rgba(240, 53, 81, 0.4);
-      border-radius: 8px;
-      color: var(--text-white);
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .public-pool-cta:hover {
-      background: rgba(240, 53, 81, 0.25);
-      border-color: var(--accent);
-    }
-
-    .public-pool-cta svg {
-      width: 14px;
-      height: 14px;
-    }
-
-    .public-pool-content {
-      padding: 0 24px 24px;
-    }
-
-    .public-pool-iframe-wrap {
-      margin-top: 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      overflow: hidden;
-      border-radius: 0 0 20px 20px;
-      min-height: 420px;
-    }
-
-    .public-pool-iframe-wrap iframe {
-      width: 100%;
-      height: 520px;
-      border: none;
-      display: block;
-    }
-
-    @media (max-width: 768px) {
-      .public-pool-iframe-wrap iframe {
-        height: 480px;
-      }
-      .dashboard-hero-right {
-        min-width: 100%;
-      }
-      .public-pool-header {
-        padding: 20px;
-      }
-      .public-pool-content {
-        padding: 0 20px 20px;
-      }
     }
 
     .price-list-compact {
@@ -984,33 +862,6 @@
       </div>
     </div>
 
-    <div class="dashboard-hero">
-      <div class="dashboard-hero-right">
-        <div class="public-pool-card">
-          <div class="public-pool-header">
-            <div class="public-pool-header-left">
-              <div class="public-pool-icon">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <div class="public-pool-title-wrap">
-                <h3>Mining & Pool</h3>
-              </div>
-            </div>
-            <a href="https://web.public-pool.io/#/app/bc1qh4z460g6nsh630s9wyfh8zlweuykc5f97rtrr2" target="_blank" rel="noopener" class="public-pool-cta">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-              Public Pool
-            </a>
-          </div>
-          <div class="public-pool-content">
-            <div class="public-pool-iframe-wrap">
-              <iframe src="https://web.public-pool.io/#/app/bc1qh4z460g6nsh630s9wyfh8zlweuykc5f97rtrr2" title="Public Pool Dashboard" loading="lazy"></iframe>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </main>
 
   <!-- Chart Popup Modal -->
