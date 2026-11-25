@@ -1,7 +1,8 @@
 /* Desktop shell for /v2/. Copy comes from ../resume.json so it is not forked. */
 (function () {
-  var mobileQuery = window.matchMedia("(max-width: 760px)");
-  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* Keep in sync with the mobile @media query in desktop.css. */
+  var mobileQuery = window.matchMedia("(max-width: 760px), (max-height: 500px) and (pointer: coarse)");
+  var motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   var clock = document.getElementById("clock");
   var stage = document.getElementById("stage");
   var dragging = null;
@@ -19,8 +20,16 @@
     clock.dateTime = now.toISOString();
   }
 
-  tick();
-  window.setInterval(tick, 1000);
+  /* The clock only shows minutes, so tick on each minute boundary. */
+  function scheduleTick() {
+    tick();
+    window.setTimeout(scheduleTick, 60000 - (Date.now() % 60000) + 50);
+  }
+
+  scheduleTick();
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) tick();
+  });
 
   function windows() {
     return Array.prototype.slice.call(document.querySelectorAll(".window"));
@@ -174,7 +183,7 @@
     }
     var token = String(Date.now()) + Math.random();
     win.dataset.minToken = token;
-    if (reduceMotion) {
+    if (motionQuery.matches) {
       finishMinimize(win, token);
       return;
     }
@@ -327,10 +336,44 @@
     openApp(opener.getAttribute("data-open-app"));
   });
 
+  /* Keep open windows reachable after the viewport changes size. */
+  function reclampWindows() {
+    if (!isDesktop()) return;
+    windows().forEach(function (win) {
+      if (!win.classList.contains("is-open") || win.classList.contains("is-max")) return;
+      if (!win.dataset.placed) {
+        if (!win.classList.contains("is-min")) placeWindow(win);
+        return;
+      }
+      /* Pull the window fully back into view when it fits, then apply the drag limits. */
+      var left = Math.min(parseFloat(win.style.left) || 0, Math.max(0, stage.clientWidth - win.offsetWidth));
+      var top = Math.min(parseFloat(win.style.top) || 0, Math.max(0, stage.clientHeight - win.offsetHeight));
+      var pos = clamp(win, left, top);
+      win.style.left = pos.left + "px";
+      win.style.top = pos.top + "px";
+    });
+  }
+
+  var resizeFrame = 0;
+  window.addEventListener("resize", function () {
+    if (resizeFrame) return;
+    resizeFrame = window.requestAnimationFrame(function () {
+      resizeFrame = 0;
+      reclampWindows();
+    });
+  });
+
   mobileQuery.addEventListener("change", function () {
     windows().forEach(function (win) { win.classList.remove("is-minimizing"); });
     syncChrome();
+    reclampWindows();
   });
+
+  /* Hide a third-party icon that fails to load instead of showing a broken image. */
+  document.addEventListener("error", function (event) {
+    var img = event.target;
+    if (img && img.tagName === "IMG" && img.closest(".window-body")) img.style.display = "none";
+  }, true);
 
   function escapeHtml(value) {
     return String(value == null ? "" : value).replace(/[&<>"']/g, function (ch) {
@@ -451,6 +494,11 @@
     return newest && newest.position ? newest.position : "";
   }
 
+  function locationText(location) {
+    if (!location) return "";
+    return [location.city, location.countryCode].filter(Boolean).join(", ");
+  }
+
   function renderAbout(data) {
     var basics = data.basics || {};
     var name = basics.name || "";
@@ -461,7 +509,7 @@
         '<p class="about-mac-tagline">I\'m an Ordinary Man. :)</p>' +
         '<dl class="about-mac-specs">' +
           "<div><dt>Role</dt><dd>" + escapeHtml(currentRole(data)) + "</dd></div>" +
-          "<div><dt>Location</dt><dd>Hatyai, Thailand</dd></div>" +
+          (locationText(basics.location) ? "<div><dt>Location</dt><dd>" + escapeHtml(locationText(basics.location)) + "</dd></div>" : "") +
           "<div><dt>Age</dt><dd>" + escapeHtml(ageInYears()) + "</dd></div>" +
           "<div><dt>Gender</dt><dd>Male</dd></div>" +
           "<div><dt>MBTI</dt><dd>ISFP</dd></div>" +
