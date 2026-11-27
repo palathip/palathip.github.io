@@ -290,8 +290,10 @@
 
   document.querySelectorAll(".dock-item, .home-item, .desktop-icon").forEach(function (item) {
     if (item.tagName === "A") return;
-    item.addEventListener("click", function () {
+    item.addEventListener("click", function (event) {
       openApp(item.dataset.app);
+      /* Mouse clicks leave :focus-visible on the dock item, which keeps the tooltip stuck. */
+      if (event.detail) item.blur();
     });
   });
 
@@ -329,6 +331,11 @@
 
   document.addEventListener("keydown", function (event) {
     if (event.key !== "Escape") return;
+    if (lightboxOpen()) {
+      event.preventDefault();
+      closeLightbox();
+      return;
+    }
     var win = frontWindow();
     if (!win) return;
     event.preventDefault();
@@ -631,6 +638,163 @@
     var message = "The resume data could not be loaded.";
     document.getElementById("about-body").textContent = message;
     document.getElementById("resume-body").textContent = message;
+  }
+
+
+  /* QR Payment lightbox: enlarge a slip, step between the two, and save the image. */
+  var lightbox = document.getElementById("qr-lightbox");
+  var lightboxImg = document.getElementById("qr-lightbox-image");
+  var lightboxTitle = document.getElementById("qr-lightbox-title");
+  var lightboxSave = document.getElementById("qr-lightbox-save");
+  var qrTriggers = Array.prototype.slice.call(document.querySelectorAll("#window-qr .pay-qr"));
+  var lightboxIndex = 0;
+  var lightboxReturn = null;
+  var swipeStartX = null;
+
+  function lightboxOpen() {
+    return !!(lightbox && lightbox.classList.contains("is-open"));
+  }
+
+  function filenameFromSrc(src) {
+    try {
+      var path = new URL(src, window.location.href).pathname;
+      return path.split("/").pop() || "qr-payment.png";
+    } catch (err) {
+      return "qr-payment.png";
+    }
+  }
+
+  function focusableInLightbox() {
+    return Array.prototype.slice.call(lightbox.querySelectorAll("button, a[href]"));
+  }
+
+  function showLightbox(index) {
+    if (!qrTriggers.length) return;
+    lightboxIndex = (index + qrTriggers.length) % qrTriggers.length;
+    var trigger = qrTriggers[lightboxIndex];
+    var src = trigger.currentSrc || trigger.getAttribute("src");
+    var name = trigger.getAttribute("data-channel") || "QR Payment";
+    lightboxImg.src = src;
+    lightboxImg.alt = trigger.alt || name;
+    lightboxTitle.textContent = name;
+    lightboxSave.href = src;
+    lightboxSave.setAttribute("download", filenameFromSrc(src));
+    lightbox.classList.add("is-open");
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.classList.add("has-lightbox");
+    window.requestAnimationFrame(function () {
+      var closeBtn = lightbox.querySelector('[data-lightbox-action="close"]');
+      if (closeBtn) closeBtn.focus();
+    });
+  }
+
+  function openLightbox(index, trigger) {
+    lightboxReturn = trigger || document.activeElement;
+    showLightbox(index);
+  }
+
+  function closeLightbox() {
+    if (!lightboxOpen()) return;
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("has-lightbox");
+    lightboxImg.removeAttribute("src");
+    var back = lightboxReturn;
+    lightboxReturn = null;
+    if (back && typeof back.focus === "function") {
+      window.requestAnimationFrame(function () {
+        back.focus({ preventScroll: true });
+      });
+    }
+  }
+
+  qrTriggers.forEach(function (img, index) {
+    img.addEventListener("click", function () {
+      openLightbox(index, img);
+    });
+    img.addEventListener("keydown", function (event) {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      openLightbox(index, img);
+    });
+  });
+
+  if (lightbox) {
+    lightbox.addEventListener("click", function (event) {
+      var action = event.target.closest("[data-lightbox-action]");
+      if (!action || !lightbox.contains(action)) return;
+      var name = action.getAttribute("data-lightbox-action");
+      if (name === "close") closeLightbox();
+      else if (name === "prev") showLightbox(lightboxIndex - 1);
+      else if (name === "next") showLightbox(lightboxIndex + 1);
+    });
+
+    lightboxSave.addEventListener("click", function (event) {
+      var url = lightboxSave.getAttribute("href");
+      if (!url || url === "#") return;
+      event.preventDefault();
+      var name = lightboxSave.getAttribute("download") || filenameFromSrc(url);
+      fetch(url).then(function (response) {
+        if (!response.ok) throw new Error("save");
+        return response.blob();
+      }).then(function (blob) {
+        var objectUrl = URL.createObjectURL(blob);
+        var link = document.createElement("a");
+        link.href = objectUrl;
+        link.download = name;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.setTimeout(function () { URL.revokeObjectURL(objectUrl); }, 1000);
+      }).catch(function () {
+        window.open(url, "_blank", "noopener");
+      });
+    });
+
+    lightbox.addEventListener("touchstart", function (event) {
+      if (event.changedTouches.length !== 1) return;
+      swipeStartX = event.changedTouches[0].clientX;
+    }, { passive: true });
+
+    lightbox.addEventListener("touchend", function (event) {
+      if (swipeStartX == null || event.changedTouches.length !== 1) {
+        swipeStartX = null;
+        return;
+      }
+      var dx = event.changedTouches[0].clientX - swipeStartX;
+      swipeStartX = null;
+      if (Math.abs(dx) < 50) return;
+      if (dx > 0) showLightbox(lightboxIndex - 1);
+      else showLightbox(lightboxIndex + 1);
+    }, { passive: true });
+
+    document.addEventListener("touchmove", function (event) {
+      if (!lightboxOpen()) return;
+      event.preventDefault();
+    }, { passive: false });
+
+    document.addEventListener("keydown", function (event) {
+      if (!lightboxOpen()) return;
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        showLightbox(lightboxIndex - 1);
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        showLightbox(lightboxIndex + 1);
+      } else if (event.key === "Tab") {
+        var nodes = focusableInLightbox();
+        if (!nodes.length) return;
+        var first = nodes[0];
+        var last = nodes[nodes.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    });
   }
 
   if (isDesktop()) openApp("about");
