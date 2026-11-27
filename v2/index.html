@@ -221,6 +221,38 @@
           <iframe class="app-frame" title="Dashboard: prices and asset converter" data-src="../dashboard/?embed=1"></iframe>
         </div>
       </section>
+
+      <section class="window has-popout" id="window-guides" data-app="guides" data-cascade="52" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="title-guides" tabindex="-1" inert>
+        <div class="titlebar">
+          <div class="traffic" role="group" aria-label="Game Guides window controls">
+            <button type="button" class="light light-close" data-action="close" aria-label="Close Game Guides"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+            <button type="button" class="light light-min" data-action="minimize" aria-label="Minimize Game Guides"><svg aria-hidden="true"><use href="#i-min"/></svg></button>
+            <button type="button" class="light light-max" data-action="maximize" aria-label="Maximize Game Guides"><svg aria-hidden="true"><use href="#i-max"/></svg></button>
+          </div>
+          <h2 class="title" id="title-guides">Game Guides</h2>
+          <button type="button" class="mobile-back" data-action="close">Back</button>
+          <a class="titlebar-popout" href="/game-guides/" target="_blank" rel="noopener">Open in new tab</a>
+        </div>
+        <div class="window-body window-body-frame">
+          <iframe class="app-frame" title="Game Guides" data-src="/game-guides/"></iframe>
+        </div>
+      </section>
+
+      <section class="window has-popout" id="window-flights" data-app="flights" data-cascade="80" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="title-flights" tabindex="-1" inert>
+        <div class="titlebar">
+          <div class="traffic" role="group" aria-label="Gen Flights window controls">
+            <button type="button" class="light light-close" data-action="close" aria-label="Close Gen Flights"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+            <button type="button" class="light light-min" data-action="minimize" aria-label="Minimize Gen Flights"><svg aria-hidden="true"><use href="#i-min"/></svg></button>
+            <button type="button" class="light light-max" data-action="maximize" aria-label="Maximize Gen Flights"><svg aria-hidden="true"><use href="#i-max"/></svg></button>
+          </div>
+          <h2 class="title" id="title-flights">Gen Flights</h2>
+          <button type="button" class="mobile-back" data-action="close">Back</button>
+          <a class="titlebar-popout" href="/gen-flights/" target="_blank" rel="noopener">Open in new tab</a>
+        </div>
+        <div class="window-body window-body-frame">
+          <iframe class="app-frame" title="Gen Flights" data-src="/gen-flights/"></iframe>
+        </div>
+      </section>
     </div>
 
     <nav class="dock" aria-label="Dock">
@@ -242,16 +274,18 @@
         <span class="dock-label">Digital Asset</span>
         <span class="sr-only" data-state></span>
       </button>
-      <a class="dock-item" href="/game-guides/">
+      <button type="button" class="dock-item" data-app="guides" aria-controls="window-guides" aria-expanded="false">
         <span class="app-icon icon-guides" aria-hidden="true"><svg><use href="#i-guides"/></svg></span>
         <span class="dock-dot" aria-hidden="true"></span>
         <span class="dock-label">Game Guides</span>
-      </a>
-      <a class="dock-item" href="/gen-flights/">
+        <span class="sr-only" data-state></span>
+      </button>
+      <button type="button" class="dock-item" data-app="flights" aria-controls="window-flights" aria-expanded="false">
         <span class="app-icon icon-flights" aria-hidden="true"><svg><use href="#i-flights"/></svg></span>
         <span class="dock-dot" aria-hidden="true"></span>
         <span class="dock-label">Gen Flights</span>
-      </a>
+        <span class="sr-only" data-state></span>
+      </button>
       <button type="button" class="dock-item" data-app="qr" aria-controls="window-qr" aria-expanded="false">
         <span class="app-icon icon-qr" aria-hidden="true"><svg><use href="#i-qr"/></svg></span>
         <span class="dock-dot" aria-hidden="true"></span>
@@ -274,14 +308,14 @@
           <span class="app-icon icon-asset" aria-hidden="true"><svg><use href="#i-asset"/></svg></span>
           <span class="home-label">Digital Asset</span>
         </button>
-        <a class="home-item" href="/game-guides/">
+        <button type="button" class="home-item" data-app="guides" aria-controls="window-guides" aria-expanded="false">
           <span class="app-icon icon-guides" aria-hidden="true"><svg><use href="#i-guides"/></svg></span>
           <span class="home-label">Game Guides</span>
-        </a>
-        <a class="home-item" href="/gen-flights/">
+        </button>
+        <button type="button" class="home-item" data-app="flights" aria-controls="window-flights" aria-expanded="false">
           <span class="app-icon icon-flights" aria-hidden="true"><svg><use href="#i-flights"/></svg></span>
           <span class="home-label">Gen Flights</span>
-        </a>
+        </button>
         <button type="button" class="home-item" data-app="qr" aria-controls="window-qr" aria-expanded="false">
           <span class="app-icon icon-qr" aria-hidden="true"><svg><use href="#i-qr"/></svg></span>
           <span class="home-label">QR Payment</span>
@@ -315,7 +349,7 @@
   </div>
 
   <noscript>
-    <p class="noscript">JavaScript is required to open the desktop apps. Resume data still lives in resume.json.</p>
+    <p class="noscript">JavaScript is required to open the desktop apps. Resume data still lives in resume.json. <a href="/game-guides/">Game Guides</a> and <a href="/gen-flights/">Gen Flights</a> open as normal pages.</p>
   </noscript>
   <script src="desktop.js"></script>
 </body>
