@@ -1253,19 +1253,12 @@ a.chip:hover, .entry-url:hover, .highlights a:hover, .entry-site a:hover { text-
 
 .qr-lightbox-toolbar {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 16px;
   margin-top: 14px;
-}
-
-.qr-lightbox-caption {
-  margin: 0;
-  color: #fff;
-  font-size: 15px;
-  font-weight: 600;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75);
+  max-width: 100%;
 }
 
 .qr-lightbox-save {
@@ -1345,11 +1338,6 @@ a.chip:hover, .entry-url:hover, .highlights a:hover, .entry-site a:hover { text-
     transform: none;
   }
 
-  .qr-lightbox-toolbar {
-    width: 100%;
-    justify-content: space-between;
-  }
-
   .qr-lightbox-stage img {
     max-height: calc(100dvh - 160px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
   }
@@ -1359,6 +1347,11 @@ body.has-lightbox .window-body {
   overflow: hidden;
 }
 
+/* Card meta and the dock share the toolbar's band and show through the scrim. */
+body.has-lightbox .pay-meta,
+body.has-lightbox .dock {
+  visibility: hidden;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .window,
