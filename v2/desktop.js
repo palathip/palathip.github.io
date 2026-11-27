@@ -644,7 +644,6 @@
   /* QR Payment lightbox: enlarge a slip, step between the two, and save the image. */
   var lightbox = document.getElementById("qr-lightbox");
   var lightboxImg = document.getElementById("qr-lightbox-image");
-  var lightboxTitle = document.getElementById("qr-lightbox-title");
   var lightboxSave = document.getElementById("qr-lightbox-save");
   var qrTriggers = Array.prototype.slice.call(document.querySelectorAll("#window-qr .pay-qr"));
   var lightboxIndex = 0;
@@ -676,14 +675,14 @@
     var name = trigger.getAttribute("data-channel") || "QR Payment";
     lightboxImg.src = src;
     lightboxImg.alt = trigger.alt || name;
-    lightboxTitle.textContent = name;
+    lightbox.setAttribute("aria-label", name);
     lightboxSave.href = src;
     lightboxSave.setAttribute("download", filenameFromSrc(src));
     lightbox.classList.add("is-open");
     lightbox.setAttribute("aria-hidden", "false");
     document.body.classList.add("has-lightbox");
     window.requestAnimationFrame(function () {
-      var closeBtn = lightbox.querySelector('[data-lightbox-action="close"]');
+      var closeBtn = lightbox.querySelector(".qr-lightbox-close");
       if (closeBtn) closeBtn.focus();
     });
   }
