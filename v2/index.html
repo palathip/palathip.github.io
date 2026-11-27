@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#07111c">
   <meta name="format-detection" content="telephone=no">
   <title>Boombibu Desktop — Palathip Wuttiprayoon</title>
@@ -33,6 +33,12 @@
     </symbol>
     <symbol id="i-close" viewBox="0 0 12 12">
       <path d="M3.1 3.1l5.8 5.8M8.9 3.1L3.1 8.9" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="i-prev" viewBox="0 0 12 12">
+      <path d="M7.8 2.2L3.8 6l4 3.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-next" viewBox="0 0 12 12">
+      <path d="M4.2 2.2L8.2 6l-4 3.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </symbol>
     <symbol id="i-min" viewBox="0 0 12 12">
       <path d="M2.4 6h7.2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -176,28 +182,28 @@
           <button type="button" class="mobile-back" data-action="close">Back</button>
         </div>
         <div class="window-body">
-          <p class="about-kicker">เลือกช่องทางรับเงิน</p>
-          <p class="about-summary">สแกน QR เพื่อโอนเงิน</p>
-          <article class="pay-card">
-            <img loading="lazy" decoding="async" class="pay-qr" src="../images/qr-payment.png" alt="QR Payment - นาย พลาธิป วุฒิประยูร" width="280" height="280">
-            <div>
-              <h3 class="pay-channel"><img loading="lazy" decoding="async" src="../images/kbank-logo.png" alt="" width="28" height="28">KBANK</h3>
-              <p class="pay-row"><span>ชื่อ</span> นาย พลาธิป วุฒิประยูร</p>
-              <p class="pay-row"><span>บัญชี</span> <strong class="account-num">517-2-15834-1</strong> <button type="button" class="copy-btn" data-copy="517-2-15834-1">Copy</button></p>
-              <p class="pay-row"><span>ธนาคาร</span> กสิกรไทย</p>
-              <p class="pay-foot"><svg class="pay-check" aria-hidden="true"><use href="#i-check"/></svg>รับเงินได้จากทุกธนาคาร</p>
-            </div>
-          </article>
-          <article class="pay-card">
-            <img loading="lazy" decoding="async" class="pay-qr" src="../images/qr-payment-make.png" alt="QR Payment MAKE — นาย พลาธิป วุฒิประยูร" width="280" height="280">
-            <div>
-              <h3 class="pay-channel"><img loading="lazy" decoding="async" src="../images/make-by-kbank-logo.png" alt="" width="28" height="28">MAKE</h3>
-              <p class="pay-row"><span>ชื่อ</span> นาย พลาธิป วุฒิประยูร</p>
-              <p class="pay-row"><span>บัญชี</span> <strong class="account-num">093-1-36473-1</strong> <button type="button" class="copy-btn" data-copy="093-1-36473-1">Copy</button></p>
-              <p class="pay-row"><span>ช่องทาง</span> MAKE by KBANK</p>
-              <p class="pay-foot"><svg class="pay-check" aria-hidden="true"><use href="#i-check"/></svg>รับเงินได้จากทุกธนาคาร</p>
-            </div>
-          </article>
+          <h3 class="pay-heading">เลือกช่องทางรับเงิน</h3>
+          <p class="pay-lead">สแกน QR เพื่อโอนเงิน หรือกดที่รูปเพื่อขยาย</p>
+          <div class="pay-grid">
+            <article class="pay-card">
+              <div class="pay-qr-frame">
+                <img loading="lazy" decoding="async" class="pay-qr" src="../images/qr-payment.png" alt="QR Payment KBANK — นาย พลาธิป วุฒิประยูร" width="1033" height="1505" data-channel="KBANK" role="button" tabindex="0" aria-label="ดู QR KBANK ขนาดใหญ่">
+              </div>
+              <div class="pay-meta">
+                <h3 class="pay-channel"><img loading="lazy" decoding="async" src="../images/kbank-logo.png" alt="" width="28" height="28">KBANK</h3>
+                <p class="pay-row"><span>บัญชี</span> <strong class="account-num">517-2-15834-1</strong> <button type="button" class="copy-btn" data-copy="517-2-15834-1">Copy</button></p>
+              </div>
+            </article>
+            <article class="pay-card">
+              <div class="pay-qr-frame">
+                <img loading="lazy" decoding="async" class="pay-qr" src="../images/qr-payment-make.png" alt="QR Payment MAKE — นาย พลาธิป วุฒิประยูร" width="452" height="712" data-channel="MAKE" role="button" tabindex="0" aria-label="ดู QR MAKE ขนาดใหญ่">
+              </div>
+              <div class="pay-meta">
+                <h3 class="pay-channel"><img loading="lazy" decoding="async" src="../images/make-by-kbank-logo.png" alt="" width="28" height="28">MAKE</h3>
+                <p class="pay-row"><span>บัญชี</span> <strong class="account-num">093-1-36473-1</strong> <button type="button" class="copy-btn" data-copy="093-1-36473-1">Copy</button></p>
+              </div>
+            </article>
+          </div>
         </div>
       </section>
 
@@ -286,6 +292,26 @@
         </button>
       </div>
       <div class="home-indicator" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="qr-lightbox" id="qr-lightbox" role="dialog" aria-modal="true" aria-labelledby="qr-lightbox-title" aria-hidden="true">
+    <div class="qr-lightbox-backdrop" data-lightbox-action="close"></div>
+    <button type="button" class="qr-lightbox-close" data-lightbox-action="close" aria-label="ปิด">
+      <svg aria-hidden="true"><use href="#i-close"/></svg>
+    </button>
+    <div class="qr-lightbox-stage">
+      <img id="qr-lightbox-image" alt="">
+      <div class="qr-lightbox-toolbar">
+        <button type="button" class="qr-lightbox-prev" data-lightbox-action="prev" aria-label="รูปก่อนหน้า">
+          <svg aria-hidden="true"><use href="#i-prev"/></svg>
+        </button>
+        <p class="qr-lightbox-caption" id="qr-lightbox-title"></p>
+        <a class="qr-lightbox-save" id="qr-lightbox-save" href="#" download>บันทึกรูป</a>
+        <button type="button" class="qr-lightbox-next" data-lightbox-action="next" aria-label="รูปถัดไป">
+          <svg aria-hidden="true"><use href="#i-next"/></svg>
+        </button>
+      </div>
     </div>
   </div>
 
