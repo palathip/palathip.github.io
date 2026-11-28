@@ -4,6 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script>
+    /* Sign-in popup opened by the /v2 window: relay the one-time code and close before anything renders.
+       Mirrors relayFromReturn in client.js (same keys, same checks). */
+    (function () {
+      try {
+        if (window.self !== window.top) return;
+        var hash = location.hash;
+        if (!/[#&]gf_(code|error)=/.test(hash)) return;
+        if (sessionStorage.getItem("genflights.handoffVerifier")) return;
+        var q = new URLSearchParams(hash.slice(1));
+        var msg = { type: "genflights.handoff", code: q.get("gf_code") || "", error: q.get("gf_error") || "" };
+        history.replaceState(null, "", location.pathname);
+        document.documentElement.classList.add("is-auth-relay");
+        if (typeof BroadcastChannel === "function") {
+          var channel = new BroadcastChannel("genflights.auth");
+          channel.postMessage(msg);
+          channel.close();
+        }
+        try { if (window.opener) window.opener.postMessage(msg, location.origin); } catch (err) {}
+        window.close();
+      } catch (err) {}
+    })();
+  </script>
+  <style>
+    /* Shown only if the browser keeps the relay popup open (some mobile browsers do). */
+    html.is-auth-relay, html.is-auth-relay body { height: 100%; margin: 0; background: #F5F5F7; }
+    html.is-auth-relay body > * { display: none !important; }
+    html.is-auth-relay body {
+      display: grid;
+      place-items: center;
+      color: #6E6E73;
+      font: 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    html.is-auth-relay body::before { content: "Sign-in finished. You can close this window."; }
+  </style>
+  <script>
     /* Hide the site nav only inside the /v2 window. A top-level visit keeps it. */
     (function () {
       var framed = false;
