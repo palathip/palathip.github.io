@@ -3,6 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    /* Hide the site nav only inside the /v2 window. A top-level visit keeps it. */
+    (function () {
+      var framed = false;
+      try { framed = window.self !== window.top; } catch (err) { framed = true; }
+      if (framed && new URLSearchParams(location.search).get("embed") === "v2") {
+        document.documentElement.classList.add("is-embed");
+      }
+    })();
+  </script>
   <meta name="referrer" content="no-referrer">
   <title>Gen Flights — BOOMBIBU</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -816,6 +826,11 @@
       color: #9ca3af;
       margin-top: 8px;
     }
+
+    html.is-embed .site-header { display: none; }
+    html.is-embed { scroll-padding-top: 0; }
+    html.is-embed .layout { padding-top: 24px; }
+    html.is-embed .auth-layer { padding-top: 24px; }
   </style>
 </head>
 <body>
