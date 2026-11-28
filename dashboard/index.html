@@ -734,7 +734,8 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     }
 
-    html.is-embed .converter-dropdown-option:hover { background: rgba(0, 0, 0, 0.05); }
+    html.is-embed .converter-dropdown-option:hover,
+    html.is-embed .converter-dropdown-option.selected:hover { background: rgba(0, 0, 0, 0.05); }
 
     /* Same type as the /v2 windows: system UI font, with tabular figures instead of a mono face for numbers. */
     html.is-embed body {
@@ -764,6 +765,88 @@
 
     html.is-embed .converter-field label,
     html.is-embed .converter-result-label { letter-spacing: 0.02em; }
+
+    /* macOS controls inside the /v2 window: 10px cards, hairline borders, compact fields. */
+    html.is-embed .price-card-compact,
+    html.is-embed .btc-compact {
+      border: 0;
+      border-radius: 10px;
+      box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.1), 0 0.5px 1.5px rgba(0, 0, 0, 0.05);
+    }
+
+    html.is-embed .price-card-compact:hover,
+    html.is-embed .btc-compact:hover {
+      box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.16), 0 4px 14px rgba(0, 0, 0, 0.08);
+    }
+
+    html.is-embed .converter-card {
+      border: 0;
+      border-radius: 10px;
+      padding: 18px 20px;
+      box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.1), 0 0.5px 1.5px rgba(0, 0, 0, 0.05);
+    }
+
+    html.is-embed .converter-title { font-size: 15px; }
+
+    html.is-embed .converter-field label,
+    html.is-embed .converter-result-label {
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: none;
+      letter-spacing: 0;
+      color: #6E6E73;
+    }
+
+    html.is-embed .converter-input-wrap,
+    html.is-embed .converter-result-item {
+      min-height: 40px;
+      border: 0;
+      border-radius: 8px;
+      background: #FFFFFF;
+      box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.2), inset 0 0.5px 1px rgba(0, 0, 0, 0.05);
+      transition: box-shadow 0.12s ease;
+    }
+
+    html.is-embed .converter-result-item { height: 44px; background: #F5F5F7; }
+
+    html.is-embed .converter-input-wrap:focus-within {
+      border: 0;
+      box-shadow: 0 0 0 0.5px #0A7AFF, 0 0 0 3.5px rgba(10, 122, 255, 0.4);
+    }
+
+    html.is-embed .converter-dropdown-trigger {
+      border: 0;
+      border-radius: 6px;
+      background: linear-gradient(180deg, #FFFFFF, #F6F6F8);
+      box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.18), 0 0.5px 1px rgba(0, 0, 0, 0.1);
+      font-size: 13px;
+    }
+
+    html.is-embed .converter-dropdown-trigger:hover { border: 0; background: #FFFFFF; }
+
+    html.is-embed .converter-dropdown-list {
+      border: 0;
+      border-radius: 9px;
+      padding: 5px;
+      background: rgba(246, 246, 248, 0.96);
+      -webkit-backdrop-filter: blur(30px) saturate(1.6);
+      backdrop-filter: blur(30px) saturate(1.6);
+      box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.2), 0 10px 28px rgba(0, 0, 0, 0.18);
+    }
+
+    html.is-embed .converter-dropdown-option {
+      padding: 5px 10px;
+      gap: 8px;
+      border-radius: 5px;
+      font-size: 13px;
+    }
+
+    html.is-embed .converter-dropdown-option.selected { background: rgba(10, 122, 255, 0.12); }
+
+    html.is-embed .converter-dropdown-option:hover {
+      background: #0A7AFF;
+      color: #FFFFFF;
+    }
 
     @media (max-width: 768px) {
       html.is-embed .main { padding: 16px 16px 24px; }

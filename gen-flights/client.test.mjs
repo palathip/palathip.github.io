@@ -15,6 +15,10 @@ import {
   isSafeAPIBase,
   parseHandoffFragment,
   accountFromSession,
+  acceptRelay,
+  parsePopupStart,
+  popupRelayMessage,
+  popupStartPath,
   showsFlightWorkspace,
   viewModel,
 } from "./client.js";
@@ -285,4 +289,25 @@ test("website tree does not contain the Go API or secret material", async () => 
     }
   }
   await walk(root);
+});
+
+test("embedded sign-in popup relays only a matching one-time code", () => {
+  const nonce = "n".repeat(43);
+  const challenge = "c".repeat(43);
+  const start = popupStartPath(nonce, challenge);
+  assert.equal(start.startsWith("/gen-flights/?auth=popup&"), true);
+  assert.deepEqual(parsePopupStart(start.slice(start.indexOf("?"))), { nonce, challenge });
+  assert.equal(parsePopupStart("?auth=popup&n=short&c=" + challenge), null);
+  assert.equal(parsePopupStart("?auth=popup&n=" + nonce + "&c=<script>"), null);
+  assert.equal(parsePopupStart("?n=" + nonce + "&c=" + challenge), null);
+  assert.equal(canonicalReturnTo("https://palathip.github.io" + start), "https://palathip.github.io/gen-flights/");
+
+  const msg = popupRelayMessage(nonce, { code: "abc", error: "" });
+  assert.deepEqual(acceptRelay(msg, nonce), { code: "abc", error: "" });
+  assert.equal(acceptRelay(msg, "x".repeat(43)), null);
+  assert.equal(acceptRelay(msg, ""), null);
+  assert.equal(acceptRelay({ ...msg, type: "other" }, nonce), null);
+  assert.equal(acceptRelay({ ...msg, code: "", error: "" }, nonce), null);
+  assert.equal(acceptRelay({ ...msg, token: "leak" }, nonce).token, undefined);
+  assert.deepEqual(acceptRelay(popupRelayMessage(nonce, { error: "access_denied" }), nonce), { code: "", error: "access_denied" });
 });

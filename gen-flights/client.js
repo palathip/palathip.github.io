@@ -1,5 +1,8 @@
 const TOKEN_KEY = "genflights.bearer";
 const VERIFIER_KEY = "genflights.handoffVerifier";
+const POPUP_KEY = "genflights.popupNonce";
+const AUTH_CHANNEL = "genflights.auth";
+const POPUP_NAME = "genflights-auth";
 
 const STATES = {
   unconfigured: {
@@ -108,6 +111,37 @@ export function parseHandoffFragment(hash) {
   const raw = hash.startsWith("#") ? hash.slice(1) : hash;
   const q = new URLSearchParams(raw);
   return { code: q.get("gf_code") || "", error: q.get("gf_error") || "" };
+}
+
+const PKCE_VALUE = /^[A-Za-z0-9_-]{43,128}$/;
+
+// GitHub refuses to render inside a frame, so the /v2 window signs in through a popup.
+// The popup only relays the one-time code back; the verifier and token stay in the framed page.
+export function popupStartPath(nonce, challenge) {
+  const q = new URLSearchParams({ auth: "popup", n: nonce, c: challenge });
+  return "/gen-flights/?" + q.toString();
+}
+
+export function parsePopupStart(search) {
+  const q = new URLSearchParams(search);
+  if (q.get("auth") !== "popup") return null;
+  const nonce = q.get("n") || "";
+  const challenge = q.get("c") || "";
+  if (!PKCE_VALUE.test(nonce) || !PKCE_VALUE.test(challenge)) return null;
+  return { nonce, challenge };
+}
+
+export function popupRelayMessage(nonce, handoff) {
+  return { type: "genflights.handoff", nonce, code: handoff.code || "", error: handoff.error || "" };
+}
+
+export function acceptRelay(data, expectedNonce) {
+  if (!expectedNonce || !data || typeof data !== "object") return null;
+  if (data.type !== "genflights.handoff" || data.nonce !== expectedNonce) return null;
+  const code = typeof data.code === "string" ? data.code : "";
+  const error = typeof data.error === "string" ? data.error : "";
+  if (!code && !error) return null;
+  return { code, error };
 }
 
 export function classifyAuthFailure(status, body) {
@@ -473,6 +507,32 @@ async function generate() {
   }
 }
 
+function isFramed() {
+  try {
+    return window.self !== window.top;
+  } catch {
+    return true;
+  }
+}
+
+function setAuthBusy(text) {
+  const layout = document.getElementById("flightLayout");
+  const status = document.getElementById("authStatus");
+  const button = document.getElementById("btnLogin");
+  if (layout) layout.dataset.authPhase = "redirecting";
+  if (status) status.textContent = text;
+  if (button) button.setAttribute("aria-busy", "true");
+}
+
+function clearAuthBusy(text) {
+  const layout = document.getElementById("flightLayout");
+  const status = document.getElementById("authStatus");
+  const button = document.getElementById("btnLogin");
+  if (layout) delete layout.dataset.authPhase;
+  if (status && text) status.textContent = text;
+  if (button) button.removeAttribute("aria-busy");
+}
+
 async function login() {
   const base = readBase();
   if (!apiOrigin(base)) {
@@ -487,13 +547,132 @@ async function login() {
   const verifierValue = randomVerifier();
   const challenge = await challengeFromVerifier(verifierValue);
   sessionStorage.setItem(VERIFIER_KEY, verifierValue);
-  const layout = document.getElementById("flightLayout");
-  const status = document.getElementById("authStatus");
-  const button = document.getElementById("btnLogin");
-  if (layout) layout.dataset.authPhase = "redirecting";
-  if (status) status.textContent = "Redirecting to GitHub…";
-  if (button) button.setAttribute("aria-busy", "true");
+  setAuthBusy("Redirecting to GitHub…");
   location.assign(buildStartURL(base, returnTo, challenge));
+}
+
+let pendingPopup = null;
+
+// Must run inside the click handler: the popup is opened before any await so it is not blocked.
+function loginInPopup() {
+  const base = readBase();
+  if (!apiOrigin(base)) {
+    setState("unconfigured");
+    return;
+  }
+  const popup = window.open("", POPUP_NAME, "popup,width=520,height=720");
+  if (!popup) {
+    setState("logged-out", "The sign-in window was blocked. Allow pop-ups for this site, or use the open-in-new-tab button in the title bar.");
+    return;
+  }
+  setAuthBusy("Continue in the GitHub window…");
+  const nonce = randomVerifier();
+  const verifierValue = randomVerifier();
+  if (pendingPopup) pendingPopup.stop();
+  const channel = typeof BroadcastChannel === "function" ? new BroadcastChannel(AUTH_CHANNEL) : null;
+  const state = { nonce, done: false };
+  const finish = (data) => {
+    const handoff = acceptRelay(data, state.nonce);
+    if (!handoff || state.done) return;
+    state.done = true;
+    stop();
+    try {
+      popup.close();
+    } catch {
+      // The popup may already be gone or detached from this page.
+    }
+    completeSignIn(handoff);
+  };
+  const onMessage = (event) => {
+    if (event.origin !== location.origin) return;
+    finish(event.data);
+  };
+  const onChannel = (event) => finish(event.data);
+  // Only resets the button. The relay may still arrive if the popup lost its opener on the way through GitHub.
+  const watch = window.setInterval(() => {
+    let closed = false;
+    try {
+      closed = popup.closed;
+    } catch {
+      closed = false;
+    }
+    if (closed && !state.done) {
+      window.clearInterval(watch);
+      clearAuthBusy("GitHub account required.");
+    }
+  }, 600);
+  const timeout = window.setTimeout(() => {
+    if (!state.done) {
+      stop();
+      clearAuthBusy("GitHub account required.");
+    }
+  }, 10 * 60 * 1000);
+  function stop() {
+    window.removeEventListener("message", onMessage);
+    if (channel) channel.close();
+    window.clearInterval(watch);
+    window.clearTimeout(timeout);
+    if (pendingPopup === state) pendingPopup = null;
+  }
+  state.stop = stop;
+  pendingPopup = state;
+  window.addEventListener("message", onMessage);
+  if (channel) channel.addEventListener("message", onChannel);
+  challengeFromVerifier(verifierValue)
+    .then((challenge) => {
+      sessionStorage.setItem(VERIFIER_KEY, verifierValue);
+      popup.location.href = new URL(popupStartPath(nonce, challenge), location.href).href;
+    })
+    .catch(() => {
+      stop();
+      try {
+        popup.close();
+      } catch {
+        // ignore
+      }
+      setState("error");
+    });
+}
+
+// Runs in the popup itself: start the GitHub redirect, or relay the result back and close.
+function runPopupSide() {
+  const start = parsePopupStart(location.search);
+  if (start) {
+    const base = readBase();
+    const returnTo = canonicalReturnTo(location.href);
+    history.replaceState(null, "", location.pathname);
+    if (!apiOrigin(base) || !returnTo) {
+      setState("error", "This page is not an allowed GitHub return address.");
+      return true;
+    }
+    sessionStorage.setItem(POPUP_KEY, start.nonce);
+    setAuthBusy("Redirecting to GitHub…");
+    location.assign(buildStartURL(base, returnTo, start.challenge));
+    return true;
+  }
+  const nonce = sessionStorage.getItem(POPUP_KEY) || "";
+  if (!nonce) return false;
+  const handoff = parseHandoffFragment(location.hash);
+  if (!handoff.code && !handoff.error) return false;
+  sessionStorage.removeItem(POPUP_KEY);
+  history.replaceState(null, "", location.pathname + location.search);
+  const message = popupRelayMessage(nonce, handoff);
+  if (typeof BroadcastChannel === "function") {
+    const channel = new BroadcastChannel(AUTH_CHANNEL);
+    channel.postMessage(message);
+    channel.close();
+  }
+  try {
+    if (window.opener) window.opener.postMessage(message, location.origin);
+  } catch {
+    // The opener can be cut off by GitHub's opener policy; the channel above still delivers.
+  }
+  setState("logged-out", "Sign-in finished. You can close this window.");
+  clearAuthBusy();
+  const button = document.getElementById("btnLogin");
+  if (button) button.hidden = true;
+  window.setTimeout(() => window.close(), 150);
+  return true;
 }
 
 async function logout() {
@@ -517,17 +696,7 @@ function applyFragmentError(code) {
   else setState("error");
 }
 
-async function boot() {
-  setState("loading");
-  const base = readBase();
-  if (!apiOrigin(base)) {
-    setState("unconfigured");
-    return;
-  }
-  const handoff = parseHandoffFragment(location.hash);
-  if (handoff.code || handoff.error) {
-    history.replaceState(null, "", location.pathname + location.search);
-  }
+async function completeSignIn(handoff) {
   try {
     if (handoff.error) {
       sessionStorage.removeItem(VERIFIER_KEY);
@@ -576,6 +745,21 @@ async function boot() {
   }
 }
 
+async function boot() {
+  setState("loading");
+  const base = readBase();
+  if (!apiOrigin(base)) {
+    setState("unconfigured");
+    return;
+  }
+  if (!isFramed() && runPopupSide()) return;
+  const handoff = parseHandoffFragment(location.hash);
+  if (handoff.code || handoff.error) {
+    history.replaceState(null, "", location.pathname + location.search);
+  }
+  await completeSignIn(handoff);
+}
+
 function initAccountMenu() {
   const trigger = document.getElementById("btnAccount");
   const pop = document.getElementById("accountPopover");
@@ -619,6 +803,10 @@ function initAccountMenu() {
 function init() {
   initAccountMenu();
   document.getElementById("btnLogin").addEventListener("click", () => {
+    if (isFramed()) {
+      loginInPopup();
+      return;
+    }
     login().catch(() => setState("error"));
   });
   document.getElementById("btnLogout").addEventListener("click", () => {
