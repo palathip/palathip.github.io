@@ -200,7 +200,11 @@ button, a { touch-action: manipulation; }
   text-align: center;
 }
 
-#menu-window-list .menu-item { padding-left: 8px; }
+#menu-go-list .menu-item { padding-left: 6px; }
+
+#menu-go-list .menu-mark { width: 14px; margin: 0 2px 0 0; }
+
+#menu-go-list .go-item.is-min .menu-mark { font-size: 8px; }
 
 .menu-sep {
   height: 1px;
