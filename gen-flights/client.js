@@ -1,6 +1,5 @@
 const TOKEN_KEY = "genflights.bearer";
 const VERIFIER_KEY = "genflights.handoffVerifier";
-const POPUP_KEY = "genflights.popupNonce";
 const AUTH_CHANNEL = "genflights.auth";
 const POPUP_NAME = "genflights-auth";
 
@@ -116,28 +115,25 @@ export function parseHandoffFragment(hash) {
 const PKCE_VALUE = /^[A-Za-z0-9_-]{43,128}$/;
 
 // GitHub refuses to render inside a frame, so the /v2 window signs in through a popup.
-// The popup only relays the one-time code back; the verifier and token stay in the framed page.
-export function popupStartPath(nonce, challenge) {
-  const q = new URLSearchParams({ auth: "popup", n: nonce, c: challenge });
-  return "/gen-flights/?" + q.toString();
+// The popup goes straight to the API. On its way back it only relays the one-time code; the
+// verifier and token stay in the framed page, and PKCE binds the code to that verifier.
+// A normal sign-in always keeps its verifier in its own tab, so a return without one is the popup.
+// The inline script at the top of index.html mirrors relayFromReturn so the popup relays and
+// closes before the page renders.
+export function relayFromReturn({ hash, hasVerifier }) {
+  if (hasVerifier) return null;
+  const handoff = parseHandoffFragment(hash || "");
+  if (!handoff.code && !handoff.error) return null;
+  return popupRelayMessage(handoff);
 }
 
-export function parsePopupStart(search) {
-  const q = new URLSearchParams(search);
-  if (q.get("auth") !== "popup") return null;
-  const nonce = q.get("n") || "";
-  const challenge = q.get("c") || "";
-  if (!PKCE_VALUE.test(nonce) || !PKCE_VALUE.test(challenge)) return null;
-  return { nonce, challenge };
+export function popupRelayMessage(handoff) {
+  return { type: "genflights.handoff", code: handoff.code || "", error: handoff.error || "" };
 }
 
-export function popupRelayMessage(nonce, handoff) {
-  return { type: "genflights.handoff", nonce, code: handoff.code || "", error: handoff.error || "" };
-}
-
-export function acceptRelay(data, expectedNonce) {
-  if (!expectedNonce || !data || typeof data !== "object") return null;
-  if (data.type !== "genflights.handoff" || data.nonce !== expectedNonce) return null;
+export function acceptRelay(data, waiting) {
+  if (!waiting || !data || typeof data !== "object") return null;
+  if (data.type !== "genflights.handoff") return null;
   const code = typeof data.code === "string" ? data.code : "";
   const error = typeof data.error === "string" ? data.error : "";
   if (!code && !error) return null;
@@ -560,19 +556,26 @@ function loginInPopup() {
     setState("unconfigured");
     return;
   }
+  const returnTo = canonicalReturnTo(location.href);
+  if (!returnTo) {
+    setState("error", "This page is not an allowed GitHub return address.");
+    return;
+  }
+  // A stale verifier would be copied into the popup's session storage and make it look like a normal sign-in.
+  sessionStorage.removeItem(VERIFIER_KEY);
   const popup = window.open("", POPUP_NAME, "popup,width=520,height=720");
   if (!popup) {
     setState("logged-out", "The sign-in window was blocked. Allow pop-ups for this site, or use the open-in-new-tab button in the title bar.");
     return;
   }
+  paintPopupPlaceholder(popup);
   setAuthBusy("Continue in the GitHub window…");
-  const nonce = randomVerifier();
   const verifierValue = randomVerifier();
   if (pendingPopup) pendingPopup.stop();
   const channel = typeof BroadcastChannel === "function" ? new BroadcastChannel(AUTH_CHANNEL) : null;
-  const state = { nonce, done: false };
+  const state = { done: false };
   const finish = (data) => {
-    const handoff = acceptRelay(data, state.nonce);
+    const handoff = acceptRelay(data, pendingPopup === state);
     if (!handoff || state.done) return;
     state.done = true;
     stop();
@@ -621,7 +624,7 @@ function loginInPopup() {
   challengeFromVerifier(verifierValue)
     .then((challenge) => {
       sessionStorage.setItem(VERIFIER_KEY, verifierValue);
-      popup.location.href = new URL(popupStartPath(nonce, challenge), location.href).href;
+      popup.location.replace(buildStartURL(base, returnTo, challenge));
     })
     .catch(() => {
       stop();
@@ -634,45 +637,24 @@ function loginInPopup() {
     });
 }
 
-// Runs in the popup itself: start the GitHub redirect, or relay the result back and close.
-function runPopupSide() {
-  const start = parsePopupStart(location.search);
-  if (start) {
-    const base = readBase();
-    const returnTo = canonicalReturnTo(location.href);
-    history.replaceState(null, "", location.pathname);
-    if (!apiOrigin(base) || !returnTo) {
-      setState("error", "This page is not an allowed GitHub return address.");
-      return true;
-    }
-    sessionStorage.setItem(POPUP_KEY, start.nonce);
-    setAuthBusy("Redirecting to GitHub…");
-    location.assign(buildStartURL(base, returnTo, start.challenge));
-    return true;
-  }
-  const nonce = sessionStorage.getItem(POPUP_KEY) || "";
-  if (!nonce) return false;
-  const handoff = parseHandoffFragment(location.hash);
-  if (!handoff.code && !handoff.error) return false;
-  sessionStorage.removeItem(POPUP_KEY);
-  history.replaceState(null, "", location.pathname + location.search);
-  const message = popupRelayMessage(nonce, handoff);
-  if (typeof BroadcastChannel === "function") {
-    const channel = new BroadcastChannel(AUTH_CHANNEL);
-    channel.postMessage(message);
-    channel.close();
-  }
+// Paint the blank popup while the challenge is computed, so it never flashes white or shows site chrome.
+function paintPopupPlaceholder(popup) {
   try {
-    if (window.opener) window.opener.postMessage(message, location.origin);
+    const doc = popup.document;
+    doc.open();
+    doc.write(
+      '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">' +
+        "<title>Signing in…</title><style>" +
+        "html,body{height:100%;margin:0}body{display:grid;place-items:center;background:#F5F5F7;color:#6E6E73;" +
+        "font:13px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}" +
+        ".s{width:18px;height:18px;margin:0 auto 10px;border-radius:50%;border:2px solid rgba(0,0,0,.12);" +
+        "border-top-color:#0A7AFF;animation:r .7s linear infinite}@keyframes r{to{transform:rotate(360deg)}}" +
+        "</style></head><body><div><div class=\"s\"></div>Connecting to GitHub…</div></body></html>",
+    );
+    doc.close();
   } catch {
-    // The opener can be cut off by GitHub's opener policy; the channel above still delivers.
+    // A cross-origin or closed popup cannot be painted; the redirect still works.
   }
-  setState("logged-out", "Sign-in finished. You can close this window.");
-  clearAuthBusy();
-  const button = document.getElementById("btnLogin");
-  if (button) button.hidden = true;
-  window.setTimeout(() => window.close(), 150);
-  return true;
 }
 
 async function logout() {
@@ -746,13 +728,14 @@ async function completeSignIn(handoff) {
 }
 
 async function boot() {
+  // The inline head script already relayed this popup's result; nothing else should run here.
+  if (document.documentElement.classList.contains("is-auth-relay")) return;
   setState("loading");
   const base = readBase();
   if (!apiOrigin(base)) {
     setState("unconfigured");
     return;
   }
-  if (!isFramed() && runPopupSide()) return;
   const handoff = parseHandoffFragment(location.hash);
   if (handoff.code || handoff.error) {
     history.replaceState(null, "", location.pathname + location.search);

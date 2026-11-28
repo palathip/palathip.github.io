@@ -16,9 +16,8 @@ import {
   parseHandoffFragment,
   accountFromSession,
   acceptRelay,
-  parsePopupStart,
   popupRelayMessage,
-  popupStartPath,
+  relayFromReturn,
   showsFlightWorkspace,
   viewModel,
 } from "./client.js";
@@ -291,23 +290,38 @@ test("website tree does not contain the Go API or secret material", async () => 
   await walk(root);
 });
 
-test("embedded sign-in popup relays only a matching one-time code", () => {
-  const nonce = "n".repeat(43);
-  const challenge = "c".repeat(43);
-  const start = popupStartPath(nonce, challenge);
-  assert.equal(start.startsWith("/gen-flights/?auth=popup&"), true);
-  assert.deepEqual(parsePopupStart(start.slice(start.indexOf("?"))), { nonce, challenge });
-  assert.equal(parsePopupStart("?auth=popup&n=short&c=" + challenge), null);
-  assert.equal(parsePopupStart("?auth=popup&n=" + nonce + "&c=<script>"), null);
-  assert.equal(parsePopupStart("?n=" + nonce + "&c=" + challenge), null);
-  assert.equal(canonicalReturnTo("https://palathip.github.io" + start), "https://palathip.github.io/gen-flights/");
+test("embedded sign-in popup relays only its one-time code", () => {
+  const ok = relayFromReturn({ hash: "#gf_code=abc", hasVerifier: false });
+  assert.deepEqual(ok, { type: "genflights.handoff", code: "abc", error: "" });
+  assert.deepEqual(acceptRelay(ok, true), { code: "abc", error: "" });
+  assert.equal(acceptRelay(ok, false), null);
 
-  const msg = popupRelayMessage(nonce, { code: "abc", error: "" });
-  assert.deepEqual(acceptRelay(msg, nonce), { code: "abc", error: "" });
-  assert.equal(acceptRelay(msg, "x".repeat(43)), null);
-  assert.equal(acceptRelay(msg, ""), null);
-  assert.equal(acceptRelay({ ...msg, type: "other" }, nonce), null);
-  assert.equal(acceptRelay({ ...msg, code: "", error: "" }, nonce), null);
-  assert.equal(acceptRelay({ ...msg, token: "leak" }, nonce).token, undefined);
-  assert.deepEqual(acceptRelay(popupRelayMessage(nonce, { error: "access_denied" }), nonce), { code: "", error: "access_denied" });
+  // A tab with its own verifier is a normal top-level sign-in, not the popup.
+  assert.equal(relayFromReturn({ hash: "#gf_code=abc", hasVerifier: true }), null);
+  assert.equal(relayFromReturn({ hash: "", hasVerifier: false }), null);
+  assert.equal(relayFromReturn({ hash: "#other=1", hasVerifier: false }), null);
+  assert.deepEqual(
+    relayFromReturn({ hash: "#gf_error=access_denied", hasVerifier: false }),
+    { type: "genflights.handoff", code: "", error: "access_denied" },
+  );
+
+  assert.equal(acceptRelay({ ...ok, type: "other" }, true), null);
+  assert.equal(acceptRelay({ ...ok, code: "", error: "" }, true), null);
+  assert.equal(acceptRelay({ ...ok, token: "leak" }, true).token, undefined);
+  assert.equal(acceptRelay("gf_code=abc", true), null);
+});
+
+test("popup relay runs in the head before the site nav and styles", async () => {
+  const html = await readFile(path.join(root, "gen-flights/index.html"), "utf8");
+  const client = await readFile(path.join(root, "gen-flights/client.js"), "utf8");
+  const relay = html.indexOf('new BroadcastChannel("genflights.auth")');
+  assert.ok(relay > 0);
+  assert.ok(relay < html.indexOf("site-nav.js"));
+  assert.ok(relay < html.indexOf("fonts.googleapis.com"));
+  assert.match(html, /new BroadcastChannel\("genflights\.auth"\)/);
+  assert.match(html, /sessionStorage\.getItem\("genflights\.handoffVerifier"\)/);
+  assert.match(client, /const AUTH_CHANNEL = "genflights\.auth";/);
+  assert.match(client, /const VERIFIER_KEY = "genflights\.handoffVerifier";/);
+  // The popup goes straight to the API; it never loads this page on the way out.
+  assert.match(client, /popup\.location\.replace\(buildStartURL\(/);
 });
