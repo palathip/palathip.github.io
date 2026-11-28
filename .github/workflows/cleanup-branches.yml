@@ -1,0 +1,88 @@
+# Deletes branches whose pull request was merged and that gained no commits afterwards.
+# Runs only when started by hand from the Actions tab. Dry run is on by default.
+name: Clean up merged branches
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run: only list what would be deleted"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: cleanup-branches
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete merged branches
+        uses: actions/github-script@v7
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const dryRun = process.env.DRY_RUN !== "false";
+            const { data: info } = await github.rest.repos.get({ owner, repo });
+            const keep = new Set([info.default_branch]);
+
+            const branches = await github.paginate(github.rest.repos.listBranches, { owner, repo, per_page: 100 });
+            const deleted = [];
+            const skipped = [];
+
+            for (const branch of branches) {
+              const name = branch.name;
+              if (keep.has(name)) continue;
+              if (branch.protected) {
+                skipped.push([name, "protected"]);
+                continue;
+              }
+              const prs = await github.paginate(github.rest.pulls.list, {
+                owner,
+                repo,
+                state: "all",
+                head: `${owner}:${name}`,
+                per_page: 100,
+              });
+              if (prs.some((pr) => pr.state === "open")) {
+                skipped.push([name, "has an open PR"]);
+                continue;
+              }
+              // Only delete when the branch tip is exactly what a merged PR contained.
+              const merged = prs.find((pr) => pr.merged_at && pr.head.sha === branch.commit.sha);
+              if (!merged) {
+                const reason = prs.length === 0
+                  ? "no PR"
+                  : prs.some((pr) => pr.merged_at)
+                    ? "new commits after merge"
+                    : "PR closed without merge";
+                skipped.push([name, reason]);
+                continue;
+              }
+              if (!dryRun) {
+                await github.rest.git.deleteRef({ owner, repo, ref: `heads/${name}` });
+              }
+              deleted.push([name, `#${merged.number}`]);
+            }
+
+            const verb = dryRun ? "Would delete" : "Deleted";
+            core.info(`${verb} ${deleted.length}, skipped ${skipped.length}${dryRun ? " (dry run)" : ""}`);
+            for (const [name, pr] of deleted) core.info(`  ${verb.toLowerCase()} ${name} (${pr})`);
+            for (const [name, why] of skipped) core.info(`  kept ${name}: ${why}`);
+
+            await core.summary
+              .addHeading(dryRun ? "Dry run: nothing was deleted" : "Merged branches deleted", 3)
+              .addRaw(`${verb}: ${deleted.length} · Kept: ${skipped.length}`, true)
+              .addTable([
+                [{ data: "Branch", header: true }, { data: "Result", header: true }, { data: "Why", header: true }],
+                ...deleted.map(([name, pr]) => [name, verb.toLowerCase(), `merged in ${pr}`]),
+                ...skipped.map(([name, why]) => [name, "kept", why]),
+              ])
+              .write();
