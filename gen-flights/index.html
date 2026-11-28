@@ -1112,10 +1112,37 @@
 
     html.is-embed .layout.is-locked .auth-actions { margin-top: 18px; }
 
-    html.is-embed .layout.is-locked .auth-skeleton { gap: 10px; }
-    html.is-embed .layout.is-locked .sk-title { height: 16px; width: 60%; margin: 0 auto; }
-    html.is-embed .layout.is-locked .sk-line { height: 10px; }
-    html.is-embed .layout.is-locked .sk-btn { height: 28px; border-radius: 7px; }
+    /* While checking or finishing sign-in, the alert shows the app icon, a spinner and the status line
+       instead of a skeleton, so nothing stacks against the icon. */
+    html.is-embed .layout.is-locked .auth-skeleton { display: none; }
+
+    html.is-embed .layout.is-locked[data-auth-state="loading"] #authStatus {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: 0 auto;
+      overflow: visible;
+      clip: auto;
+      clip-path: none;
+      white-space: normal;
+    }
+
+    html.is-embed .layout.is-locked[data-auth-state="loading"] #authStatus::before,
+    html.is-embed .layout.is-locked[data-auth-phase="returning"] #authStatus::before {
+      content: "";
+      display: block;
+      width: 16px;
+      height: 16px;
+      margin: 2px auto 10px;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 0, 0, 0.12);
+      border-top-color: var(--mac-blue);
+      animation: auth-spin 0.7s linear infinite;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html.is-embed .layout.is-locked #authStatus::before { animation: none; }
+    }
 
     html.is-embed .layout:not(.is-locked) .auth-card {
       background: #FFFFFF;
