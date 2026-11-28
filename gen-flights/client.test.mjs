@@ -92,6 +92,14 @@ test("return_to canonicalizes only the two allowlisted GitHub Pages URLs", () =>
     "https://palathip.github.io/gen-flights/index.html",
   );
   assert.equal(
+    canonicalReturnTo("https://palathip.github.io/gen-flights/?embed=v2"),
+    "https://palathip.github.io/gen-flights/",
+  );
+  assert.equal(
+    canonicalReturnTo("https://palathip.github.io/gen-flights/index.html?embed=v2#gf_code=abc"),
+    "https://palathip.github.io/gen-flights/index.html",
+  );
+  assert.equal(
     buildStartURL(
       "https://boombibu-api.vercel.app",
       canonicalReturnTo("https://palathip.github.io/gen-flights"),
