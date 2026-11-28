@@ -244,13 +244,21 @@
     }
 
     .resume-frame-open {
+      display: inline-grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      flex: none;
       color: var(--text-white);
-      font-size: 0.9rem;
-      font-weight: 600;
       text-decoration: none;
-      padding: 8px 12px;
-      border-radius: 999px;
+      border-radius: 50%;
       background: rgba(255, 255, 255, 0.1);
+    }
+
+    .resume-frame-open svg {
+      width: 18px;
+      height: 18px;
+      display: block;
     }
 
     .resume-frame-open:hover {
@@ -383,7 +391,7 @@
     <div class="resume-frame-modal" role="dialog" aria-modal="true" aria-labelledby="resumeFrameTitle">
       <div class="resume-frame-header">
         <h2 id="resumeFrameTitle">Simple Resume</h2>
-        <a class="resume-frame-open" href="https://registry.jsonresume.org/palathip" target="_blank" rel="noopener">Open in new tab</a>
+        <a class="resume-frame-open" href="https://registry.jsonresume.org/palathip" target="_blank" rel="noopener" aria-label="Open Simple Resume in new tab" title="Open in new tab"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9.5 2.5h4v4M13.5 2.5L7.5 8.5M11.5 9.5v3a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         <button type="button" class="resume-frame-close" id="resumeFrameClose" aria-label="ปิด">×</button>
       </div>
       <div class="resume-frame-body">

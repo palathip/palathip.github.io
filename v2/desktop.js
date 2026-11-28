@@ -60,6 +60,7 @@
       win.setAttribute("aria-hidden", visible ? "false" : "true");
       win.setAttribute("aria-modal", mobile && win === front ? "true" : "false");
     });
+    updateMenubar(front);
   }
 
   function setLauncher(id, mode) {
@@ -287,6 +288,181 @@
     bar.addEventListener("pointerup", endDrag);
     bar.addEventListener("pointercancel", endDrag);
   });
+
+
+  /* Menu bar: the bold title follows the front window, like the active app on macOS. */
+  var menubar = document.getElementById("menubar");
+  var appName = document.getElementById("menu-app-name");
+  var windowList = document.getElementById("menu-window-list");
+  var openMenu = null;
+
+  function updateMenubar(front) {
+    if (!menubar) return;
+    if (appName) appName.textContent = front ? labelFor(front.dataset.app) : "Desktop";
+    var pop = menubar.querySelector('[data-menu="app"] .menu-pop');
+    if (pop) {
+      pop.querySelectorAll("[data-menu-action]").forEach(function (item) {
+        var off = !front;
+        if (item.dataset.menuAction === "maximize" && front) {
+          item.textContent = front.classList.contains("is-max") ? "Restore" : "Zoom";
+        }
+        if (item.dataset.menuAction === "popout") {
+          var link = front && front.querySelector(".titlebar-popout");
+          item.hidden = !link;
+          if (link) item.href = link.getAttribute("href");
+          return;
+        }
+        item.disabled = off;
+        item.setAttribute("aria-disabled", off ? "true" : "false");
+      });
+    }
+    if (windowList) {
+      windowList.replaceChildren();
+      windows().forEach(function (win) {
+        var item = document.createElement("button");
+        item.type = "button";
+        item.className = "menu-item";
+        item.setAttribute("role", "menuitemradio");
+        item.setAttribute("aria-checked", win === front ? "true" : "false");
+        item.dataset.openApp = win.dataset.app;
+        if (win.classList.contains("is-open") && win.classList.contains("is-min")) item.classList.add("is-min");
+        var mark = document.createElement("span");
+        mark.className = "menu-mark";
+        mark.setAttribute("aria-hidden", "true");
+        mark.textContent = win === front ? "\u2713" : win.classList.contains("is-min") ? "\u25C6" : "";
+        item.appendChild(mark);
+        item.appendChild(document.createTextNode(labelFor(win.dataset.app)));
+        windowList.appendChild(item);
+      });
+    }
+  }
+
+  function menuItems(menu) {
+    return Array.prototype.slice.call(menu.querySelectorAll(".menu-item")).filter(function (item) {
+      return !item.hidden && !item.disabled;
+    });
+  }
+
+  function closeMenus(returnFocus) {
+    if (!openMenu) return;
+    var title = openMenu.querySelector(".menu-title");
+    openMenu.querySelector(".menu-pop").hidden = true;
+    openMenu.classList.remove("is-open");
+    title.setAttribute("aria-expanded", "false");
+    if (returnFocus) title.focus();
+    openMenu = null;
+  }
+
+  function showMenu(menu, focusFirst) {
+    if (openMenu === menu) return;
+    closeMenus(false);
+    openMenu = menu;
+    menu.classList.add("is-open");
+    menu.querySelector(".menu-title").setAttribute("aria-expanded", "true");
+    menu.querySelector(".menu-pop").hidden = false;
+    if (focusFirst) {
+      var items = menuItems(menu);
+      if (items[0]) items[0].focus();
+    }
+  }
+
+  if (menubar) {
+    var menus = Array.prototype.slice.call(menubar.querySelectorAll(".menu"));
+    menus.forEach(function (menu, index) {
+      var title = menu.querySelector(".menu-title");
+      title.addEventListener("click", function (event) {
+        if (openMenu === menu) closeMenus(false);
+        else showMenu(menu, event.detail === 0);
+      });
+      /* Once a menu is open, sliding across the bar switches menus without another click. */
+      title.addEventListener("pointerenter", function () {
+        if (openMenu && openMenu !== menu) showMenu(menu, false);
+      });
+      menu.addEventListener("keydown", function (event) {
+        var items = menuItems(menu);
+        var at = items.indexOf(document.activeElement);
+        if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+          event.preventDefault();
+          if (openMenu !== menu) showMenu(menu, false);
+          var step = event.key === "ArrowDown" ? 1 : -1;
+          var next = items[(at + step + items.length) % items.length] || items[0];
+          if (next) next.focus();
+        } else if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+          event.preventDefault();
+          var target = menus[(index + (event.key === "ArrowRight" ? 1 : -1) + menus.length) % menus.length];
+          if (openMenu) showMenu(target, true);
+          else target.querySelector(".menu-title").focus();
+        }
+      });
+    });
+
+    menubar.addEventListener("click", function (event) {
+      var item = event.target.closest(".menu-item");
+      if (!item || item.disabled) return;
+      var action = item.dataset.menuAction;
+      var front = frontWindow();
+      if (action && action !== "popout") {
+        if (!front) return;
+        if (action === "close") closeApp(front);
+        if (action === "minimize") minimizeApp(front);
+        if (action === "maximize") toggleMax(front);
+      }
+      closeMenus(false);
+    });
+
+    document.addEventListener("pointerdown", function (event) {
+      if (openMenu && !openMenu.contains(event.target)) closeMenus(false);
+    });
+
+    /* Capture phase, so Escape closes the menu before it reaches the window shortcuts. */
+    document.addEventListener("keydown", function (event) {
+      if (event.key !== "Escape" || !openMenu) return;
+      event.preventDefault();
+      event.stopPropagation();
+      closeMenus(true);
+    }, true);
+
+    window.addEventListener("blur", function () { closeMenus(false); });
+  }
+
+
+  /* Dock magnification: icons near the pointer grow and push their neighbours apart. */
+  (function () {
+    var dock = document.querySelector(".dock");
+    var fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+    if (!dock) return;
+    var items = Array.prototype.slice.call(dock.querySelectorAll(".dock-item"));
+    var RANGE = 150;
+    var BOOST = 0.55;
+    var frame = 0;
+    var pointerX = null;
+
+    function apply() {
+      frame = 0;
+      items.forEach(function (item) {
+        var scale = 1;
+        if (pointerX !== null) {
+          var rect = item.getBoundingClientRect();
+          var d = Math.abs(pointerX - (rect.left + rect.width / 2));
+          if (d < RANGE) scale = 1 + BOOST * Math.cos((d / RANGE) * (Math.PI / 2));
+        }
+        item.style.setProperty("--mag", scale.toFixed(3));
+      });
+    }
+
+    dock.addEventListener("pointermove", function (event) {
+      if (!fine.matches || motionQuery.matches || event.pointerType !== "mouse") return;
+      pointerX = event.clientX;
+      dock.classList.add("is-magnifying");
+      if (!frame) frame = window.requestAnimationFrame(apply);
+    });
+
+    dock.addEventListener("pointerleave", function () {
+      pointerX = null;
+      dock.classList.remove("is-magnifying");
+      if (!frame) frame = window.requestAnimationFrame(apply);
+    });
+  })();
 
   document.querySelectorAll(".dock-item, .home-item, .desktop-icon").forEach(function (item) {
     if (item.tagName === "A") return;
