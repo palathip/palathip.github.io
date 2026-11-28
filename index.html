@@ -268,21 +268,17 @@
         </div>
         <div class="menu" data-menu="go">
           <button type="button" class="menu-title" aria-haspopup="menu" aria-expanded="false">Go</button>
-          <div class="menu-pop" role="menu" hidden>
-            <button type="button" role="menuitem" class="menu-item" data-open-app="about"><svg class="menu-icon" aria-hidden="true"><use href="#art-about"/></svg>About</button>
-            <button type="button" role="menuitem" class="menu-item" data-open-app="resume"><svg class="menu-icon" aria-hidden="true"><use href="#art-resume"/></svg>Resume</button>
-            <button type="button" role="menuitem" class="menu-item" data-open-app="asset"><svg class="menu-icon" aria-hidden="true"><use href="#art-asset"/></svg>Digital Asset</button>
-            <button type="button" role="menuitem" class="menu-item" data-open-app="qr"><svg class="menu-icon" aria-hidden="true"><use href="#art-qr"/></svg>QR Payment</button>
+          <div class="menu-pop" role="menu" hidden id="menu-go-list">
+            <button type="button" role="menuitemradio" aria-checked="false" class="menu-item go-item" data-open-app="about"><span class="menu-mark" aria-hidden="true"></span><svg class="menu-icon" aria-hidden="true"><use href="#art-about"/></svg>About</button>
+            <button type="button" role="menuitemradio" aria-checked="false" class="menu-item go-item" data-open-app="resume"><span class="menu-mark" aria-hidden="true"></span><svg class="menu-icon" aria-hidden="true"><use href="#art-resume"/></svg>Resume</button>
+            <button type="button" role="menuitemradio" aria-checked="false" class="menu-item go-item" data-open-app="asset"><span class="menu-mark" aria-hidden="true"></span><svg class="menu-icon" aria-hidden="true"><use href="#art-asset"/></svg>Digital Asset</button>
+            <button type="button" role="menuitemradio" aria-checked="false" class="menu-item go-item" data-open-app="qr"><span class="menu-mark" aria-hidden="true"></span><svg class="menu-icon" aria-hidden="true"><use href="#art-qr"/></svg>QR Payment</button>
             <div class="menu-sep" role="separator"></div>
-            <button type="button" role="menuitem" class="menu-item" data-open-app="dashboard"><svg class="menu-icon" aria-hidden="true"><use href="#art-dashboard"/></svg>Dashboard</button>
-            <button type="button" role="menuitem" class="menu-item" data-open-app="guides"><svg class="menu-icon" aria-hidden="true"><use href="#art-guides"/></svg>Game Guides</button>
+            <button type="button" role="menuitemradio" aria-checked="false" class="menu-item go-item" data-open-app="dashboard"><span class="menu-mark" aria-hidden="true"></span><svg class="menu-icon" aria-hidden="true"><use href="#art-dashboard"/></svg>Dashboard</button>
+            <button type="button" role="menuitemradio" aria-checked="false" class="menu-item go-item" data-open-app="guides"><span class="menu-mark" aria-hidden="true"></span><svg class="menu-icon" aria-hidden="true"><use href="#art-guides"/></svg>Game Guides</button>
             <div class="menu-sep" role="separator"></div>
-            <button type="button" role="menuitem" class="menu-item" data-open-app="flights"><svg class="menu-icon" aria-hidden="true"><use href="#art-flights"/></svg>Gen Flights</button>
+            <button type="button" role="menuitemradio" aria-checked="false" class="menu-item go-item" data-open-app="flights"><span class="menu-mark" aria-hidden="true"></span><svg class="menu-icon" aria-hidden="true"><use href="#art-flights"/></svg>Gen Flights</button>
           </div>
-        </div>
-        <div class="menu" data-menu="window">
-          <button type="button" class="menu-title" aria-haspopup="menu" aria-expanded="false">Window</button>
-          <div class="menu-pop" role="menu" hidden id="menu-window-list"></div>
         </div>
       </nav>
       <time id="clock"></time>

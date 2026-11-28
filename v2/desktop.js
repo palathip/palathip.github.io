@@ -293,7 +293,7 @@
   /* Menu bar: the bold title follows the front window, like the active app on macOS. */
   var menubar = document.getElementById("menubar");
   var appName = document.getElementById("menu-app-name");
-  var windowList = document.getElementById("menu-window-list");
+  var goList = document.getElementById("menu-go-list");
   var openMenu = null;
 
   function updateMenubar(front) {
@@ -316,23 +316,18 @@
         item.setAttribute("aria-disabled", off ? "true" : "false");
       });
     }
-    if (windowList) {
-      windowList.replaceChildren();
-      windows().forEach(function (win) {
-        var item = document.createElement("button");
-        item.type = "button";
-        item.className = "menu-item";
-        item.setAttribute("role", "menuitemradio");
-        item.setAttribute("aria-checked", win === front ? "true" : "false");
-        item.dataset.openApp = win.dataset.app;
-        if (win.classList.contains("is-open") && win.classList.contains("is-min")) item.classList.add("is-min");
-        var mark = document.createElement("span");
-        mark.className = "menu-mark";
-        mark.setAttribute("aria-hidden", "true");
-        mark.textContent = win === front ? "\u2713" : win.classList.contains("is-min") ? "\u25C6" : "";
-        item.appendChild(mark);
-        item.appendChild(document.createTextNode(labelFor(win.dataset.app)));
-        windowList.appendChild(item);
+    /* Go opens apps and doubles as the window list: ✓ front, ◆ minimized, • open. */
+    if (goList) {
+      goList.querySelectorAll(".go-item").forEach(function (item) {
+        var win = document.getElementById("window-" + item.dataset.openApp);
+        var open = !!win && win.classList.contains("is-open");
+        var min = open && win.classList.contains("is-min");
+        var isFront = !!win && win === front;
+        item.setAttribute("aria-checked", isFront ? "true" : "false");
+        item.classList.toggle("is-running", open);
+        item.classList.toggle("is-min", min);
+        var mark = item.querySelector(".menu-mark");
+        if (mark) mark.textContent = isFront ? "\u2713" : min ? "\u25C6" : open ? "\u2022" : "";
       });
     }
   }
