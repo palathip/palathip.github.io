@@ -31,7 +31,7 @@
   }
 
   var page = pageId();
-  var homeHref = href('index.html');
+  var homeHref = href('v1/');
   var items = [
     { id: 'home', label: 'Home', href: homeHref },
     { id: 'resume', label: 'Resume', href: href('resume.html') },

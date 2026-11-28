@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BOOMBIBU</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700&family=Plus+Jakarta+Sans:wght@600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../site-nav.css">
+  <style>
+    :root {
+      --bg-dark: #0D0D0D;
+      --bg-card: #1A1A1A;
+      --accent: #F03551;
+      --text-white: #FFFFFF;
+      --text-muted: #888888;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      min-height: 100%;
+      margin: 0;
+      font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-white);
+      overflow-x: hidden;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 48px 80px;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 55%;
+      height: 100%;
+      background: url('https://www.img.in.th/images/96fe7af53b320949d0a7843183239a73.jpg') center/cover no-repeat;
+      opacity: 0.25;
+      filter: grayscale(80%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+    }
+
+    .accent-line {
+      width: 60px;
+      height: 3px;
+      background: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -1px;
+      margin-bottom: 32px;
+      min-height: 1.2em;
+      white-space: nowrap;
+    }
+
+    .typing-cursor {
+      color: var(--accent);
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .button-group {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 16px 32px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-outline {
+      background: var(--bg-dark);
+      color: var(--text-white);
+      border-color: var(--accent);
+    }
+
+    .btn-outline:hover {
+      background: var(--accent-fill);
+      border-color: var(--accent-fill);
+      transform: translateY(-2px);
+    }
+
+    .btn-solid {
+      background: var(--accent-fill);
+      color: white;
+      border-color: var(--accent-fill);
+    }
+
+    .btn-solid:hover {
+      background: var(--accent-fill-hover);
+      border-color: var(--accent-fill-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(240, 53, 81, 0.4);
+    }
+
+    /* Services Section */
+    .services {
+      padding: 80px 48px 120px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .services-header {
+      margin-bottom: 48px;
+    }
+
+    .services-header .accent-line {
+      margin-bottom: 20px;
+    }
+
+    .services-header h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .services-header .subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .service-item {
+      background: var(--bg-card);
+      padding: 24px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text-white);
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid transparent;
+    }
+
+    .service-item:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+    }
+
+    .service-item.highlight {
+      background: var(--accent-fill);
+    }
+
+    .service-item.highlight:hover {
+      background: var(--accent-fill-hover);
+    }
+
+    .service-item span {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .service-item .arrow {
+      opacity: 0.7;
+      font-size: 1.2rem;
+    }
+
+    .resume-frame-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+    }
+
+    .resume-frame-overlay.active {
+      display: flex;
+    }
+
+    .resume-frame-modal {
+      display: flex;
+      flex-direction: column;
+      width: min(1100px, 100%);
+      height: min(860px, calc(100vh - 40px));
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+    }
+
+    .resume-frame-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 14px 14px 22px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .resume-frame-header h2 {
+      margin-right: auto;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .resume-frame-open {
+      display: inline-grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      flex: none;
+      color: var(--text-white);
+      text-decoration: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .resume-frame-open svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+
+    .resume-frame-open:hover {
+      background: var(--accent-fill);
+    }
+
+    .resume-frame-close {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-white);
+      font-size: 1.5rem;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .resume-frame-close:hover {
+      background: var(--accent-fill);
+    }
+
+    .resume-frame-body {
+      flex: 1;
+      min-height: 0;
+      background: #fff;
+    }
+
+    .resume-frame-body iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        padding: 100px 24px 60px;
+      }
+
+      .hero::before {
+        width: 100%;
+        opacity: 0.15;
+      }
+
+      .services {
+        padding: 60px 24px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .hero-content {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .hero h1 {
+        white-space: normal;
+        min-height: 2.4em;
+      }
+
+      .resume-frame-overlay {
+        padding: 0;
+      }
+
+      .resume-frame-modal {
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: 0;
+      }
+    }
+
+    @media (max-width: 340px) {
+      .hero h1 {
+        min-height: 3.6em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script src="../site-nav.js"></script>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="accent-line"></div>
+      <h1><span id="typed-text"></span><span class="typing-cursor">|</span></h1>
+      <div class="button-group">
+        <a href="../resume.html" class="btn btn-solid">View My Resume</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="services">
+    <div class="services-header">
+      <div class="accent-line"></div>
+      <h2>Services.</h2>
+      <p class="subtitle">I WORK WITH YOU, NOT FOR YOU</p>
+    </div>
+    <div class="services-grid">
+      <a href="https://registry.jsonresume.org/palathip" class="service-item highlight" id="resumeServiceItem">
+        <span>Simple Resume</span>
+      </a>
+      <div class="service-item" id="assetServiceItem" style="cursor: pointer;">
+        <span>Digital Asset</span>
+      </div>
+      <div class="service-item" id="qrServiceItem" style="cursor: pointer;">
+        <span>QR Payment</span>
+      </div>
+      <a href="../dashboard/index.html" class="service-item">
+        <span>My Dashboard</span>
+      </a>
+      <a href="../gen-flights/index.html" class="service-item">
+        <span>Gen Flights</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="resume-frame-overlay" id="resumeFrameModal" aria-hidden="true">
+    <div class="resume-frame-modal" role="dialog" aria-modal="true" aria-labelledby="resumeFrameTitle">
+      <div class="resume-frame-header">
+        <h2 id="resumeFrameTitle">Simple Resume</h2>
+        <a class="resume-frame-open" href="https://registry.jsonresume.org/palathip" target="_blank" rel="noopener" aria-label="Open Simple Resume in new tab" title="Open in new tab"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M9.5 2.5h4v4M13.5 2.5L7.5 8.5M11.5 9.5v3a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <button type="button" class="resume-frame-close" id="resumeFrameClose" aria-label="ปิด">×</button>
+      </div>
+      <div class="resume-frame-body">
+        <iframe id="resumeFrameView" title="Simple Resume"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Typing effect: Developer. → Engineer. → Ordinary Man. :)
+    const typedText = document.getElementById('typed-text');
+    const typeSpeed = 80;
+    const deleteSpeed = 50;
+    const pauseAfterType = 2000;
+    const pauseAfterDelete = 400;
+
+    const phrases = [
+      { prefix: "I'm a ", suffix: "Software Developer.", deleteStop: 9 },
+      { prefix: "I'm a Software ", suffix: "Engineer.", deleteStop: 0 },
+      { prefix: "I'm a ", suffix: "Software ", deleteOnly: true },
+      { prefix: "I'm an ", suffix: "Ordinary Man.", deleteStop: 0 }
+    ];
+
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let isFixingPrefix = false;
+
+    function type() {
+      const phrase = phrases[phraseIndex];
+      const { prefix: displayPrefix, suffix: currentSuffix } = phrase;
+
+      if (isFixingPrefix) {
+        typedText.textContent = "I'm an ";
+        isFixingPrefix = false;
+        charIndex = 0;
+        setTimeout(type, pauseAfterDelete);
+        return;
+      }
+
+      if (!isDeleting) {
+        if (phrase.deleteOnly) {
+          isDeleting = true;
+          charIndex = currentSuffix.length;
+          setTimeout(type, pauseAfterDelete);
+          return;
+        }
+        const suffixToShow = currentSuffix.substring(0, charIndex);
+        typedText.textContent = displayPrefix + suffixToShow;
+        charIndex++;
+        if (charIndex > currentSuffix.length) {
+          if (phraseIndex === phrases.length - 1) {
+            setTimeout(() => typeSuffix(), pauseAfterType);
+            return;
+          }
+          isDeleting = true;
+          charIndex = currentSuffix.length;
+          setTimeout(type, pauseAfterType);
+        } else {
+          setTimeout(type, typeSpeed);
+        }
+      } else {
+        const deleteStop = phrase.deleteStop || 0;
+        charIndex--;
+        const suffixToShow = currentSuffix.substring(0, Math.max(charIndex, deleteStop));
+        typedText.textContent = displayPrefix + suffixToShow;
+        if (charIndex <= deleteStop) {
+          isDeleting = false;
+          phraseIndex++;
+          charIndex = 0;
+          if (phraseIndex === 3) {
+            typedText.textContent = "I'm ";
+            setTimeout(() => {
+              isFixingPrefix = true;
+              type();
+            }, pauseAfterDelete);
+          } else if (phrases[phraseIndex]?.deleteOnly) {
+            isDeleting = true;
+            charIndex = phrases[phraseIndex].suffix.length;
+            setTimeout(type, pauseAfterDelete);
+          } else {
+            setTimeout(type, pauseAfterDelete);
+          }
+        } else {
+          setTimeout(type, deleteSpeed);
+        }
+      }
+    }
+
+    function typeSuffix() {
+      const suffix = " :)";
+      let i = 0;
+      function addChar() {
+        if (i < suffix.length) {
+          typedText.textContent += suffix.charAt(i);
+          i++;
+          setTimeout(addChar, typeSpeed);
+        }
+      }
+      addChar();
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(type, 500);
+    });
+
+  </script>
+  <script>
+    (function () {
+      var card = document.getElementById('resumeServiceItem');
+      var overlay = document.getElementById('resumeFrameModal');
+      var frame = document.getElementById('resumeFrameView');
+      var scrollY = 0;
+
+      function openResume() {
+        if (!frame.getAttribute('src')) frame.src = 'https://registry.jsonresume.org/palathip';
+        scrollY = window.scrollY;
+        overlay.classList.add('active');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeResume() {
+        overlay.classList.remove('active');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        window.scrollTo(0, scrollY);
+      }
+
+      card.addEventListener('click', function (event) {
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        openResume();
+      });
+      document.getElementById('resumeFrameClose').addEventListener('click', closeResume);
+      overlay.addEventListener('click', function (event) {
+        if (event.target === overlay) closeResume();
+      });
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && overlay.classList.contains('active')) closeResume();
+      });
+    })();
+  </script>
+</body>
+</html>

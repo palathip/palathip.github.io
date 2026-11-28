@@ -1,4 +1,4 @@
-/* Desktop shell for /v2/. Copy comes from ../resume.json so it is not forked. */
+/* Desktop shell for the home page (/). Copy comes from /resume.json so it is not forked. */
 (function () {
   /* Keep in sync with the mobile @media query in desktop.css. */
   var mobileQuery = window.matchMedia("(max-width: 760px), (max-height: 500px) and (pointer: coarse)");
@@ -599,9 +599,9 @@
   function pictureSrc(picture) {
     var value = String(picture || "");
     var local = value.match(/^(?:https?:\/\/[^/]+)?\/?(images\/profile\.png)$/);
-    if (local) return new URL("../" + local[1], window.location.href).href;
+    if (local) return new URL("/" + local[1], window.location.href).href;
     if (value) return value;
-    return new URL("../images/profile.png", window.location.href).href;
+    return new URL("/images/profile.png", window.location.href).href;
   }
 
   function highlightHtml(text) {
@@ -975,7 +975,7 @@
   if (isDesktop()) openApp("about");
   else syncChrome();
 
-  fetch(new URL("../resume.json", window.location.href).href)
+  fetch(new URL("/resume.json", window.location.href).href)
     .then(function (response) {
       if (!response.ok) throw new Error("resume");
       return response.json();
